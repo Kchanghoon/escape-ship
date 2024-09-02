@@ -22,4 +22,6 @@ if (Input.GetKey(KeyCode.LeftArrow))
     this.transform.Translate(Vector3.left * Time.deltaTime * 3); //왼쪽으로 이동
     }
     }
+
+    
 }
