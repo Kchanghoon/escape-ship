@@ -4,5 +4,11 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Main.unity
+    guid: 2e97fe4e8bb7533448be8e6e714ab62d
+  - enabled: 1
+    path: Assets/Scenes/escape_ship.unity
+    guid: 8f1a01e4b1a374aa6bfe472517a8a56e
   m_configObjects: {}
