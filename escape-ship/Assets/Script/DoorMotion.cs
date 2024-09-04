@@ -18,9 +18,9 @@ public class DoorMotion : MonoBehaviour
     [ContextMenu("PlayDoorMotion")]
     private void PlayDoorMotion()
     {
-        DOTween.Sequence().Append(doorLeft.DOLocalMoveZ(doorLeft.position.z +endPosZ, duration)
+        DOTween.Sequence().Append(doorLeft.DOLocalMoveZ(leftStartPosZ + endPosZ, duration)
                                             .From(leftStartPosZ))
-                        .Join(doorRight.DOLocalMoveZ(doorRight.position.z -endPosZ, duration)
+                        .Join(doorRight.DOLocalMoveZ(rightStartPosZ - endPosZ, duration)
                                             .From(rightStartPosZ))
                         .SetEase(motionEase)
                         .SetId($"Door Motion{GetInstanceID()}");
