@@ -81,7 +81,7 @@ public class MovementInput : MonoBehaviour
 
         desiredMoveDirection = forward * InputZ + right * InputX;
         
-        Debug.Log($"forward : {forward}     /     InputZ : {InputZ}       /       right : {right}      /      InputX : {InputX}");
+        //Debug.Log($"forward : {forward}     /     InputZ : {InputZ}       /       right : {right}      /      InputX : {InputX}");
 
         if (blockRotationPlayer == false)
         {
