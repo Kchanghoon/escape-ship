@@ -9,6 +9,7 @@ public class ChestOpen : MonoBehaviour
     [SerializeField] private float duration = 1f;  // 열리는 속도
     [SerializeField] private Ease motionEase = Ease.InOutQuad;  // 애니메이션 Ease
     private bool isOpen = false;  // 상자가 열렸는지 여부를 기록
+    private bool playerInRange = false;  // 플레이어가 가까이 있는지 확인하는 플래그
 
     void Start()
     {
@@ -17,8 +18,8 @@ public class ChestOpen : MonoBehaviour
 
     void Update()
     {
-        // E 키를 눌렀을 때 상자를 여닫는 기능
-        if (Input.GetKeyDown(KeyCode.E))
+        // 플레이어가 범위 안에 있을 때만 E 키로 상자를 여닫음
+        if (playerInRange && Input.GetKeyDown(KeyCode.E))
         {
             ToggleChest();  // 상자를 열거나 닫음
         }
@@ -39,5 +40,23 @@ public class ChestOpen : MonoBehaviour
         }
 
         isOpen = !isOpen;  // 상태를 반전시킴
+    }
+
+    // 플레이어가 트리거 범위 안으로 들어왔을 때 호출되는 함수
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))  // 플레이어에게 'Player' 태그가 있는지 확인
+        {
+            playerInRange = true;  // 플레이어가 범위 안에 있음
+        }
+    }
+
+    // 플레이어가 트리거 범위에서 벗어났을 때 호출되는 함수
+    void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))  // 플레이어가 범위를 벗어남
+        {
+            playerInRange = false;  // 플레이어가 범위 밖으로 나감
+        }
     }
 }
