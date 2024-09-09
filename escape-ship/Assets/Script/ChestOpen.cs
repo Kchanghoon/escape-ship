@@ -3,9 +3,9 @@ using DG.Tweening;
 
 public class ChestOpen : MonoBehaviour
 {
-    [SerializeField] private Transform lid;  // 상자의 뚜껑 (회전할 부분)
-    [SerializeField] private Vector3 closedRotation;  // 닫혀있을 때의 회전값 (예: (0, 0, 0))
-    [SerializeField] private Vector3 openRotation;    // 열렸을 때의 회전값 (예: (-90, 0, 0))
+    [SerializeField] private Transform lid;  // 상자의 뚜껑 (움직일 부분)
+    [SerializeField] private Vector3 closedPosition = Vector3.zero;  // 닫혀있을 때의 로컬 위치값
+    [SerializeField] private float openPositionX = 1f;  // 열렸을 때의 X축 위치값
     [SerializeField] private float duration = 1f;  // 열리는 속도
     [SerializeField] private Ease motionEase = Ease.InOutQuad;  // 애니메이션 Ease
     private bool isOpen = false;  // 상자가 열렸는지 여부를 기록
@@ -13,7 +13,7 @@ public class ChestOpen : MonoBehaviour
 
     void Start()
     {
-        lid.localRotation = Quaternion.Euler(closedRotation);  // 처음엔 닫힌 상태로 시작
+        lid.localPosition = closedPosition;  // 처음엔 닫힌 상태로 시작
     }
 
     void Update()
@@ -30,13 +30,13 @@ public class ChestOpen : MonoBehaviour
     {
         if (isOpen)
         {
-            // 상자가 열려있으면 닫기
-            lid.DORotate(closedRotation, duration).SetEase(motionEase);
+            // 상자가 열려있으면 닫기 (로컬 위치 사용)
+            lid.DOLocalMoveX(closedPosition.x, duration).SetEase(motionEase);
         }
         else
         {
-            // 상자가 닫혀있으면 열기
-            lid.DORotate(openRotation, duration).SetEase(motionEase);
+            // 상자가 닫혀있으면 열기 (X축으로 이동)
+            lid.DOLocalMoveX(openPositionX, duration).SetEase(motionEase);
         }
 
         isOpen = !isOpen;  // 상태를 반전시킴
