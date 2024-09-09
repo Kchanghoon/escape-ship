@@ -39,12 +39,14 @@ public class StartMenu : MonoBehaviour
     public void Resume()
     {
         StartMenuUI.SetActive(false);  // UI 숨기기
-        
+ 
         confirmExitPanel.SetActive(false); //나가기 확인창 숨기기
         confirmOptionSlotPanel.SetActive(false); //세이브창 숨기기
         confirmLoadSlotPanel.SetActive(false); // 로드창 숨기기
         Time.timeScale = 1f;  // 게임 시간 재개
         isPaused = false;  // 일시정지 상태 해제
+       Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
  
 
