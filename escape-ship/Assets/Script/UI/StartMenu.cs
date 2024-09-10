@@ -17,7 +17,7 @@ public class StartMenu : MonoBehaviour
     public AudioSource[] allAudioSources; //오디오 사운드 관리
 
    
-    public void Update()
+    public void Start()
     {
         if (StartMenuUI.activeSelf)
         {
