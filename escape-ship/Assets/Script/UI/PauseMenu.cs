@@ -1,3 +1,4 @@
+using DG.Tweening.Core.Easing;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,6 +27,7 @@ public class PauseMenu : MonoBehaviour
             else
             {
                 Pause();  // 일시정지 상태가 아니라면 일시정지
+                
                 PauseAllSounds(); //소리도 정지
             }
         }
@@ -40,6 +42,8 @@ public class PauseMenu : MonoBehaviour
         confirmLoadSlotPanel.SetActive(false); // 로드창 숨기기
         Time.timeScale = 1f;  // 게임 시간 재개
         isPaused = false;  // 일시정지 상태 해제
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     void Pause()
@@ -47,6 +51,8 @@ public class PauseMenu : MonoBehaviour
         pauseMenuUI.SetActive(true);  // UI 표시
         Time.timeScale = 0f;  // 게임 시간 정지
         isPaused = true;  // 일시정지 상태로 설정
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 
     public void showConfirmMenuPanel()

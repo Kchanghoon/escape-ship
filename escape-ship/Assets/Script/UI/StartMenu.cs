@@ -17,12 +17,12 @@ public class StartMenu : MonoBehaviour
     public AudioSource[] allAudioSources; //오디오 사운드 관리
 
    
-    public void Start()
+    public void Update()
     {
         if (StartMenuUI.activeSelf)
         {
+            Time.timeScale = 0f;  // 게임 시간 정지
             PauseAllSoundsExcept(continueAudioSource);
-          
         }
         else
         {
@@ -45,8 +45,8 @@ public class StartMenu : MonoBehaviour
         confirmLoadSlotPanel.SetActive(false); // 로드창 숨기기
         Time.timeScale = 1f;  // 게임 시간 재개
         isPaused = false;  // 일시정지 상태 해제
-       Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;     //마우스 커서 안보이게 
+        Cursor.lockState = CursorLockMode.Locked;  //마우스 커서 중앙에 고정.
     }
  
 
