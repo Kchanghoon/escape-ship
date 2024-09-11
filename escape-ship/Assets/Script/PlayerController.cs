@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
+using Cysharp.Threading.Tasks;
 
 public class PlayerController : MonoBehaviour
 {
@@ -32,20 +34,11 @@ public class PlayerController : MonoBehaviour
         if (characterController.isGrounded)
         {
             yVelocity = 0;
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                yVelocity = jumpSpeed;
-            }
+            if (Input.GetKeyDown(KeyCode.Space)) yVelocity = jumpSpeed;
         }
 
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            moveSpeed = RunSpeed;
-        }
-        else
-        {
-            moveSpeed = NormalSpeed;
-        }
+        if (Input.GetKey(KeyCode.LeftShift)) moveSpeed = RunSpeed;
+        else moveSpeed = NormalSpeed;
 
         yVelocity += (gravity * Time.deltaTime);
         moveDirection.y = yVelocity;
@@ -58,15 +51,13 @@ public class PlayerController : MonoBehaviour
         return transform.position;
     }
 
-    public void SetPlayerPosition(Vector3 position)
+    public async void SetPlayerPosition(Vector3 position)
     {
         isMovingEnabled = false;
         transform.position = position;
-        if (cameraTransform != null)
-        {
-            cameraTransform.position = new Vector3(position.x, cameraTransform.position.y, position.z);
-        }
+
         Debug.Log("플레이어 위치가 설정되었습니다: " + transform.position);
+        await UniTask.Delay(1000); // 플레이어 이동 후 딜레이
         isMovingEnabled = true;
     }
 }

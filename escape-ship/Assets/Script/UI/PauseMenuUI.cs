@@ -3,15 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PauseMenu : MonoBehaviour
+public class PauseMenuUI : MonoBehaviour
 {
-    public GameObject pauseMenuUI;  // PauseMenu의 Canvas를 드래그하여 연결할 변수
-    public GameObject confirmMenuPanel; //메뉴 확인창 UI 
-    public GameObject confirmExitPanel;//게임 종료 확인창 UI
-    public GameObject confirmSaveSlotPanel;
-    public GameObject confirmLoadSlotPanel;
-    public AudioSource[] allAudioSources;
-    public GameObject MainMenuUI;
+    [SerializeField] GameObject pauseMenuUI;  // PauseMenu의 Canvas를 드래그하여 연결할 변수
+    [SerializeField] GameObject confirmMenuPanel; //메뉴 확인창 UI 
+    [SerializeField] GameObject confirmExitPanel;//게임 종료 확인창 UI
+    [SerializeField] GameObject confirmSaveSlotPanel;
+    [SerializeField] GameObject confirmLoadSlotPanel;
+    [SerializeField] AudioSource[] allAudioSources;
+    [SerializeField] GameObject MainMenuUI;
     private bool isPaused = false;  // 게임이 일시정지 상태인지 확인하는 변수
 
     void Update()
@@ -116,5 +116,15 @@ public class PauseMenu : MonoBehaviour
         {
             audioSource.UnPause(); // 소리 재개
         }
+    }
+
+    public void ClickSaveButton(int saveIndex)
+    {
+
+    }
+
+    public void ClickLoadButton(int loadIndex)
+    {
+
     }
 }

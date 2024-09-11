@@ -10,6 +10,7 @@ public class SaveMenuController : MonoBehaviour
     public GameObject pauseMenuUI;
     public Button slotButton1, slotButton2, slotButton3;
     public Button loadSlotButton1, loadSlotButton2, loadSlotButton3;
+    [SerializeField] PlayerController player;
 
     void Start()
     {
@@ -30,7 +31,7 @@ public class SaveMenuController : MonoBehaviour
 
     public void SaveGame(int slotNumber)
     {
-        PlayerController player = FindObjectOfType<PlayerController>();
+        //PlayerController player = FindObjectOfType<PlayerController>();
         if (player != null)
         {
             GameState gameState = new GameState
@@ -65,14 +66,14 @@ public class SaveMenuController : MonoBehaviour
             Debug.Log("읽은 JSON 데이터: " + json);
 
             GameState gameState = JsonUtility.FromJson<GameState>(json);
-            PlayerController player = FindObjectOfType<PlayerController>();
+            //PlayerController player = FindObjectOfType<PlayerController>();
 
             if (player != null)
             {
                 Vector3 newPosition = new Vector3(gameState.playerPositionX, gameState.playerPositionY, gameState.playerPositionZ);
                 player.SetPlayerPosition(newPosition);
                 Debug.Log("게임이 슬롯 " + slotNumber + "에서 로드되었습니다.");
-                Debug.Log("로드 후 플레이어 위치: " + player.transform.position);
+                Debug.Log("로드 후 플레이어 위치 : " + player.transform.position);
             }
             else
             {

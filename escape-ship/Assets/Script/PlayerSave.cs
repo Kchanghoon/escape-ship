@@ -5,10 +5,10 @@ public class PlayerSave : MonoBehaviour
 {
     public PlayerController playerController;
 
-    private void Awake()
-    {
-        playerController = GetComponent<PlayerController>();
-    }
+    //private void Awake()
+    //{
+    //    playerController = GetComponent<PlayerController>();
+    //}
 
     public void SavePlayerState()
     {

@@ -14,6 +14,6 @@ public class FadeText : MonoBehaviour
         myTMPText.color = new Color(myTMPText.color.r, myTMPText.color.g, myTMPText.color.b, 0);
 
         // 3초 동안 투명도를 1로 변경하여 텍스트가 서서히 나타나도록 설정
-        myTMPText.DOFade(1, 3f);
+        myTMPText.DOFade(1, 3f).SetUpdate(true);
     }
 }
