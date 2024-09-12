@@ -7,26 +7,26 @@ using TMPro;
 
 public class StartMenu : MonoBehaviour
 {
-    public GameObject StartMenuUI;  // StartMenuUI Canvas를 드래그하여 연결할 변수
-    public GameObject confirmExitPanel;//게임 종료 확인창 UI
-    public GameObject confirmOptionSlotPanel; //  옵션창 UI
-    public GameObject confirmLoadSlotPanel; // 로드 UI
+    [SerializeField] GameObject StartMenuUI;  // StartMenuUI Canvas를 드래그하여 연결할 변수
+    [SerializeField] GameObject PauseMenuUI;
+    [SerializeField] GameObject confirmExitPanel;//게임 종료 확인창 UI
+    [SerializeField] GameObject confirmOptionSlotPanel; //  옵션창 UI
+    [SerializeField] GameObject confirmLoadSlotPanel; // 로드 UI
     private bool isPaused = false;  // 게임이 일시정지 상태인지 확인하는 변수
     public GameObject panel;
-    public AudioSource continueAudioSource;
-    public AudioSource[] allAudioSources; //오디오 사운드 관리
+    //public string continueSoundName;
 
-   
+
     public void Update()
     {
-        if (StartMenuUI.activeSelf)
+        if (StartMenuUI.activeSelf || PauseMenuUI.activeSelf)
         {
-            Time.timeScale = 0f;  // 게임 시간 정지
-            PauseAllSoundsExcept(continueAudioSource);
+            //SoundManager.instance.PlaySound2D("MenuBGM", isLoop: true, type: SoundType.BGM);  // 메뉴 BGM 재생
+            SoundManager.instance.StopAllSounds();  // 특정 소리 제외하고 모두 일시정지
         }
         else
         {
-            ResumeAllSounds();
+            SoundManager.instance.ResumeAllSounds();  // 모든 소리 재개
         }
     }
 
@@ -83,22 +83,22 @@ public class StartMenu : MonoBehaviour
 #endif
     }
 
-    void PauseAllSoundsExcept(AudioSource continueAudioSource) //소리 일시정지
-    {
-        allAudioSources = FindObjectsOfType<AudioSource>(); // 모든 오디오 소스 가져오기
-        foreach (AudioSource audioSource in allAudioSources)
-        {
-            //if (audioSource != exception)  // 특정 오디오 소스는 제외
-            {
-                audioSource.Pause();  // 나머지 오디오 소스는 일시 정지
-            }
-        }
-    }
-    void ResumeAllSounds() // 소리 재생
-    {
-        foreach (AudioSource audioSource in allAudioSources)
-        {
-            audioSource.UnPause(); // 소리 재개
-        }
-    }
+    //void PauseAllSoundsExcept(AudioSource continueAudioSource) //소리 일시정지
+    //{
+    //    allAudioSources = FindObjectsOfType<AudioSource>(); // 모든 오디오 소스 가져오기
+    //    foreach (AudioSource audioSource in allAudioSources)
+    //    {
+    //        //if (audioSource != exception)  // 특정 오디오 소스는 제외
+    //        {
+    //            audioSource.Pause();  // 나머지 오디오 소스는 일시 정지
+    //        }
+    //    }
+    //}
+    //void ResumeAllSounds() // 소리 재생
+    //{
+    //    foreach (AudioSource audioSource in allAudioSources)
+    //    {
+    //        audioSource.UnPause(); // 소리 재개
+    //    }
+    //}
 }

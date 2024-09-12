@@ -10,7 +10,7 @@ public class PauseMenuUI : MonoBehaviour
     [SerializeField] GameObject confirmExitPanel;//게임 종료 확인창 UI
     [SerializeField] GameObject confirmSaveSlotPanel;
     [SerializeField] GameObject confirmLoadSlotPanel;
-    [SerializeField] AudioSource[] allAudioSources;
+    //[SerializeField] AudioSource[] allAudioSources;
     [SerializeField] GameObject MainMenuUI;
     private bool isPaused = false;  // 게임이 일시정지 상태인지 확인하는 변수
 
@@ -22,13 +22,10 @@ public class PauseMenuUI : MonoBehaviour
             if (isPaused)
             {
                 Resume();  // 이미 일시정지 상태라면 재개
-                ResumeAllSounds(); // 소리 재게
             }
             else
             {
                 Pause();  // 일시정지 상태가 아니라면 일시정지
-                
-                PauseAllSounds(); //소리도 정지
             }
         }
     }
@@ -44,6 +41,7 @@ public class PauseMenuUI : MonoBehaviour
         isPaused = false;  // 일시정지 상태 해제
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+        SoundManager.instance.ResumeAllSounds();
     }
 
     void Pause()
@@ -53,6 +51,7 @@ public class PauseMenuUI : MonoBehaviour
         isPaused = true;  // 일시정지 상태로 설정
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
+        SoundManager.instance.StopAllSounds();
     }
 
     public void showConfirmMenuPanel()
@@ -102,21 +101,6 @@ public class PauseMenuUI : MonoBehaviour
 #endif
     }
 
-    void PauseAllSounds() //소리 일시정지
-    {
-        allAudioSources = FindObjectsOfType<AudioSource>(); // 모든 오디오 소스 가져오기
-        foreach (AudioSource audioSource in allAudioSources)
-        {
-            audioSource.Pause(); // 소리 일시 정지
-        }
-    }
-    void ResumeAllSounds() // thfl worp 
-    {
-        foreach (AudioSource audioSource in allAudioSources)
-        {
-            audioSource.UnPause(); // 소리 재개
-        }
-    }
 
     public void ClickSaveButton(int saveIndex)
     {
