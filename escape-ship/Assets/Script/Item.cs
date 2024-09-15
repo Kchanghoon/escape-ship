@@ -6,7 +6,7 @@ using UnityEngine;
 public class Item : ScriptableObject
 {
     public string itemName; // 아이템의 이름
-    public Sprite icon;     // 인벤토리 UI에서 사용할 아이콘
+    public Sprite itemImage;     // 인벤토리 UI에서 사용할 아이콘
 
     // 가상 메서드 정의 (필요 시 서브클래스에서 구현)
     public virtual void Use()

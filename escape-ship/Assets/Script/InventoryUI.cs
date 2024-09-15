@@ -58,7 +58,7 @@ public class InventoryUI : MonoBehaviour
                 continue;
             }
 
-            icon.sprite = item.icon;  // 아이템 아이콘 설정
+            icon.sprite = item.itemImage;  // 아이템 아이콘 설정
         }
     }
 }
