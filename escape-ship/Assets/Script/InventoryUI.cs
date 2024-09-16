@@ -18,12 +18,11 @@ public class InventoryUI : MonoBehaviour
             isInventoryVisible = !isInventoryVisible;  // 상태 반전
             inventoryPanel.SetActive(isInventoryVisible);  // 패널 활성화/비활성화 전환
 
-            if (isInventoryVisible)
-            {
-                UpdateInventoryUI();  // 패널이 활성화될 때만 인벤토리 UI 업데이트
-            }
+            // 패널이 열릴 때 또는 닫힐 때 UI를 업데이트
+            UpdateInventoryUI();
         }
     }
+
 
     void UpdateInventoryUI()
     {
