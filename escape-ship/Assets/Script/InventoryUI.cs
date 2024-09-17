@@ -10,19 +10,32 @@ public class InventoryUI : MonoBehaviour
 
     private bool isInventoryVisible = false;  // 인벤토리 패널의 현재 상태
 
+    void Start()
+    {
+        inventoryPanel.SetActive(isInventoryVisible);  // 시작할 때 인벤토리 패널을 숨김
+    }
+
     void Update()
     {
         // 'Tab' 키 입력 감지
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            isInventoryVisible = !isInventoryVisible;  // 상태 반전
-            inventoryPanel.SetActive(isInventoryVisible);  // 패널 활성화/비활성화 전환
-
-            // 패널이 열릴 때 또는 닫힐 때 UI를 업데이트
-            UpdateInventoryUI();
+            ToggleInventory();
         }
     }
 
+    // 인벤토리 패널의 활성/비활성 상태 전환 함수
+    void ToggleInventory()
+    {
+        isInventoryVisible = !isInventoryVisible;  // 상태 반전
+        inventoryPanel.SetActive(isInventoryVisible);  // 패널 활성화/비활성화 전환
+
+        // 패널이 열릴 때만 UI 갱신
+        if (isInventoryVisible)
+        {
+            UpdateInventoryUI();
+        }
+    }
 
     void UpdateInventoryUI()
     {
@@ -43,6 +56,7 @@ public class InventoryUI : MonoBehaviour
         {
             GameObject slot = Instantiate(slotPrefab, inventoryPanel.transform);
 
+            // 프리팹 내에서 'Icon' 오브젝트를 찾음
             Transform iconTransform = slot.transform.Find("Icon");
             if (iconTransform == null)
             {
