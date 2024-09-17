@@ -17,9 +17,9 @@ public class InventoryUI : MonoBehaviour
 
     void Update()
     {
-        // 'Tab' 키 입력 감지
         if (Input.GetKeyDown(KeyCode.Tab))
         {
+            Debug.Log("Tab key pressed!");  // Tab 키 입력 감지 확인
             ToggleInventory();
         }
     }
@@ -30,12 +30,13 @@ public class InventoryUI : MonoBehaviour
         isInventoryVisible = !isInventoryVisible;  // 상태 반전
         inventoryPanel.SetActive(isInventoryVisible);  // 패널 활성화/비활성화 전환
 
-        // 패널이 열릴 때만 UI 갱신
         if (isInventoryVisible)
         {
             UpdateInventoryUI();
         }
+        Debug.Log("Inventory visibility toggled: " + isInventoryVisible);
     }
+
 
     void UpdateInventoryUI()
     {
