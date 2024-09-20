@@ -15,6 +15,11 @@ public class PlayerController : MonoBehaviour
     public float jumpSpeed = 10f;
     public float gravity = -20f;
     public float yVelocity = 0;
+    public PlayerState playerState;
+
+   
+   
+
 
 
     public bool isMovingEnabled = true;
@@ -37,13 +42,21 @@ public class PlayerController : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space)) yVelocity = jumpSpeed;
         }
 
-        if (Input.GetKey(KeyCode.LeftShift)) moveSpeed = RunSpeed;
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            playerState.DecreaseOxygen(5f);  // 산소를 5만큼 감소
+        }
+        if (Input.GetKey(KeyCode.LeftShift)) 
+        { moveSpeed = RunSpeed;
+            playerState.DecreaseOxygen(Time.deltaTime *2f); // 산소 2초마다 감소.
+        }
         else moveSpeed = NormalSpeed;
 
         yVelocity += (gravity * Time.deltaTime);
         moveDirection.y = yVelocity;
 
         characterController.Move(moveDirection * Time.deltaTime);
+
     }
 
     public Vector3 GetPlayerPosition()
