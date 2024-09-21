@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    public List<Item> items;
+    public Item[] items;  // 아이템을 배열로 선언
 
     [SerializeField]
     private Transform slotParent;
@@ -15,6 +15,9 @@ public class Inventory : MonoBehaviour
     private void OnValidate()
     {
         slots = slotParent.GetComponentsInChildren<Slot>();
+
+        // 슬롯 배열의 크기를 slotParent의 자식 개수로 설정
+        items = new Item[slots.Length];
     }
 #endif
 
@@ -25,27 +28,27 @@ public class Inventory : MonoBehaviour
 
     public void FreshSlot()
     {
-        int i = 0;
-        for (; i < items.Count && i < slots.Length; i++)
+        // 슬롯을 업데이트하는 부분
+        for (int i = 0; i < slots.Length; i++)
         {
             slots[i].item = items[i];
-        }
-        for (; i < slots.Length; i++)
-        {
-            slots[i].item = null;
         }
     }
 
     public void AddItem(Item _item)
     {
-        if (items.Count < slots.Length)
+        // 빈 슬롯을 찾은 후 아이템을 추가
+        for (int i = 0; i < items.Length; i++)
         {
-            items.Add(_item);
-            FreshSlot();
+            if (items[i] == null)
+            {
+                items[i] = _item;
+                FreshSlot();
+                return; // 아이템 추가 후 종료
+            }
         }
-        else
-        {
-            print("슬롯이 가득 차 있습니다.");
-        }
+
+        // 모든 슬롯이 가득 찬 경우
+        print("슬롯이 가득 차 있습니다.");
     }
 }
