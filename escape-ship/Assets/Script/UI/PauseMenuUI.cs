@@ -14,20 +14,16 @@ public class PauseMenuUI : MonoBehaviour
     [SerializeField] GameObject MainMenuUI;
     private bool isPaused = false;  // 게임이 일시정지 상태인지 확인하는 변수
 
-    void Update()
+    private void Start()
     {
-        // Esc 키 입력 감지
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            if (isPaused)
-            {
-                Resume();  // 이미 일시정지 상태라면 재개
-            }
-            else
-            {
-                Pause();  // 일시정지 상태가 아니라면 일시정지
-            }
-        }
+        KeyManager.Instance.keyDic[KeyAction.Setting] += OnSetting;
+    }
+
+    private void OnSetting()
+    {
+        Pause(!isPaused);
+        //if (isPaused) Resume();  // 이미 일시정지 상태라면 재개
+        //else Pause(!isPaused);  // 일시정지 상태가 아니라면 일시정지
     }
 
     public void Resume()
@@ -44,14 +40,22 @@ public class PauseMenuUI : MonoBehaviour
         SoundManager.instance.ResumeAllSounds();
     }
 
-    void Pause()
+    void Pause(bool isPuase)
     {
-        pauseMenuUI.SetActive(true);  // UI 표시
-        Time.timeScale = 0f;  // 게임 시간 정지
-        isPaused = true;  // 일시정지 상태로 설정
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
-        SoundManager.instance.StopAllSounds();
+        pauseMenuUI.SetActive(isPuase);  // UI 표시
+        Time.timeScale = isPuase? 0f : 1;  // 게임 시간 정지
+        isPaused = isPuase;  // 일시정지 상태로 설정
+        Cursor.visible = isPuase;
+        Cursor.lockState = isPuase? CursorLockMode.None : CursorLockMode.Locked;
+
+        if(isPuase) SoundManager.instance.StopAllSounds();
+        else
+        {
+            confirmMenuPanel.SetActive(false); //메뉴 확인창 숨기기
+            confirmExitPanel.SetActive(false); //나가기 확인창 숨기기
+            confirmSaveSlotPanel.SetActive(false); //세이브창 숨기기
+            confirmLoadSlotPanel.SetActive(false); // 로드창 숨기기
+        }
     }
 
     public void showConfirmMenuPanel()

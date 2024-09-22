@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using Cysharp.Threading.Tasks;
+using UnityEngine.Playables;
+using System.IO;
+using Unity.VisualScripting;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : Singleton<PlayerController>
 {
     public Transform cameraTransform;
     public CharacterController characterController;
@@ -15,14 +18,32 @@ public class PlayerController : MonoBehaviour
     public float jumpSpeed = 10f;
     public float gravity = -20f;
     public float yVelocity = 0;
-    public PlayerState playerState;
-
-   
-   
-
-
 
     public bool isMovingEnabled = true;
+    bool isRun;
+
+    private void Start()
+    {
+        KeyManager.Instance.keyDic[KeyAction.Jump] += OnJump;
+        KeyManager.Instance.keyDic[KeyAction.Run] += OnRun;
+    }
+
+    private void OnJump()
+    {
+        if(characterController.isGrounded) yVelocity = jumpSpeed;
+        //if (characterController.isGrounded)
+        //{
+        //    yVelocity = 0;
+        //    if (Input.GetKeyDown(KeyCode.Space)) yVelocity = jumpSpeed;
+        //}
+        //else moveSpeed = NormalSpeed;
+    }
+
+    private void OnRun()
+    {
+        moveSpeed = isRun ? NormalSpeed : RunSpeed;
+        isRun = !isRun;
+    }
 
     void Update()
     {
@@ -36,21 +57,7 @@ public class PlayerController : MonoBehaviour
         moveDirection = cameraTransform.TransformDirection(moveDirection);
         moveDirection *= moveSpeed;
 
-        if (characterController.isGrounded)
-        {
-            yVelocity = 0;
-            if (Input.GetKeyDown(KeyCode.Space)) yVelocity = jumpSpeed;
-        }
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            playerState.DecreaseOxygen(5f);  // 산소를 5만큼 감소
-        }
-        if (Input.GetKey(KeyCode.LeftShift)) 
-        { moveSpeed = RunSpeed;
-            playerState.DecreaseOxygen(Time.deltaTime *2f); // 산소 2초마다 감소.
-        }
-        else moveSpeed = NormalSpeed;
+        if (!characterController.isGrounded) moveSpeed = NormalSpeed;
 
         yVelocity += (gravity * Time.deltaTime);
         moveDirection.y = yVelocity;

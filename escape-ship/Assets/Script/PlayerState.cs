@@ -1,23 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 
 public class PlayerState : MonoBehaviour
 {
     // 플레이어 상태 스탯 변수
-    public float stress;  // 스트레스 수치
-    public float oxygen;  // 산소 수치
+    [SerializeField] float stress;  // 스트레스 수치
+    [SerializeField] float oxygen;  // 산소 수치
 
     // 최대값, 최소값을 지정해 줄 수 있다.
-    public float maxStress = 100f;
-    public float maxOxygen = 100f;
+    [SerializeField] float maxStress = 100f;
+    [SerializeField] float maxOxygen = 100f;
 
     // Start는 게임 시작 시 호출
-    void Start()
+    private void Start()
     {
         // 초기 값 설정 (원하는 값으로 초기화할 수 있다)
         stress = 0f;
         oxygen = maxOxygen;
+        KeyManager.Instance.keyDic[KeyAction.Jump] += OnJump;
+        KeyManager.Instance.keyDic[KeyAction.Run] += OnRun;
+    }
+
+    private void OnJump()
+    {
+        DecreaseOxygen(5f);  // 산소를 5만큼 감소
+
+    }
+
+    private void OnRun()
+    {
+        DecreaseOxygen(Time.deltaTime * 2f); // 산소 2초마다 감소.
     }
 
     // Update는 매 프레임마다 호출
