@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class ItemSlotUI : MonoBehaviour
 {
     [SerializeField] ItemDataExample itemData;
     [SerializeField] CanvasGroup canvasGroup;
-    [SerializeField] Image itemIcon;
+    [SerializeField] UnityEngine.UI.Image itemIcon;
+    [SerializeField] UnityEngine.UI.Image itembackground;
 
     public ItemDataExample ItemData { get => itemData; }
 
@@ -56,5 +58,17 @@ public class ItemSlotUI : MonoBehaviour
     {
         if (itemData == null) return;
         InventoryUIExmaple.Instance.OnDropIcon();
+    }
+
+    // 슬롯 선택 시 호출 (선택 시 배경 활성화)
+    public void Select()
+    {
+        itembackground.gameObject.SetActive(true); // 선택 시 배경 활성화
+    }
+
+    // 슬롯 선택 해제 시 호출 (선택 해제 시 배경 비활성화)
+    public void Deselect()
+    {
+        itembackground.gameObject.SetActive(false); // 선택 해제 시 배경 비활성화
     }
 }

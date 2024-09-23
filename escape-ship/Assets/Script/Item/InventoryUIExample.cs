@@ -21,6 +21,7 @@ public class InventoryUIExmaple : Singleton<InventoryUIExmaple>
     bool isDrag;
     public bool IsDrag { get => isDrag; }
     private bool isInventoryOpen = false;
+    private ItemSlotUI selectedItemSlot;
 
     private void Start()
     {
@@ -32,7 +33,26 @@ public class InventoryUIExmaple : Singleton<InventoryUIExmaple>
 
     }
 
+    public void selectItem(int index)
+    {
+        if (index < 0 || index >= itemSlots.Length)
+        {
+            Debug.LogWarning("잘못된 아이템 슬롯 인덱스입니다.");
+            return;
+        }
 
+        // 이전에 선택한 아이템이 있으면 선택 해제
+        if (selectedItemSlot != null)
+        {
+            selectedItemSlot.Deselect();
+        }
+
+        // 새로운 아이템 슬롯 선택
+        selectedItemSlot = itemSlots[index];
+        selectedItemSlot.Select();
+
+        Debug.Log($"아이템 슬롯 {index + 1}이(가) 선택되었습니다.");
+    }
 
     /// <summary>
     /// 인벤토리 열기
@@ -41,8 +61,8 @@ public class InventoryUIExmaple : Singleton<InventoryUIExmaple>
     {
         isInventoryOpen = !isInventoryOpen;
 
-        // 인벤토리 UI를 토글
-        canvasGroup.alpha = isInventoryOpen ? 1 : 0;
+        //// 인벤토리 UI를 토글
+        //canvasGroup.alpha = isInventoryOpen ? 1 : 0;
         canvasGroup.interactable = isInventoryOpen;
         canvasGroup.blocksRaycasts = isInventoryOpen;
 
