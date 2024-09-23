@@ -45,6 +45,7 @@ public class PlayerController : Singleton<PlayerController>
         isRun = !isRun;
     }
 
+
     void Update()
     {
         if (!isMovingEnabled)

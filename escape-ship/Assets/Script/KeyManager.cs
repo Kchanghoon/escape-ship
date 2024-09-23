@@ -9,7 +9,9 @@ public enum KeyAction
 {
     Jump,
     Run,
-    Setting
+    Setting,
+    Inventory,
+    PickUp
 }
 
 [Serializable]
@@ -39,6 +41,8 @@ public class KeyManager : Singleton<KeyManager>
     private event KeyEvent OnJump;
     private event KeyEvent OnRun;
     private event KeyEvent OnSetting;
+    private event KeyEvent OnInventory;
+    private event KeyEvent OnPickUp;
 
     public Dictionary<KeyAction, KeyEvent> keyDic = new Dictionary<KeyAction, KeyEvent>();
 
@@ -47,6 +51,8 @@ public class KeyManager : Singleton<KeyManager>
         keyDic.Add(KeyAction.Jump, OnJump);
         keyDic.Add(KeyAction.Run, OnRun);
         keyDic.Add(KeyAction.Setting, OnSetting);
+        keyDic.Add(KeyAction.Inventory, OnInventory);
+        keyDic.Add(KeyAction.PickUp, OnPickUp);
     }
 
     // Update is called once per frame

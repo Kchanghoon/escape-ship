@@ -20,22 +20,43 @@ public class InventoryUIExmaple : Singleton<InventoryUIExmaple>
     ItemSlotUI targetItemSlotUI;
     bool isDrag;
     public bool IsDrag { get => isDrag; }
+    private bool isInventoryOpen = false;
 
     private void Start()
     {
         ItemController.Instance.OnAddItem += OnAddItem;
         ItemController.Instance.OnRemoveItem += OnRemoveItem;
+        KeyManager.Instance.keyDic[KeyAction.Inventory] += OpenInventory;
+
         ResetInventory(); // 테스트용
+
     }
+
+
 
     /// <summary>
     /// 인벤토리 열기
     /// </summary>
     public void OpenInventory()
     {
-        canvasGroup.alpha = 1;
-        canvasGroup.interactable = true;
-        canvasGroup.blocksRaycasts = true;
+        isInventoryOpen = !isInventoryOpen;
+
+        // 인벤토리 UI를 토글
+        canvasGroup.alpha = isInventoryOpen ? 1 : 0;
+        canvasGroup.interactable = isInventoryOpen;
+        canvasGroup.blocksRaycasts = isInventoryOpen;
+
+        // 커서 상태 변경
+        if (isInventoryOpen)
+        {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+        }
+        else
+        {
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+        }
     }
 
     [ContextMenu("Reset")]
@@ -66,7 +87,7 @@ public class InventoryUIExmaple : Singleton<InventoryUIExmaple>
         ItemSlotUI itemSlot = GetEmptySlot(); // 비어있는칸 확인
         if (itemSlot == null) return; // 빈 칸 없음
 
-        itemSlot.Init(itemData);
+        itemSlot.Init(itemData); // 빈 칸에 아이템 추가
     }
 
     public void OnRemoveItem(ItemDataExample itemData)
