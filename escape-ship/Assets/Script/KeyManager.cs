@@ -12,6 +12,7 @@ public enum KeyAction
     Setting,
     Inventory,
     PickUp,
+    Play,
     SelectItem1,
     SelectItem2,
     SelectItem3,
@@ -53,6 +54,7 @@ public class KeyManager : Singleton<KeyManager>
     private event KeyEvent OnSetting;
     private event KeyEvent OnInventory;
     private event KeyEvent OnPickUp;
+    private event KeyEvent OnPlay;
 
     private event KeyEvent OnSelectItem1;
     private event KeyEvent OnSelectItem2;
@@ -74,6 +76,7 @@ public class KeyManager : Singleton<KeyManager>
         keyDic.Add(KeyAction.Setting, OnSetting);
         keyDic.Add(KeyAction.Inventory, OnInventory);
         keyDic.Add(KeyAction.PickUp, OnPickUp);
+        keyDic.Add(KeyAction.Play, OnPlay);
 
         keyDic[KeyAction.SelectItem1] = () => InventoryUIExmaple.Instance.selectItem(0);
         keyDic[KeyAction.SelectItem2] = () => InventoryUIExmaple.Instance.selectItem(1);

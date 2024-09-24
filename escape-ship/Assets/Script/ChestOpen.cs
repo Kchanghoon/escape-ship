@@ -10,18 +10,41 @@ public class ChestOpen : MonoBehaviour
     [SerializeField] private Ease motionEase = Ease.InOutQuad;  // 애니메이션 Ease
     private bool isOpen = false;  // 상자가 열렸는지 여부를 기록
     private bool playerInRange = false;  // 플레이어가 가까이 있는지 확인하는 플래그
+    private bool hasUsedBattery = false;  // 배터리를 사용하여 상자를 처음 열었는지 확인하는 플래그
 
     void Start()
     {
         lid.localPosition = closedPosition;  // 처음엔 닫힌 상태로 시작
+        KeyManager.Instance.keyDic[KeyAction.Play] += OnPlay;
     }
 
-    void Update()
+    // KeyManager에서 Play 액션이 호출될 때 상자 열기/닫기 처리
+    public void OnPlay()
     {
-        // 플레이어가 범위 안에 있을 때만 E 키로 상자를 여닫음
-        if (playerInRange && Input.GetKeyDown(KeyCode.E))
+        if (playerInRange)
         {
-            ToggleChest();  // 상자를 열거나 닫음
+            // 상자를 처음 열 때만 배터리를 소모
+            if (!hasUsedBattery)
+            {
+                // 현재 선택한 아이템이 배터리(ID = 1)인지 확인
+                var selectedItem = InventoryUIExmaple.Instance.GetSelectedItem();
+                if (selectedItem != null && selectedItem.id == "1")
+                {
+                    // 상자를 열거나 닫은 후 배터리 수량 감소
+                    ToggleChest();
+                    ItemController.Instance.DecreaseItemQuantity("1");  // 배터리 수량 감소
+                    hasUsedBattery = true;  // 배터리를 사용했음을 기록
+                }
+                else
+                {
+                    Debug.Log("배터리가 선택되지 않았습니다.");
+                }
+            }
+            else
+            {
+                // 이미 배터리를 사용했으므로 배터리 없이 상자를 열거나 닫음
+                ToggleChest();
+            }
         }
     }
 

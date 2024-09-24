@@ -32,6 +32,13 @@ public class InventoryUIExmaple : Singleton<InventoryUIExmaple>
         ResetInventory(); // 테스트용
 
     }
+
+    public ItemDataExample GetSelectedItem()
+    {
+        return selectedItemSlot?.ItemData;
+    }
+
+
     public void UpdateInventoryUI()
     {
         foreach (var slot in itemSlots)
@@ -40,7 +47,7 @@ public class InventoryUIExmaple : Singleton<InventoryUIExmaple>
         }
     }
 
-    public void selectItem(int index)
+       public void selectItem(int index)
     {
         if (index < 0 || index >= itemSlots.Length)
         {

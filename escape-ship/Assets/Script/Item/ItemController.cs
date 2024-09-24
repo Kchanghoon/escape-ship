@@ -160,4 +160,28 @@ public class ItemController : Singleton<ItemController>
     //    curItemDatas.Add(itemDataExample);
     //    OnAddItem?.Invoke(itemDataExample); // 인벤토리에 아이템 추가 이벤트 발생
     //}
+
+    // 아이템 수량 감소 메서드
+    public void DecreaseItemQuantity(string id)
+    {
+        var item = curItemDatas.Find(x => x.id == id);
+
+        if (item != null)
+        {
+            item.quantity--;
+
+            if (item.quantity <= 0)
+            {
+                // 수량이 0이 되면 아이템을 인벤토리에서 제거
+                RemoveItem(item.uniqueId);
+            }
+            else
+            {
+                // 수량이 줄었을 때 UI 업데이트
+                InventoryUIExmaple.Instance.UpdateInventoryUI();
+            }
+        }
+    }
+
+
 }
