@@ -13,8 +13,7 @@ public class DoorController : MonoBehaviour
     public float duration = 1f;  // 문이 열리는 데 걸리는 시간
     public Ease motionEase = Ease.OutQuad;
 
-    public TextMeshProUGUI OpenText;  // "E키를 눌러 문을 여시오" TMP 텍스트를 위한 변수
-    public TextMeshProUGUI CloseText;  // "E키를 눌러 문을 여시오" TMP 텍스트를 위한 변수
+    public TextMeshProUGUI statusText;  // 상태를 표시할 TMP 텍스트
     private bool isDoorOpen = false;  // 문이 열려 있는지 여부를 저장하는 변수
     private bool isAnimating = false;  // 애니메이션이 실행 중인지 확인하는 플래그
     private bool playerInRange = false;  // 플레이어가 범위 안에 있는지 확인하는 플래그
@@ -26,8 +25,8 @@ public class DoorController : MonoBehaviour
         rightStartPosZ = doorRight.localPosition.z;
 
         // 시작 시 텍스트 숨기기
-        OpenText.gameObject.SetActive(false);  // TMP 텍스트 숨김
-        CloseText.gameObject.SetActive(false);
+        statusText.gameObject.SetActive(false);  // TMP 텍스트 숨김
+
         // KeyManager에서 Play 액션을 등록
         KeyManager.Instance.keyDic[KeyAction.Play] += OnPlay;
     }
@@ -49,12 +48,21 @@ public class DoorController : MonoBehaviour
                 {
                     OpenDoor();  // 문이 닫혀 있으면 염
                 }
+                UpdateStatusText("E키를 눌러 문을 여닫아주세요.");  // 문 상태에 따른 텍스트 갱신
             }
             else
             {
                 Debug.Log("노랑 카드키를 들고 있어야 문을 열 수 있습니다.");
+                UpdateStatusText("노랑 카드가 필요합니다.");
             }
         }
+    }
+
+    // 상태 텍스트를 업데이트하는 함수
+    private void UpdateStatusText(string message)
+    {
+        statusText.text = message;  // 상태 메시지 갱신
+        statusText.gameObject.SetActive(true);  // 텍스트 표시
     }
 
     // 플레이어가 트리거 범위 안에 들어왔을 때
@@ -63,15 +71,16 @@ public class DoorController : MonoBehaviour
         if (other.CompareTag("Player"))  // 플레이어에게 'Player' 태그가 붙어 있다고 가정
         {
             playerInRange = true;  // 플레이어가 범위 안에 있음을 기록
-            if (isDoorOpen == false)
+            var selectedItem = InventoryUIExmaple.Instance.GetSelectedItem();
+
+            // 노랑 카드를 선택하지 않은 상태에서 문 범위에 들어오면
+            if (selectedItem == null || selectedItem.id != "2")
             {
-                OpenText.gameObject.SetActive(true);  // TMP 텍스트 표시
-                CloseText.gameObject .SetActive(false);
+                UpdateStatusText("노랑 카드가 필요합니다.");  // TMP 텍스트 표시
             }
             else
             {
-                CloseText.gameObject.SetActive(true);
-                OpenText.gameObject.SetActive(false);
+                UpdateStatusText("E키를 눌러 문을 여닫아주세요.");  // TMP 텍스트 표시
             }
         }
     }
@@ -82,8 +91,7 @@ public class DoorController : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerInRange = false;  // 플레이어가 범위를 벗어났음을 기록
-            OpenText.gameObject.SetActive(false);  // TMP 텍스트 숨김
-            CloseText.gameObject.SetActive(false);
+            statusText.gameObject.SetActive(false);  // TMP 텍스트 숨김
         }
     }
 
