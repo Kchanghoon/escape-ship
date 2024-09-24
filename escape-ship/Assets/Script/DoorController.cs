@@ -31,6 +31,15 @@ public class DoorController : MonoBehaviour
         KeyManager.Instance.keyDic[KeyAction.Play] += OnPlay;
     }
 
+    void Update()
+    {
+        // 플레이어가 범위 안에 있는 동안 아이템 상태에 따라 문구를 업데이트
+        if (playerInRange)
+        {
+            UpdateStatusText();
+        }
+    }
+
     // KeyManager에서 Play 액션이 호출될 때 상자 열기/닫기 처리
     public void OnPlay()
     {
@@ -48,20 +57,28 @@ public class DoorController : MonoBehaviour
                 {
                     OpenDoor();  // 문이 닫혀 있으면 염
                 }
-                UpdateStatusText("E키를 눌러 문을 여닫아주세요.");  // 문 상태에 따른 텍스트 갱신
+                statusText.text = "E키를 눌러 문을 여닫아주세요.";  // 문 상태에 따른 텍스트 갱신
             }
             else
             {
                 Debug.Log("노랑 카드키를 들고 있어야 문을 열 수 있습니다.");
-                UpdateStatusText("노랑 카드가 필요합니다.");
+                statusText.text = "노랑 카드가 필요합니다.";
             }
         }
     }
 
     // 상태 텍스트를 업데이트하는 함수
-    private void UpdateStatusText(string message)
+    private void UpdateStatusText()
     {
-        statusText.text = message;  // 상태 메시지 갱신
+        var selectedItem = InventoryUIExmaple.Instance.GetSelectedItem();
+        if (selectedItem == null || selectedItem.id != "2")
+        {
+            statusText.text = "노랑 카드가 필요합니다.";  // 노랑 카드가 없을 때
+        }
+        else
+        {
+            statusText.text = "E키를 눌러 문을 여닫아주세요.";  // 노랑 카드가 있을 때
+        }
         statusText.gameObject.SetActive(true);  // 텍스트 표시
     }
 
@@ -71,17 +88,7 @@ public class DoorController : MonoBehaviour
         if (other.CompareTag("Player"))  // 플레이어에게 'Player' 태그가 붙어 있다고 가정
         {
             playerInRange = true;  // 플레이어가 범위 안에 있음을 기록
-            var selectedItem = InventoryUIExmaple.Instance.GetSelectedItem();
-
-            // 노랑 카드를 선택하지 않은 상태에서 문 범위에 들어오면
-            if (selectedItem == null || selectedItem.id != "2")
-            {
-                UpdateStatusText("노랑 카드가 필요합니다.");  // TMP 텍스트 표시
-            }
-            else
-            {
-                UpdateStatusText("E키를 눌러 문을 여닫아주세요.");  // TMP 텍스트 표시
-            }
+            UpdateStatusText();  // 범위에 들어오자마자 상태 문구 업데이트
         }
     }
 
