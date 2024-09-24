@@ -11,6 +11,7 @@ public class ItemSlotUI : MonoBehaviour
     [SerializeField] CanvasGroup canvasGroup;
     [SerializeField] UnityEngine.UI.Image itemIcon;
     [SerializeField] UnityEngine.UI.Image itembackground;
+    [SerializeField] Text itemQuantityText; // 아이템 수량을 표시하는 UI 텍스트
 
     public ItemDataExample ItemData { get => itemData; }
 
@@ -22,6 +23,7 @@ public class ItemSlotUI : MonoBehaviour
 
         if (!isActive) return;
         itemIcon.sprite = ResourceDB.Instance.GetItemResource(itemData.id).sprite;
+        UpdateQuantityUI();
     }
 
     public void SetActive(bool isActive)
@@ -30,6 +32,26 @@ public class ItemSlotUI : MonoBehaviour
         canvasGroup.interactable = isActive;
         canvasGroup.blocksRaycasts = isActive;
     }
+
+    public void UpdateQuantityUI()
+    {
+        if (itemQuantityText == null)
+        {
+            Debug.LogError("itemQuantityText가 할당되지 않았습니다.");
+            return;
+        }
+
+        if (itemData != null && itemData.quantity > 1)
+        {
+            itemQuantityText.text = itemData.quantity.ToString();
+            itemQuantityText.gameObject.SetActive(true); // 수량이 1 이상일 때만 활성화
+        }
+        else
+        {
+            itemQuantityText.gameObject.SetActive(false); // 수량이 1 이하일 때 숨기기
+        }
+    }
+
 
     /// <summary>
     /// item icon alpha값 변경

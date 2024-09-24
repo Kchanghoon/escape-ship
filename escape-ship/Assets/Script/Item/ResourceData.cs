@@ -8,4 +8,5 @@ public class ResourceData
     public string id;
     public GameObject object3D;
     public Sprite sprite;
+    public string Ό³Έν;
 }

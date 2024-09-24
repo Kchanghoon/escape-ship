@@ -32,6 +32,13 @@ public class InventoryUIExmaple : Singleton<InventoryUIExmaple>
         ResetInventory(); // 테스트용
 
     }
+    public void UpdateInventoryUI()
+    {
+        foreach (var slot in itemSlots)
+        {
+            slot.UpdateQuantityUI();  // 수량이 변경된 아이템 슬롯의 UI 업데이트
+        }
+    }
 
     public void selectItem(int index)
     {

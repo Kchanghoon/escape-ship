@@ -22,30 +22,50 @@ public class ItemController : Singleton<ItemController>
     }
     public string testAddId;
 
-    [ContextMenu("Test Add Item")]
-    public void TestAddItem()
-    {
-        AddItem(testAddId);
-    }
+    //[ContextMenu("Test Add Item")]
+    //public void TestAddItem()
+    //{
+    //    AddItem(testAddId);
+    //}
 
-    [ContextMenu("Test Remove Item")]
-    public void TestRemoveItem()
-    {
-        RemoveItemById(testAddId);
-    }
+    //[ContextMenu("Test Remove Item")]
+    //public void TestRemoveItem()
+    //{
+    //    RemoveItemById(testAddId);
+    //}
 
-    
+
+    //기존 코드 
+    //public void RemoveItem(string uniqueId)
+    //{
+    //    OnRemoveItem?.Invoke((curItemDatas.Find(x => x.uniqueId == uniqueId)));
+    //    curItemDatas.RemoveAll(x => x.uniqueId == uniqueId);
+    //}
+
+    //public void RemoveItemById(string id)
+    //{
+    //    OnRemoveItem?.Invoke((curItemDatas.Find(x => x.id == id)));
+    //    curItemDatas.RemoveAll(x => x.id == id);
+    //}
 
     public void RemoveItem(string uniqueId)
     {
-        OnRemoveItem?.Invoke((curItemDatas.Find(x => x.uniqueId == uniqueId)));
-        curItemDatas.RemoveAll(x => x.uniqueId == uniqueId);
+        var item = curItemDatas.Find(x => x.uniqueId == uniqueId);
+        if (item != null)
+        {
+            OnRemoveItem?.Invoke(item);
+            curItemDatas.Remove(item);
+        }
     }
 
     public void RemoveItemById(string id)
     {
-        OnRemoveItem?.Invoke((curItemDatas.Find(x => x.id == id)));
-        curItemDatas.RemoveAll(x => x.id == id);
+        var item = curItemDatas.Find(x => x.id == id);
+        if (item != null)
+        {
+            OnRemoveItem?.Invoke(item);
+            curItemDatas.Remove(item);
+        }
     }
 
     //public ItemDataExample GetItemDBData(string id)
@@ -109,10 +129,35 @@ public class ItemController : Singleton<ItemController>
     //}
     public void AddItem(string id)
     {
-        var itemDataExample = GetItemDBData(id);
-        if (itemDataExample == null) return; // 아이템이 없으면 추가하지 않음
-        itemDataExample.uniqueId = Guid.NewGuid().ToString();
-        curItemDatas.Add(itemDataExample);
-        OnAddItem?.Invoke(itemDataExample); // 인벤토리에 아이템 추가 이벤트 발생
+        var existingItem = curItemDatas.Find(x => x.id == id);
+
+        if (existingItem != null)
+        {
+            // 이미 인벤토리에 있는 아이템일 경우 수량만 증가
+            existingItem.quantity++;
+            Debug.Log($"아이템 {existingItem.id}의 수량이 {existingItem.quantity}로 증가했습니다.");
+        }
+        else
+        {
+            // 새로운 아이템을 추가
+            var itemDataExample = GetItemDBData(id);
+            if (itemDataExample == null) return;  // 아이템 데이터가 없으면 추가하지 않음
+            itemDataExample.uniqueId = System.Guid.NewGuid().ToString();
+            itemDataExample.quantity = 1;  // 새로 추가된 아이템의 수량은 1로 설정
+            curItemDatas.Add(itemDataExample);
+
+            OnAddItem?.Invoke(itemDataExample);  // 인벤토리 UI 갱신 이벤트
+            Debug.Log($"아이템 {itemDataExample.id}이(가) 인벤토리에 추가되었습니다.");
+        }
+
+        // UI 갱신 (인벤토리 슬롯 갱신)
+        InventoryUIExmaple.Instance.UpdateInventoryUI();
     }
+    //{
+    //    var itemDataExample = GetItemDBData(id);
+    //    if (itemDataExample == null) return; // 아이템이 없으면 추가하지 않음
+    //    itemDataExample.uniqueId = Guid.NewGuid().ToString();
+    //    curItemDatas.Add(itemDataExample);
+    //    OnAddItem?.Invoke(itemDataExample); // 인벤토리에 아이템 추가 이벤트 발생
+    //}
 }
