@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
+using UnityEngine.SceneManagement;
 
 public class PlayerState : MonoBehaviour
 {
@@ -36,12 +37,18 @@ public class PlayerState : MonoBehaviour
 
     private void OnJump()
     {
-        DecreaseOxygen(3f);  // 산소를 3만큼 감소
+        if (oxygen >= 3f)
+        {
+            DecreaseOxygen(1f);  // 산소를 3만큼 감소
+        }
     }
 
     private void OnRun()
     {
-        DecreaseOxygen(Time.deltaTime * 2f); // 산소 2초마다 감소.
+        if (oxygen >= 3f)
+        {
+            DecreaseOxygen(Time.deltaTime * 1f); // 산소 2초마다 감소.
+        }
     }
 
     private void OnAction()
@@ -92,7 +99,14 @@ public class PlayerState : MonoBehaviour
             // 산소가 다 떨어지고 회복존에 있지 않으면 초당 스트레스 5 증가
             IncreaseStress(5f * Time.deltaTime);
         }
+
+        // 스트레스가 최대치에 도달하면 게임 오버
+        if (stress >= maxStress)
+        {
+            GameOver();
+        }
     }
+
 
     // 산소를 업데이트하는 메서드
     void UpdateOxygen()
@@ -143,5 +157,13 @@ public class PlayerState : MonoBehaviour
     public void ExitRecoverZone()
     {
         isInRecoverZone = false;  // 회복존에서 나간 상태로 기록
+    }
+
+    private void GameOver()
+    {
+        Debug.Log("게임 오버! 스트레스가 최대치에 도달했습니다.");
+        // 여기서 게임 오버 처리를 할 수 있음. 예: 씬을 리로드하거나 게임 오버 화면을 띄우는 코드
+        // 예시로 현재 씬을 다시 로드 (게임을 재시작)
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

@@ -166,6 +166,13 @@ public class ItemController : Singleton<ItemController>
     {
         var item = curItemDatas.Find(x => x.id == id);
 
+        // 소모되지 않는 아이템은 여기서 바로 리턴
+        if (id == "2")
+        {
+            Debug.Log($"아이템 {id}은(는) 소모되지 않습니다.");
+            return;
+        }
+
         if (item != null)
         {
             item.quantity--;

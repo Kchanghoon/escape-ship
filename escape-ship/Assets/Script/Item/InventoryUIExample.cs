@@ -124,11 +124,30 @@ public class InventoryUIExmaple : Singleton<InventoryUIExmaple>
         itemSlot.Init(itemData); // 빈 칸에 아이템 추가
     }
 
-    public void OnRemoveItem(ItemDataExample itemData)
+    /*public void OnRemoveItem(ItemDataExample itemData)
     {
         ItemSlotUI itemSlot = GetItemSlot(itemData.uniqueId);
         if (itemSlot == null) return;
         itemSlot.Init(new ItemDataExample());
+    }
+    */
+    public void OnRemoveItem(ItemDataExample itemData)
+    {
+        if (itemData == null)
+        {
+            Debug.LogError("유효하지 않은 itemData입니다.");
+            return;
+        }
+
+        ItemSlotUI itemSlot = GetItemSlot(itemData.uniqueId);
+        if (itemSlot == null)
+        {
+            Debug.LogError("아이템 슬롯을 찾을 수 없습니다.");
+            return;
+        }
+
+        itemSlot.Init(new ItemDataExample()); // 아이템 제거 시 빈 데이터를 초기화
+        itemSlot.UpdateQuantityUI(); // UI 업데이트
     }
 
     /// <summary>
@@ -142,7 +161,20 @@ public class InventoryUIExmaple : Singleton<InventoryUIExmaple>
 
     private ItemSlotUI GetItemSlot(string uniqueId)
     {
-        return Array.Find(itemSlots, x => x.ItemData.uniqueId == uniqueId);
+        if (string.IsNullOrEmpty(uniqueId))
+        {
+            Debug.LogError("유효하지 않은 uniqueId입니다.");
+            return null;
+        }
+
+        // uniqueId에 해당하는 아이템 슬롯을 찾아 반환
+        return Array.Find(itemSlots, x => x.ItemData != null && x.ItemData.uniqueId == uniqueId);
+    }
+
+
+    public ItemSlotUI GetItemSlotById(string id)
+    {
+        return Array.Find(itemSlots, x => x.ItemData != null && x.ItemData.id == id);
     }
 
     /// <summary>
@@ -155,9 +187,13 @@ public class InventoryUIExmaple : Singleton<InventoryUIExmaple>
         var tempFromItemData = fromItemSlot?.ItemData;
         var tempTargetItemData = targetItemSlot?.ItemData;
 
-        // 바뀐 값 넣어주기
+        // 바뀐 값 넣어주기 (수량도 함께 이동)
         fromItemSlot?.Init(tempTargetItemData);
         targetItemSlot?.Init(tempFromItemData);
+
+        // Update quantity UI for both slots after change
+        fromItemSlot?.UpdateQuantityUI();
+        targetItemSlot?.UpdateQuantityUI();
     }
 
     /// <summary>
