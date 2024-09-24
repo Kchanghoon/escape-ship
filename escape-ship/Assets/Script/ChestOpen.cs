@@ -28,7 +28,7 @@ public class ChestOpen : MonoBehaviour
         }
         else
         {
-            Debug.LogError("statusText가 할당되지 않았습니다. Unity 에디터에서 TextMeshProUGUI 컴포넌트를 연결하세요.");
+            //Debug.LogError("statusText가 할당되지 않았습니다. Unity 에디터에서 TextMeshProUGUI 컴포넌트를 연결하세요.");
         }
     }
 
