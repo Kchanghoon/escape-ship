@@ -28,20 +28,31 @@ public class DoorController : MonoBehaviour
         // 시작 시 텍스트 숨기기
         OpenText.gameObject.SetActive(false);  // TMP 텍스트 숨김
         CloseText.gameObject.SetActive(false);
+        // KeyManager에서 Play 액션을 등록
+        KeyManager.Instance.keyDic[KeyAction.Play] += OnPlay;
     }
 
-    void Update()
+    // KeyManager에서 Play 액션이 호출될 때 상자 열기/닫기 처리
+    public void OnPlay()
     {
-        // E키를 눌렀을 때 애니메이션 실행 (플레이어가 범위 안에 있고 애니메이션이 실행 중이지 않은 경우에만)
-        if (playerInRange && Input.GetKeyDown(KeyCode.E) && !isAnimating)
+        if (playerInRange && !isAnimating)
         {
-            if (isDoorOpen)
+            // 노랑 카드키(ID = 2)를 들고 있어야만 문을 열 수 있음
+            var selectedItem = InventoryUIExmaple.Instance.GetSelectedItem();
+            if (selectedItem != null && selectedItem.id == "2")
             {
-                CloseDoor();  // 문이 열려 있으면 닫음
+                if (isDoorOpen)
+                {
+                    CloseDoor();  // 문이 열려 있으면 닫음
+                }
+                else
+                {
+                    OpenDoor();  // 문이 닫혀 있으면 염
+                }
             }
             else
             {
-                OpenDoor();  // 문이 닫혀 있으면 염
+                Debug.Log("노랑 카드키를 들고 있어야 문을 열 수 있습니다.");
             }
         }
     }
