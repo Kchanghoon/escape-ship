@@ -31,6 +31,7 @@ public class PlayerState : MonoBehaviour
         KeyManager.Instance.keyDic[KeyAction.Jump] += OnJump;
         KeyManager.Instance.keyDic[KeyAction.Run] += OnRun;
         KeyManager.Instance.keyDic[KeyAction.Play] += OnAction;  // E키 할당 (가정: KeyAction.Action이 E키로 설정됨)
+        KeyManager.Instance.keyDic[KeyAction.Use] += OnUse;      // Use 키를 누를 때 아이템 사용
     }
 
     private void OnJump()
@@ -53,6 +54,34 @@ public class PlayerState : MonoBehaviour
     {
         UpdateOxygen();
         UpdateStress();
+    }
+
+    private void OnUse()
+    {
+        // 현재 선택된 아이템을 확인
+        var selectedItem = InventoryUIExmaple.Instance.GetSelectedItem();
+        if (selectedItem != null)
+        {
+            // 물약 (id = 5): 스트레스 -10
+            if (selectedItem.id == "5")
+            {
+                DecreaseStress(5f);
+                Debug.Log("물약을 사용하여 스트레스가 5 감소했습니다.");
+            }
+            // 책 (id = 4): 스트레스 -5
+            else if (selectedItem.id == "4")
+            {
+                DecreaseStress(10f);
+                Debug.Log("책을 사용하여 스트레스가 10 감소했습니다.");
+            }
+
+            // 사용 후 아이템 수량 감소
+            ItemController.Instance.DecreaseItemQuantity(selectedItem.id);
+        }
+        else
+        {
+            Debug.Log("사용할 아이템이 선택되지 않았습니다.");
+        }
     }
 
     // 스트레스를 업데이트하는 메서드
