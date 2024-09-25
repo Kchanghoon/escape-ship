@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 
-public class ItemSlotUI : MonoBehaviour
+public class ItemSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] ItemDataExample itemData;
     [SerializeField] CanvasGroup canvasGroup;
@@ -52,6 +53,27 @@ public class ItemSlotUI : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 아이템에 마우스가 올라갔을 때 툴팁 표시
+    /// </summary>
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (itemData != null)
+        {
+            TooltipUI.Instance.ShowTooltip(itemData.descriptions);
+            TooltipUI.Instance.SetTooltipPosition(Input.mousePosition); // 툴팁 위치 설정
+        }
+    }
+
+
+    /// <summary>
+    /// 아이템에서 마우스가 나갔을 때 툴팁 숨김
+    /// </summary>
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        TooltipUI.Instance.HideTooltip();
+    }
+
 
     /// <summary>
     /// item icon alpha값 변경
@@ -93,4 +115,6 @@ public class ItemSlotUI : MonoBehaviour
     {
         itembackground.gameObject.SetActive(false); // 선택 해제 시 배경 비활성화
     }
+
+
 }

@@ -8,6 +8,9 @@ public class MouseCam : MonoBehaviour
     public float rotationX;
     public float rotationY;
     private bool isCursorLocked = true;  // 커서 잠금 여부 플래그
+    public float smoothTime = 0.1f;  // 회전의 부드러움을 위한 변수
+    private Vector3 currentRotation;  // 현재 회전
+    private Vector3 smoothVelocity = Vector3.zero;  // 보간 속도를 위한 변수
 
     void Start()
     {
@@ -32,9 +35,15 @@ public class MouseCam : MonoBehaviour
             rotationY += mouseMoveX * sensitivity * Time.deltaTime;
             rotationX -= mouseMoveY * sensitivity * Time.deltaTime;
 
-            rotationX = Mathf.Clamp(rotationX, -50f, 40f);  // 고개가 과도하게 젖혀지지 않도록 제한
+            // X축 회전을 제한하여 고개가 과도하게 젖혀지지 않도록
+            rotationX = Mathf.Clamp(rotationX, -50f, 40f);
 
-            transform.eulerAngles = new Vector3(rotationX, rotationY, 0);
+            // 현재 회전값을 보간하여 부드럽게 처리
+            Vector3 targetRotation = new Vector3(rotationX, rotationY, 0);
+            currentRotation = Vector3.SmoothDamp(currentRotation, targetRotation, ref smoothVelocity, smoothTime);
+
+            // 카메라의 EulerAngles 업데이트
+            transform.eulerAngles = currentRotation;
         }
     }
 
