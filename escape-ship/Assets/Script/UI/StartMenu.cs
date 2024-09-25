@@ -22,11 +22,11 @@ public class StartMenu : MonoBehaviour
         if (StartMenuUI.activeSelf || PauseMenuUI.activeSelf)
         {
             //SoundManager.instance.PlaySound2D("MenuBGM", isLoop: true, type: SoundType.BGM);  // 메뉴 BGM 재생
-            SoundManager.instance.StopAllSounds();  // 특정 소리 제외하고 모두 일시정지
+          //  SoundManager.instance.StopAllSounds();  // 특정 소리 제외하고 모두 일시정지
         }
         else
         {
-            SoundManager.instance.ResumeAllSounds();  // 모든 소리 재개
+           // SoundManager.instance.ResumeAllSounds();  // 모든 소리 재개
         }
     }
 

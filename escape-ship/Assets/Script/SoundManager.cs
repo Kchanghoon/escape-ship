@@ -1,203 +1,102 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Audio;
 
-//사운드의 타입이다. 사운드를 중단을 식별하기위해 사용한다.
 public enum SoundType
 {
     BGM,
     EFFECT,
+    MASTER
 }
 
 public class SoundManager : MonoBehaviour
 {
-    #region singleton
-    static public SoundManager instance;  // 자기 자신을 공유 자원으로. static은 씬이 바뀌어도 유지된다.
-    private Dictionary<string, AudioSource> audioSources = new Dictionary<string, AudioSource>();
+    public static SoundManager Instance;  // 싱글톤 인스턴스
 
-    private void Awake()  // 객체 생성시 최초 실행 (그래서 싱글톤을 여기서 생성)
+    [SerializeField] private AudioMixer audioMixer;   // 오디오 믹서 (BGM과 EFFECT 볼륨을 조절하기 위해)
+    [SerializeField] private AudioSource bgmSource;   // 배경음악(AudioSource)
+    [SerializeField] private AudioSource effectSource; // 효과음(AudioSource)
+    [SerializeField] private AudioSource masterSource;
+
+    // 볼륨 조절을 위한 파라미터 이름 (AudioMixer에서 설정한 이름과 동일해야 함)
+    private const string BGM_VOLUME = "BGMVolume";
+    private const string EFFECT_VOLUME = "EffectVolume";
+    private const string MASTER_VOLUME = "MasterVolume";
+
+    private void Awake()
     {
-        if (instance == null)  // 단 하나만 존재하게끔
+        // 싱글톤 인스턴스 생성
+        if (Instance == null)
         {
-            instance = this;  // 객체 생성시 instance에 자기 자신을 넣어줌
-            DontDestroyOnLoad(gameObject);  // 씬 바뀔 때 자기 자신 파괴 방지
+            Instance = this;
+            DontDestroyOnLoad(gameObject);  // 씬이 바뀌어도 유지
         }
         else
-            Destroy(this.gameObject);
-    }
-    #endregion singleton
-    /// <summary>
-    /// 오디오 믹서, 오디오의 타입별로 사운드를 조절할 수 있도록 한다.
-    /// </summary>
-    [SerializeField] private AudioMixer mAudioMixer;
-
-    //옵션에서 설정된 현재 배경음악과 효과 사운드의 불륨이다. 효과는 BGM을 제외한 모든 소리의 불륨을 담당한다.
-    private float mCurrentBGMVolume, mCurrentEffectVolume;
-
-    /// <summary>
-    /// 클립들을 담는 딕셔너리
-    /// </summary>
-    private Dictionary<string, AudioClip> mClipsDictionary;
-
-    /// <summary>
-    /// 사전에 미리 로드하여 사용할 클립들
-    /// </summary>
-    [SerializeField] private AudioClip[] mPreloadClips;
-
-    private List<TemporarySoundPlayer> mInstantiatedSounds;
-
-    private void Start()
-    {
-        mClipsDictionary = new Dictionary<string, AudioClip>();
-        foreach (AudioClip clip in mPreloadClips)
         {
-            mClipsDictionary.Add(clip.name, clip);
+            Destroy(gameObject);  // 중복된 SoundManager가 있을 경우 제거
         }
-
-        mInstantiatedSounds = new List<TemporarySoundPlayer>();
     }
 
-    /// <summary>
-    /// 오디오의 이름을 기반으로 찾는다.
-    /// </summary>
-    /// <param name="clipName">오디오의 이름(파일 이름 기준)</param>
-    /// <returns></returns>
-    private AudioClip GetClip(string clipName)
+    // 배경음악 재생
+    public void PlayBGM(AudioClip bgmClip)
     {
-        AudioClip clip = mClipsDictionary[clipName];
-
-        if (clip == null) { Debug.LogError(clipName + "이 존재하지 않습니다."); }
-
-        return clip;
+        if (bgmSource.clip == bgmClip) return;  // 이미 재생 중인 BGM이면 무시
+        bgmSource.clip = bgmClip;
+        bgmSource.Play();
     }
 
-    /// <summary>
-    /// 사운드를 재생할 때, 루프 형태로 재생된경우에는 나중에 제거하기위해 리스트에 저장한다.
-    /// </summary>
-    /// <param name="soundPlayer"></param>
-    private void AddToList(TemporarySoundPlayer soundPlayer)
+    // 효과음 재생
+    public void PlayEffect(AudioClip effectClip)
     {
-        mInstantiatedSounds.Add(soundPlayer);
+        effectSource.PlayOneShot(effectClip);  // 여러 효과음을 동시에 재생할 수 있게 PlayOneShot 사용
     }
 
-    /// <summary>
-    /// 루프 사운드 중 리스트에 있는 오브젝트를 이름으로 찾아 제거한다.
-    /// </summary>
-    /// <param name="clipName"></param>
-    public void StopLoopSound(string clipName)
+    // BGM 볼륨 설정
+    public void SetBGMVolume(float volume)
     {
-        foreach (TemporarySoundPlayer audioPlayer in mInstantiatedSounds)
-        {
-            if (audioPlayer.ClipName == clipName)
-            {
-                mInstantiatedSounds.Remove(audioPlayer);
-                Destroy(audioPlayer.gameObject);
-                return;
-            }
-        }
-
-        Debug.LogWarning(clipName + "을 찾을 수 없습니다.");
+        audioMixer.SetFloat(BGM_VOLUME, Mathf.Log10(volume) * 20);  // 0~1 사이의 볼륨을 dB로 변환
     }
 
-    /// <summary>
-    /// 2D 사운드로 재생한다. 거리에 상관 없이 같은 소리 크기로 들린다.
-    /// </summary>
-    /// <param name="clipName">오디오 클립 이름</param>
-    /// <param name="type">오디오 유형(BGM, EFFECT 등.)</param>
-    public void PlaySound2D(string clipName, float delay = 0f, bool isLoop = false, SoundType type = SoundType.EFFECT)
+    // 효과음 볼륨 설정
+    public void SetEffectVolume(float volume)
     {
-        GameObject obj = new GameObject("TemporarySoundPlayer 2D");
-        TemporarySoundPlayer soundPlayer = obj.AddComponent<TemporarySoundPlayer>();
-
-        //루프를 사용하는경우 사운드를 저장한다.
-        if (isLoop) { AddToList(soundPlayer); }
-
-        soundPlayer.InitSound2D(GetClip(clipName));
-        soundPlayer.Play(mAudioMixer.FindMatchingGroups(type.ToString())[0], delay, isLoop);
+        audioMixer.SetFloat(EFFECT_VOLUME, Mathf.Log10(volume) * 20);
     }
 
-    /// <summary>
-    /// 3D 사운드로 재생한다.
-    /// </summary>
-    /// <param name="clipName"></param>
-    /// <param name="audioTarget"></param>
-    /// <param name="type"></param>
-    /// <param name="attachToTarget"></param>
-    /// <param name="minDistance"></param>
-    /// <param name="maxDistance"></param>
-    public void PlaySound3D(string clipName, Transform audioTarget, float delay = 0f, bool isLoop = false, SoundType type = SoundType.EFFECT, bool attachToTarget = true, float minDistance = 0.0f, float maxDistance = 50.0f)
+    public void SetMasterVolume(float volume) 
+    { 
+        audioMixer.SetFloat(MASTER_VOLUME, Mathf.Log10(volume) * 20);
+    }
+
+    // 볼륨을 초기화 (AudioMixer의 볼륨을 불러와서 설정)
+    public void InitVolumes(float bgmVolume, float effectVolume , float masterVolume)
     {
-        GameObject obj = new GameObject("TemporarySoundPlayer 3D");
-        obj.transform.localPosition = audioTarget.transform.position;
-        if (attachToTarget) { obj.transform.parent = audioTarget; }
-
-        TemporarySoundPlayer soundPlayer = obj.AddComponent<TemporarySoundPlayer>();
-
-        //루프를 사용하는경우 사운드를 저장한다.
-        if (isLoop) { AddToList(soundPlayer); }
-
-        soundPlayer.InitSound3D(GetClip(clipName), minDistance, maxDistance);
-        soundPlayer.Play(mAudioMixer.FindMatchingGroups(type.ToString())[0], delay, isLoop);
+        SetBGMVolume(bgmVolume);
+        SetEffectVolume(effectVolume);
+        SetMasterVolume(masterVolume);
     }
 
-    //씬이 로드될 때 옵션 매니저에의해 모든 사운드 불륨을 저장된 옵션의 크기로 초기화시키는 함수.
-    public void InitVolumes(float bgm, float effect)
+    // 모든 소리 일시 정지
+    public void PauseAllSounds()
     {
-        SetVolume(SoundType.BGM, bgm);
-        SetVolume(SoundType.EFFECT, effect);
+        bgmSource.Pause();
+        effectSource.Pause();
+        masterSource.Pause();
     }
 
-    //옵션을 변경할 때 소리의 불륨을 조절하는 함수
-    public void SetVolume(SoundType type, float value)
-    {
-        mAudioMixer.SetFloat(type.ToString(), value);
-    }
-
-    /// <summary>
-    /// 무작위 사운드를 실행하기위해 랜덤 값을 리턴 (included)
-    /// </summary>
-    /// <param name="from">시작하는 인덱스 번호</param>
-    /// <param name="includedTo">끝나는 인덱스 번호(포함)</param>
-    /// <param name="isStartZero">한자리일경우 0으로 시작하는가? 예)01</param>
-    /// <returns></returns>
-    public static string Range(int from, int includedTo, bool isStartZero = false)
-    {
-        if (includedTo > 100 && isStartZero) { Debug.LogWarning("0을 포함한 세자리는 지원하지 않습니다."); }
-
-        int value = UnityEngine.Random.Range(from, includedTo + 1);
-
-        return value < 10 && isStartZero ? '0' + value.ToString() : value.ToString();
-    }
-
-    //public void PauseAllSounds(string soundName)
-    //{
-    //    foreach(var pair in audioSource)
-    //    {
-    //        if(pair.Key != soundName)
-    //        {
-    //            pair.Value.Pause();
-    //        }
-    //    }
-    //}
-
+    // 모든 소리 다시 재생
     public void ResumeAllSounds()
     {
-        foreach (var source in audioSources.Values)
-        {
-            source.UnPause();
-        }
+        bgmSource.UnPause();
+        effectSource.UnPause();
+        masterSource.UnPause();
     }
 
+    // 모든 소리 정지
     public void StopAllSounds()
     {
-        foreach (var source in audioSources.Values)
-        {
-            source.Stop();
-        }
+        bgmSource.Stop();
+        effectSource.Stop();
+        masterSource.Stop();
     }
-
-
 }
