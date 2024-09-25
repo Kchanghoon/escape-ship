@@ -41,6 +41,7 @@ public class InventoryUIExmaple : Singleton<InventoryUIExmaple>
 
     public void UpdateInventoryUI()
     {
+        Debug.Log("인벤토리 UI 업데이트 호출됨");
         foreach (var slot in itemSlots)
         {
             slot.UpdateQuantityUI();  // 수량이 변경된 아이템 슬롯의 UI 업데이트

@@ -23,7 +23,8 @@ public enum KeyAction
     SelectItem8,
     SelectItem9,
     SelectItem10,
-    Use
+    Use,
+    Drop
 }
 
 [Serializable]
@@ -69,6 +70,7 @@ public class KeyManager : Singleton<KeyManager>
     private event KeyEvent OnSelectItem10;
 
     private event KeyEvent OnUse;
+    private event KeyEvent OnDrop;
 
     public Dictionary<KeyAction, KeyEvent> keyDic = new Dictionary<KeyAction, KeyEvent>();
 
@@ -81,6 +83,7 @@ public class KeyManager : Singleton<KeyManager>
         keyDic.Add(KeyAction.PickUp, OnPickUp);
         keyDic.Add(KeyAction.Play, OnPlay);
         keyDic.Add(KeyAction.Use, OnUse);
+        keyDic.Add(KeyAction.Drop, OnDrop);
 
         keyDic[KeyAction.SelectItem1] = () => InventoryUIExmaple.Instance.selectItem(0);
         keyDic[KeyAction.SelectItem2] = () => InventoryUIExmaple.Instance.selectItem(1);

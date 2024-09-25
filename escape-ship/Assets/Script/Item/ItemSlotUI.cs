@@ -6,8 +6,9 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 
-public class ItemSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class ItemSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
+
     [SerializeField] ItemDataExample itemData;
     [SerializeField] CanvasGroup canvasGroup;
     [SerializeField] UnityEngine.UI.Image itemIcon;
@@ -116,5 +117,12 @@ public class ItemSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         itembackground.gameObject.SetActive(false); // 선택 해제 시 배경 비활성화
     }
 
-
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            // 우클릭으로 아이템을 버리기
+            ItemController.Instance.OnDrop();
+        }
+    }
 }
