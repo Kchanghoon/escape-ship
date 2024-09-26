@@ -1,0 +1,84 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5065223466707459327
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3696009524385849454}
+  - component: {fileID: 2297607532073889543}
+  m_Layer: 0
+  m_Name: KeyManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3696009524385849454
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5065223466707459327}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2297607532073889543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5065223466707459327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9a182cdb4d0119438ed6680b4974c15, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputDownKeySets:
+  - keyAction: 2
+    keyCode: 27
+  - keyAction: 3
+    keyCode: 9
+  - keyAction: 4
+    keyCode: 102
+  - keyAction: 5
+    keyCode: 101
+  - keyAction: 6
+    keyCode: 49
+  - keyAction: 7
+    keyCode: 50
+  - keyAction: 8
+    keyCode: 51
+  - keyAction: 9
+    keyCode: 52
+  - keyAction: 10
+    keyCode: 53
+  - keyAction: 11
+    keyCode: 54
+  - keyAction: 12
+    keyCode: 55
+  - keyAction: 13
+    keyCode: 56
+  - keyAction: 14
+    keyCode: 57
+  - keyAction: 15
+    keyCode: 48
+  - keyAction: 16
+    keyCode: 324
+  - keyAction: 17
+    keyCode: 113
+  inputKeySets:
+  - keyAction: 0
+    keyCode: 32
+  - keyAction: 1
+    keyCode: 304
