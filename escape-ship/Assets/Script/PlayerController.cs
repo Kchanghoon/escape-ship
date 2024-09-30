@@ -19,6 +19,9 @@ public class PlayerController : Singleton<PlayerController>
     public float gravity = -20f;
     public float yVelocity = 0;
     public float oxygenDepletedSpeed = 5f;  // 산소가 다 떨어졌을 때의 속도
+    private bool isSitting = false;
+    public float sitHeight = 0.7f;  // 앉았을 때 카메라가 이동할 높이
+    public float sitDuration = 0.5f; // 앉는 동작이 진행될 시간
 
     public bool isMovingEnabled = true;
     bool isRun;
@@ -32,6 +35,7 @@ public class PlayerController : Singleton<PlayerController>
 
         KeyManager.Instance.keyDic[KeyAction.Jump] += OnJump;
         KeyManager.Instance.keyDic[KeyAction.Run] += OnRun;
+        KeyManager.Instance.keyDic[KeyAction.Sit] += OnSit;
     }
 
     private void OnJump()
@@ -51,6 +55,23 @@ public class PlayerController : Singleton<PlayerController>
             moveSpeed = isRun ? NormalSpeed : RunSpeed;
             isRun = !isRun;
         }
+    }
+
+    private void OnSit()
+    {
+        // 앉고 일어서기 토글
+        if (!isSitting)
+        {
+            // 앉는 동작: 카메라 높이를 낮춘다
+            cameraTransform.DOLocalMoveY(cameraTransform.localPosition.y - sitHeight, sitDuration).SetEase(Ease.OutQuad);
+        }
+        else
+        {
+            // 일어서는 동작: 카메라 높이를 원래대로 되돌린다
+            cameraTransform.DOLocalMoveY(cameraTransform.localPosition.y + sitHeight, sitDuration).SetEase(Ease.OutQuad);
+        }
+
+        isSitting = !isSitting;  // 상태 토글
     }
 
 
