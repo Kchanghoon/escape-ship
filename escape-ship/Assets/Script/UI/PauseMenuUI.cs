@@ -88,15 +88,17 @@ public class PauseMenuUI : MonoBehaviour
     //    Cursor.lockState = CursorLockMode.Locked;
     ////    SoundManager.instance.ResumeAllSounds();
     //}
-
+    
     void Pause(bool isPuase)
     {
-        //pauseMenuUI.SetActive(isPuase);  // UI 표시
-        //Time.timeScale = isPuase? 0f : 1;  // 게임 시간 정지
-        //isPaused = isPuase;  // 일시정지 상태로 설정
-        //Cursor.visible = isPuase ? Cursor.visible = true : Cursor.visible = false;
-        //Cursor.lockState = isPuase? CursorLockMode.None : CursorLockMode.Locked;
-            pauseMenuUI.SetActive(isPuase);  // UI 표시
+        pauseMenuUI.SetActive(isPuase);  // UI 표시
+        Time.timeScale = isPuase? 0f : 1;  // 게임 시간 정지
+        isPaused = isPuase;  // 일시정지 상태로 설정
+        Cursor.visible = isPuase ? Cursor.visible = true : Cursor.visible = false;
+        Cursor.lockState = isPuase? CursorLockMode.None : CursorLockMode.Locked;
+          
+        /*
+        pauseMenuUI.SetActive(isPuase);  // UI 표시
             Time.timeScale = isPuase ? 0f : 1f;  // 게임 시간 정지 또는 재개
             isPaused = isPuase;  // 일시정지 상태로 설정
 
@@ -113,7 +115,9 @@ public class PauseMenuUI : MonoBehaviour
             Cursor.visible = false;
                 Cursor.lockState = CursorLockMode.Locked;  // 커서를 화면 중앙에 고정
             }
+       */
     }
+
 
     public void showConfirmMenuPanel()
     {
