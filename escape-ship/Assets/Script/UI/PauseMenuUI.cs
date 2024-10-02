@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class PauseMenuUI : MonoBehaviour
@@ -74,37 +75,44 @@ public class PauseMenuUI : MonoBehaviour
         //else Pause(!isPaused);  // 일시정지 상태가 아니라면 일시정지
     }
 
-    public void Resume()
-    {
-        pauseMenuUI.SetActive(false);  // UI 숨기기
-        confirmMenuPanel.SetActive(false); //메뉴 확인창 숨기기
-        confirmExitPanel.SetActive(false); //나가기 확인창 숨기기
-        confirmSaveSlotPanel.SetActive(false); //세이브창 숨기기
-        confirmLoadSlotPanel.SetActive(false); // 로드창 숨기기
-        Time.timeScale = 1f;  // 게임 시간 재개
-        isPaused = false;  // 일시정지 상태 해제
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
-    //    SoundManager.instance.ResumeAllSounds();
-    }
+    //public void Resume()
+    //{
+    //    pauseMenuUI.SetActive(false);  // UI 숨기기
+    //    confirmMenuPanel.SetActive(false); //메뉴 확인창 숨기기
+    //    confirmExitPanel.SetActive(false); //나가기 확인창 숨기기
+    //    confirmSaveSlotPanel.SetActive(false); //세이브창 숨기기
+    //    confirmLoadSlotPanel.SetActive(false); // 로드창 숨기기
+    //    Time.timeScale = 1f;  // 게임 시간 재개
+    //    isPaused = false;  // 일시정지 상태 해제
+    //    Cursor.visible = false;
+    //    Cursor.lockState = CursorLockMode.Locked;
+    ////    SoundManager.instance.ResumeAllSounds();
+    //}
 
     void Pause(bool isPuase)
     {
-        pauseMenuUI.SetActive(isPuase);  // UI 표시
-        Time.timeScale = isPuase? 0f : 1;  // 게임 시간 정지
-        isPaused = isPuase;  // 일시정지 상태로 설정
-        Cursor.visible = isPuase;
-        Cursor.lockState = isPuase? CursorLockMode.None : CursorLockMode.Locked;
+        //pauseMenuUI.SetActive(isPuase);  // UI 표시
+        //Time.timeScale = isPuase? 0f : 1;  // 게임 시간 정지
+        //isPaused = isPuase;  // 일시정지 상태로 설정
+        //Cursor.visible = isPuase ? Cursor.visible = true : Cursor.visible = false;
+        //Cursor.lockState = isPuase? CursorLockMode.None : CursorLockMode.Locked;
+            pauseMenuUI.SetActive(isPuase);  // UI 표시
+            Time.timeScale = isPuase ? 0f : 1f;  // 게임 시간 정지 또는 재개
+            isPaused = isPuase;  // 일시정지 상태로 설정
 
-      /*  if(isPuase) SoundManager.instance.StopAllSounds();
-        else
-        {
-            confirmMenuPanel.SetActive(false); //메뉴 확인창 숨기기
-            confirmExitPanel.SetActive(false); //나가기 확인창 숨기기
-            confirmSaveSlotPanel.SetActive(false); //세이브창 숨기기
-            confirmLoadSlotPanel.SetActive(false); // 로드창 숨기기
-        }
-      */
+            // 커서 제어
+            if (isPuase)
+            {
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;  // 커서가 자유롭게 움직이게 설정
+            }
+            else
+            {
+            EventSystem.current.SetSelectedGameObject(null);
+
+            Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;  // 커서를 화면 중앙에 고정
+            }
     }
 
     public void showConfirmMenuPanel()

@@ -5,9 +5,13 @@ using TMPro;
 
 public class KeypadController : MonoBehaviour
 {
-    public InputField inputField;     // 입력 필드
-    public string correctPassword = "1234";  // 정답 비밀번호
+    [SerializeField] InputField inputField;     // 입력 필드
+    [SerializeField] string correctPassword = "1234";  // 정답 비밀번호
+    [SerializeField] Canvas keyPadCanvas;  // 키패드 패널의 Canvas
+
+    [SerializeField] GameObject keyPadPanel;  // 비밀번호 입력 패널
     private string currentInput = "";  // 현재 입력된 비밀번호
+
 
     // 숫자 버튼 클릭 시 호출
     public void OnNumberButtonClick(string number)
@@ -43,5 +47,20 @@ public class KeypadController : MonoBehaviour
         // 입력 초기화
         currentInput = "";
         inputField.text = "";
+    }
+
+    public void OnBackButtonClick()
+    {
+        // KeyPad의 ClosePlay 기능 구현
+        keyPadPanel.SetActive(false);  // 패널 비활성화
+        Time.timeScale = 1;  // 게임 다시 진행
+
+        // 커서 상태 변경
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+
+        // 추가적으로 초기화가 필요하다면 추가할 수 있음 (예: 입력 초기화 등)
+        currentInput = "";  // 입력 초기화
+        inputField.text = "";  // 입력 필드 초기화
     }
 }
