@@ -21,6 +21,7 @@ public class PauseMenuUI : MonoBehaviour
     [SerializeField] private Slider masterSlider;  // Master Volume 슬라이더
     private bool isPaused = false;  // 게임이 일시정지 상태인지 확인하는 변수
 
+
     private void Start()
     {
         KeyManager.Instance.keyDic[KeyAction.Setting] += OnSetting;
