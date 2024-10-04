@@ -1,14 +1,15 @@
 using UnityEngine;
-using TMPro;  // TextMeshPro를 사용한다면 필요
+using TMPro;
 
 public class PuzzleTrigger : MonoBehaviour
 {
-    public GameObject puzzlePanel; // 퍼즐 패널 UI
-    public float interactDistance = 3f; // 상호작용 가능한 거리
-    public TextMeshProUGUI interactText; // 상호작용 텍스트 (TextMeshPro 사용 시)
-    private Transform playerTransform; // 플레이어의 Transform
-    private bool isMouseOverObject = false; // 마우스가 오브젝트에 닿았는지 여부
-    private bool isPuzzleCompleted = false; // 퍼즐이 완료되었는지 여부
+    public GameObject puzzlePanel;  // 퍼즐 패널 UI
+    public float interactDistance = 3f;  // 상호작용 가능한 거리
+    public TextMeshProUGUI interactText;  // 상호작용 텍스트 (TextMeshPro 사용 시)
+    private Transform playerTransform;  // 플레이어의 Transform
+    private bool isMouseOverObject = false;  // 마우스가 오브젝트에 닿았는지 여부
+    private bool isPuzzleCompleted = false;  // 퍼즐이 완료되었는지 여부
+    public DropSlot[] dropSlots;  // 퍼즐의 모든 DropSlot
 
     void Start()
     {
@@ -20,7 +21,7 @@ public class PuzzleTrigger : MonoBehaviour
     private void OnMouseEnter()
     {
         isMouseOverObject = true;  // 마우스가 오브젝트에 닿음
-        HighlightObject(true); // 오브젝트 하이라이트 활성화 (선택적)
+        HighlightObject(true);  // 오브젝트 하이라이트 활성화 (선택적)
     }
 
     // 마우스가 오브젝트에서 벗어났을 때 호출
@@ -28,17 +29,15 @@ public class PuzzleTrigger : MonoBehaviour
     {
         isMouseOverObject = false;  // 마우스가 오브젝트에서 벗어남
         interactText.gameObject.SetActive(false);  // 마우스가 벗어나면 상호작용 텍스트 비활성화
-        HighlightObject(false); // 오브젝트 하이라이트 비활성화 (선택적)
+        HighlightObject(false);  // 오브젝트 하이라이트 비활성화 (선택적)
     }
 
     void Update()
     {
         if (isMouseOverObject)
         {
-            // 플레이어와 오브젝트 사이의 거리 계산
             float distanceToPlayer = Vector3.Distance(playerTransform.position, transform.position);
 
-            // 플레이어가 지정된 거리 안에 있을 경우
             if (distanceToPlayer <= interactDistance)
             {
                 if (!isPuzzleCompleted)
@@ -83,6 +82,22 @@ public class PuzzleTrigger : MonoBehaviour
         puzzlePanel.SetActive(false);  // 퍼즐 패널 비활성화
         Time.timeScale = 1f;  // 게임 재개
         Debug.Log("퍼즐 완료!");
+    }
+
+    // 모든 DropSlot이 올바르게 배치되었는지 확인하는 함수
+    public void CheckAllSlots()
+    {
+        foreach (DropSlot slot in dropSlots)
+        {
+            if (!slot.IsCorrectPiecePlaced())
+            {
+                return;  // 하나라도 올바르게 배치되지 않았다면 함수 종료
+            }
+        }
+        // 모든 조각이 올바르게 배치된 경우 퍼즐 완료
+        CompletePuzzle();
+
+        ItemController.Instance.AddItem("2");
     }
 
     // 오브젝트 하이라이트 함수 (선택 사항)

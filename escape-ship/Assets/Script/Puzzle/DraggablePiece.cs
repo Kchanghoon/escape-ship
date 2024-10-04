@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -27,5 +28,10 @@ public class DraggablePiece : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
     {
         canvasGroup.alpha = 1f; // 원래 상태로 복구
         canvasGroup.blocksRaycasts = true; // 드래그 후 다시 상호작용 가능
+    }
+
+    internal Vector3 GetOriginalPosition()
+    {
+        throw new NotImplementedException();
     }
 }
