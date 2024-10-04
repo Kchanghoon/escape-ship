@@ -18,7 +18,6 @@ public class KeyPad : MonoBehaviour
         keyPadPanel.SetActive(false);  // 패널도 처음에는 비활성화
         originalSortingOrder = keyPadCanvas.sortingOrder;  // 초기 Canvas 순서를 저장
         KeyManager.Instance.keyDic[KeyAction.Play] += OnPlay;
-        KeyManager.Instance.keyDic[KeyAction.Setting] += ClosePlay;
     }
 
     private void Update()
@@ -54,21 +53,20 @@ public class KeyPad : MonoBehaviour
 
     public void OnPlay()
     {
-        keyPadPanel.SetActive(true);  // 패널 활성화
-        keyPadCanvas.sortingOrder = 999;  // Canvas를 최상위로 설정
-        Time.timeScale = 0;  // 패널이 활성화되면 게임을 일시정지
-        // 커서 상태 변경
-        Cursor.visible = true;  
-        Cursor.lockState = CursorLockMode.None;
+        if (isMouseOverItem)
+        {
+            keyPadPanel.SetActive(true);  // 패널 활성화
+            keyPadCanvas.sortingOrder = 999;  // Canvas를 최상위로 설정
+            Time.timeScale = 0;  // 패널이 활성화되면 게임을 일시정지
+                                 // 커서 상태 변경
+            MouseCam mouseCam = FindObjectOfType<MouseCam>();  // MouseCam 스크립트 인스턴스 가져오기
+            if (mouseCam != null)
+            {
+                mouseCam.UnlockCursor();  // MouseCam의 UnlockCursor 함수 사용
+            }
+        }
 
     }
 
-    public void ClosePlay()
-    {
-        keyPadPanel.SetActive(false);  // 패널 비활성화
-        keyPadCanvas.sortingOrder = originalSortingOrder;  // Canvas 순서를 원래 값으로 되돌림
-        Time.timeScale = 1;  // 게임 다시 진행
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
-    }
+   
 }

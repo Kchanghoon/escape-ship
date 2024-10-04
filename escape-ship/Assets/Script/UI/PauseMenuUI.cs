@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class PauseMenuUI : MonoBehaviour
 {
-    [SerializeField] GameObject pauseMenuUI;  // PauseMenu의 Canvas를 드래그하여 연결할 변수
+    [SerializeField] GameObject BasepauseMenuUI;  // PauseMenu의 Canvas를 드래그하여 연결할 변수
     [SerializeField] GameObject confirmMenuPanel; //메뉴 확인창 UI 
     [SerializeField] GameObject confirmExitPanel;//게임 종료 확인창 UI
     [SerializeField] GameObject confirmSaveSlotPanel;
@@ -21,6 +21,7 @@ public class PauseMenuUI : MonoBehaviour
     [SerializeField] private Slider masterSlider;  // Master Volume 슬라이더
     private bool isPaused = false;  // 게임이 일시정지 상태인지 확인하는 변수
 
+    [SerializeField] private GameObject[] uiElements; // 확인할 UI 요소들을 배열로 지정
 
     private void Start()
     {
@@ -71,28 +72,26 @@ public class PauseMenuUI : MonoBehaviour
 
     private void OnSetting()
     {
-        Pause(!isPaused);
-        //if (isPaused) Resume();  // 이미 일시정지 상태라면 재개
-        //else Pause(!isPaused);  // 일시정지 상태가 아니라면 일시정지
+        if (AreAllUIElementsInactive()) Pause(!isPaused); 
     }
 
-    //public void Resume()
-    //{
-    //    pauseMenuUI.SetActive(false);  // UI 숨기기
-    //    confirmMenuPanel.SetActive(false); //메뉴 확인창 숨기기
-    //    confirmExitPanel.SetActive(false); //나가기 확인창 숨기기
-    //    confirmSaveSlotPanel.SetActive(false); //세이브창 숨기기
-    //    confirmLoadSlotPanel.SetActive(false); // 로드창 숨기기
-    //    Time.timeScale = 1f;  // 게임 시간 재개
-    //    isPaused = false;  // 일시정지 상태 해제
-    //    Cursor.visible = false;
-    //    Cursor.lockState = CursorLockMode.Locked;
-    ////    SoundManager.instance.ResumeAllSounds();
-    //}
-    
+    private bool AreAllUIElementsInactive()
+    {
+        foreach (GameObject uiElement in uiElements)
+        {
+            if (uiElement.activeSelf) // 하나라도 활성화되어 있으면 false 반환
+            {
+                Debug.Log(uiElement.name + " is active.");
+                return false;
+            }
+        }
+        return true; // 모든 UI가 비활성화되어 있으면 true 반환
+    }
+
+
     void Pause(bool isPuase)
     {
-        pauseMenuUI.SetActive(isPuase);  // UI 표시
+        BasepauseMenuUI.SetActive(isPuase);  // UI 표시
         Time.timeScale = isPuase? 0f : 1;  // 게임 시간 정지
         isPaused = isPuase;  // 일시정지 상태로 설정
         Cursor.visible = isPuase ? Cursor.visible = true : Cursor.visible = false;
@@ -141,7 +140,7 @@ public class PauseMenuUI : MonoBehaviour
 
     public void Menu()
     {
-        pauseMenuUI.SetActive(false);  // UI 숨기기
+        BasepauseMenuUI.SetActive(false);  // UI 숨기기
         confirmMenuPanel.SetActive(false); //메뉴 확인창 숨기기
         confirmExitPanel.SetActive(false); //나가기 확인창 숨기기
         confirmSaveSlotPanel.SetActive(false); //세이브창 숨기기
