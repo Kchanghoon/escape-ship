@@ -3,6 +3,7 @@ using UnityEngine;
 public class MirrorItem : MonoBehaviour
 {
     public GameObject mirror;  // 회전시킬 거울 오브젝트
+    public GameObject mirror2;  // 회전시킬 거울 오브젝트
     public float rotationAmount = 45f;  // 한 번에 회전할 각도
     public float rotationSpeed = 50f;  // 회전 속도
     public KeyCode rotateKey = KeyCode.X;  // 회전시킬 때 누를 키
@@ -42,6 +43,7 @@ public class MirrorItem : MonoBehaviour
         {
             isRotating = true;  // 회전 시작
             targetRotationY = mirror.transform.eulerAngles.y + rotationAmount;  // 거울의 목표 회전각 설정
+            targetRotationY = mirror2.transform.eulerAngles.y + rotationAmount;  // 거울의 목표 회전각 설정
         }
         else
         {
@@ -56,6 +58,7 @@ public class MirrorItem : MonoBehaviour
         {
             float newYRotation = Mathf.MoveTowardsAngle(mirror.transform.eulerAngles.y, targetRotationY, rotationSpeed * Time.deltaTime);
             mirror.transform.eulerAngles = new Vector3(mirror.transform.eulerAngles.x, newYRotation, mirror.transform.eulerAngles.z);
+            mirror2.transform.eulerAngles = new Vector3(mirror.transform.eulerAngles.x, newYRotation, mirror.transform.eulerAngles.z);
 
             // 목표 각도에 도달하면 회전 중지
             if (Mathf.Abs(newYRotation - targetRotationY) < 0.01f)
