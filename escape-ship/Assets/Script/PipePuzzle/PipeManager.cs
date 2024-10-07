@@ -4,32 +4,29 @@ using UnityEngine;
 public class PipeManager : MonoBehaviour
 {
     public List<Pipe> allPipes;  // 퍼즐에 포함된 모든 파이프 리스트
+    public Pipe startPipe;       // 시작 파이프
+    public Pipe endPipe;         // 끝 파이프
+    private bool reachedEndPipe = false;  // End 파이프에 도달했는지 여부 확인용 변수
 
+    // 퍼즐이 해결되었는지 체크하는 함수
     public void CheckAllConnections()
     {
-        bool allConnected = true;
-
+        // 모든 파이프를 체크하지 않은 상태로 초기화
         foreach (Pipe pipe in allPipes)
         {
-            // 파이프의 연결을 다른 파이프들과 확인
-            foreach (Pipe otherPipe in allPipes)
-            {
-                if (pipe != otherPipe)
-                {
-                    if (!pipe.IsConnected(otherPipe))
-                    {
-                        allConnected = false;
-                        break;
-                    }
-                }
-            }
-            if (!allConnected) break;
+            pipe.isChecked = false;
         }
 
-        if (allConnected)
+        // End 파이프에 도달 여부 초기화
+        reachedEndPipe = false;
+
+        // 시작 파이프부터 연결된 모든 파이프를 체크
+        CheckConnectedPipes(startPipe);
+
+        // 퍼즐이 해결되었는지 확인
+        if (reachedEndPipe)
         {
             Debug.Log("퍼즐 완료!");
-            // 퍼즐 완료 처리
             OnPuzzleComplete();
         }
         else
@@ -38,8 +35,29 @@ public class PipeManager : MonoBehaviour
         }
     }
 
+    // 시작 파이프에서 연결된 모든 파이프를 재귀적으로 체크하는 함수
+    void CheckConnectedPipes(Pipe currentPipe)
+    {
+        currentPipe.isChecked = true;  // 현재 파이프를 체크 상태로 표시
+
+        // 연결된 파이프들 탐색
+        foreach (Pipe otherPipe in allPipes)
+        {
+            // 아직 체크되지 않고 연결된 파이프만 탐색
+            if (!otherPipe.isChecked && currentPipe.IsConnected(otherPipe))
+            {
+                CheckConnectedPipes(otherPipe);  // 연결된 파이프도 재귀적으로 체크
+            }
+        }
+    }
+
+
+
+
+    // 퍼즐이 완료되었을 때 처리 (예: 문을 열거나, 다음 단계로 진행하는 로직)
     void OnPuzzleComplete()
     {
-        // 퍼즐이 완료되었을 때의 처리 (예: 문을 열거나, 게임을 진행시키는 로직)
+        Debug.Log("문이 열렸습니다!");
+        // 퍼즐 완료 로직 추가 가능
     }
 }

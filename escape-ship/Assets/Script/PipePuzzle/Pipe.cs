@@ -1,83 +1,112 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using DG.Tweening;
 
 public class Pipe : MonoBehaviour, IPointerClickHandler
 {
-    private int currentRotation = 0;  // 현재 회전 각도 (0, 90, 180, 270도)
-    public RectTransform rectTransform;  // UI 이미지의 RectTransform 참조
-    public Vector2Int[] connectionPoints;  // 파이프의 연결 포인트 (입구와 출구 방향)
+    public PipeType pipeType;  // 파이프 종류
+    public bool isChecked = false;  // 파이프가 체크되었는지 여부
+    private int currentRotation = 0;
+    public RectTransform rectTransform;
+    public Vector2Int[] connectionPoints;
 
-    // 네 방향 (상, 하, 좌, 우)을 나타내는 벡터 (0: 위, 1: 오른쪽, 2: 아래, 3: 왼쪽)
-    private Vector2Int[] defaultConnectionPoints = new Vector2Int[2] { new Vector2Int(0, 1), new Vector2Int(0, -1) };  // 기본 방향 (위-아래)
+    private Vector2Int[] defaultConnectionPoints;
 
     private void Start()
     {
-        rectTransform = GetComponent<RectTransform>();  // RectTransform을 가져옵니다
-        UpdateConnectionPoints();  // 처음 시작할 때 연결 포인트를 설정합니다.
+        rectTransform = GetComponent<RectTransform>();
+        currentRotation = Mathf.RoundToInt(rectTransform.eulerAngles.z);
+
+        SetDefaultConnectionPoints();
+        UpdateConnectionPoints();
+        Debug.Log("Pipe initialized");
     }
 
-    // IPointerClickHandler 인터페이스의 메서드 구현
     public void OnPointerClick(PointerEventData eventData)
     {
-        RotatePipe();  // 클릭 시 파이프 회전
+        RotatePipe();
     }
 
     void RotatePipe()
     {
-        // 90도씩 회전
         currentRotation = (currentRotation + 90) % 360;
-        rectTransform.localRotation = Quaternion.Euler(0, 0, currentRotation);  // Z축을 기준으로 회전
-
-        // 회전 후 연결 상태 업데이트
-        UpdateConnectionPoints();
-
-        Debug.Log("Pipe rotated to " + currentRotation + " degrees.");
+        rectTransform.DORotate(new Vector3(0, 0, currentRotation), 0.5f)
+            .SetEase(Ease.OutQuad)
+            .OnComplete(UpdateConnectionPoints);
     }
 
-    // 파이프 회전 후 입구와 출구 포인트를 업데이트하는 함수
+    void SetDefaultConnectionPoints()
+    {
+        if (pipeType == PipeType.Start)
+        {
+            defaultConnectionPoints = new Vector2Int[1] { new Vector2Int(1, 0) };
+        }
+        else if (pipeType == PipeType.End)
+        {
+            defaultConnectionPoints = new Vector2Int[1] { new Vector2Int(-1, 0) };
+        }
+        else if (pipeType == PipeType.Straight)
+        {
+            defaultConnectionPoints = new Vector2Int[2] { new Vector2Int(0, 1), new Vector2Int(0, -1) };
+        }
+        else if (pipeType == PipeType.Corner)
+        {
+            defaultConnectionPoints = new Vector2Int[2] { new Vector2Int(1, 0), new Vector2Int(0, -1) };
+        }
+        else if (pipeType == PipeType.TShape)
+        {
+            defaultConnectionPoints = new Vector2Int[3] { new Vector2Int(0, 1), new Vector2Int(1, 0), new Vector2Int(0, -1) };
+        }
+    }
+
     void UpdateConnectionPoints()
     {
         connectionPoints = new Vector2Int[defaultConnectionPoints.Length];
 
-        for (int i = 0; i < defaultConnectionPoints.Length; i++)
+        for (int i = 0; i < connectionPoints.Length; i++)
         {
-            // 회전된 각도에 따라 연결 포인트를 업데이트
             connectionPoints[i] = RotateVector(defaultConnectionPoints[i], currentRotation);
         }
     }
 
-    // 특정 벡터를 주어진 각도만큼 회전시키는 함수
     Vector2Int RotateVector(Vector2Int vector, int angle)
     {
-        // 각도에 따라 벡터를 회전시킴 (90도, 180도, 270도 회전만 지원)
         switch (angle)
         {
             case 90:
-                return new Vector2Int(vector.y, -vector.x);
+                return new Vector2Int(-vector.y, vector.x);
             case 180:
                 return new Vector2Int(-vector.x, -vector.y);
             case 270:
-                return new Vector2Int(-vector.y, vector.x);
+                return new Vector2Int(vector.y, -vector.x);
             default:
-                return vector;  // 0도 회전 (기본 상태)
+                return vector;
         }
     }
 
     // 다른 파이프와의 연결 상태를 확인하는 함수
+    // 두 파이프가 서로 연결되었는지 확인하는 함수
     public bool IsConnected(Pipe otherPipe)
     {
         foreach (var point in connectionPoints)
         {
             foreach (var otherPoint in otherPipe.connectionPoints)
             {
-                // 파이프의 연결 포인트가 반대일 경우 연결됨 (서로 방향이 반대인 경우)
-                if (point == -otherPoint)
+                // 연결 포인트 디버그 출력
+                Debug.Log($"현재 파이프 {gameObject.name} 연결 포인트: {point}, 다른 파이프 {otherPipe.gameObject.name} 연결 포인트: {otherPoint}");
+
+                // 파이프의 연결 포인트가 반대 방향이거나 같은 경우 연결된 것으로 간주
+                if (point == otherPoint)  // 같은 방향일 경우도 연결된 것으로 간주
                 {
+                    Debug.Log($"{gameObject.name}이(가) {otherPipe.gameObject.name}과 연결되었습니다.");
+                    otherPipe.isChecked = true;  // 연결된 파이프의 체크 상태를 업데이트
                     return true;
                 }
             }
         }
 
+        Debug.Log($"{gameObject.name}이(가) {otherPipe.gameObject.name}과 연결되지 않았습니다.");
         return false;
     }
+
 }

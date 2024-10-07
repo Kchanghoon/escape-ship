@@ -4929,7 +4929,7 @@ MonoBehaviour:
   mirror: {fileID: 650103082}
   mirror2: {fileID: 1770256398}
   rotationAmount: 45
-  rotationSpeed: 50
+  rotationDuration: 0.5
   rotateKey: 120
 --- !u!136 &2001187249
 CapsuleCollider:
@@ -6664,6 +6664,34 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1111326917706667281, guid: 6757d93e3082b4645838019e302d085c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1614729640830810892, guid: 6757d93e3082b4645838019e302d085c, type: 3}
+      propertyPath: isChecked
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1614729640830810892, guid: 6757d93e3082b4645838019e302d085c, type: 3}
+      propertyPath: connectionPoints.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1614729640830810892, guid: 6757d93e3082b4645838019e302d085c, type: 3}
+      propertyPath: connectionPoints.Array.data[0].x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1614729640830810892, guid: 6757d93e3082b4645838019e302d085c, type: 3}
+      propertyPath: connectionPoints.Array.data[0].y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3429705088244330522, guid: 6757d93e3082b4645838019e302d085c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3429705088244330522, guid: 6757d93e3082b4645838019e302d085c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3429705088244330522, guid: 6757d93e3082b4645838019e302d085c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}

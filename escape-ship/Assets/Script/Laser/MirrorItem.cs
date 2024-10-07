@@ -1,27 +1,21 @@
 using UnityEngine;
+using DG.Tweening;  // DoTween 네임스페이스 추가
 
 public class MirrorItem : MonoBehaviour
 {
     public GameObject mirror;  // 회전시킬 거울 오브젝트
-    public GameObject mirror2;  // 회전시킬 거울 오브젝트
+    public GameObject mirror2;  // 회전시킬 두 번째 거울 오브젝트
     public float rotationAmount = 45f;  // 한 번에 회전할 각도
-    public float rotationSpeed = 50f;  // 회전 속도
+    public float rotationDuration = 0.5f;  // 회전 시간 (DoTween에서 사용할 애니메이션 시간)
     public KeyCode rotateKey = KeyCode.X;  // 회전시킬 때 누를 키
-    private bool isRotating = false;  // 회전 중인지 여부
-    private float targetRotationY;  // 목표 Y축 회전각도
     private bool isMouseOver = false;  // 마우스가 버튼 위에 있는지 여부
 
     private void Update()
     {
         // 마우스가 버튼 위에 있을 때, 지정된 키를 눌렀을 때만 거울을 회전
-        if (isMouseOver && Input.GetKeyDown(rotateKey) && !isRotating)
+        if (isMouseOver && Input.GetKeyDown(rotateKey))
         {
             StartRotation();
-        }
-
-        if (isRotating)
-        {
-            ContinueRotation();
         }
     }
 
@@ -39,32 +33,22 @@ public class MirrorItem : MonoBehaviour
 
     void StartRotation()
     {
-        if (mirror != null)
+        if (mirror != null && mirror2 != null)
         {
-            isRotating = true;  // 회전 시작
-            targetRotationY = mirror.transform.eulerAngles.y + rotationAmount;  // 거울의 목표 회전각 설정
-            targetRotationY = mirror2.transform.eulerAngles.y + rotationAmount;  // 거울의 목표 회전각 설정
+            // 목표 회전 각도 설정
+            float targetRotationY1 = mirror.transform.eulerAngles.y + rotationAmount;
+            float targetRotationY2 = mirror2.transform.eulerAngles.y + rotationAmount;
+
+            // DoTween을 사용하여 두 거울을 각각 부드럽게 회전
+            mirror.transform.DORotate(new Vector3(0, targetRotationY1, 0), rotationDuration)
+                .SetEase(Ease.OutQuad);  // 자연스럽게 감속
+
+            mirror2.transform.DORotate(new Vector3(0, targetRotationY2, 0), rotationDuration)
+                .SetEase(Ease.OutQuad);  // 자연스럽게 감속
         }
         else
         {
             Debug.LogWarning("Mirror 오브젝트가 할당되지 않았습니다!");
-        }
-    }
-
-    void ContinueRotation()
-    {
-        // 부드럽게 목표 각도로 거울을 회전
-        if (mirror != null)
-        {
-            float newYRotation = Mathf.MoveTowardsAngle(mirror.transform.eulerAngles.y, targetRotationY, rotationSpeed * Time.deltaTime);
-            mirror.transform.eulerAngles = new Vector3(mirror.transform.eulerAngles.x, newYRotation, mirror.transform.eulerAngles.z);
-            mirror2.transform.eulerAngles = new Vector3(mirror.transform.eulerAngles.x, newYRotation, mirror.transform.eulerAngles.z);
-
-            // 목표 각도에 도달하면 회전 중지
-            if (Mathf.Abs(newYRotation - targetRotationY) < 0.01f)
-            {
-                isRotating = false;
-            }
         }
     }
 }
