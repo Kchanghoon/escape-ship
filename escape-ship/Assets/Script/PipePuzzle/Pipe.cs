@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using DG.Tweening;
+using System.Collections.Generic;
+using System.Drawing;
 
 public class Pipe : MonoBehaviour, IPointerClickHandler
 {
@@ -8,13 +10,37 @@ public class Pipe : MonoBehaviour, IPointerClickHandler
     public bool isChecked = false;  // 파이프가 체크되었는지 여부
     private int currentRotation = 0;
     public RectTransform rectTransform;
+
     public Vector2Int[] connectionPoints;
 
     private Vector2Int[] defaultConnectionPoints;
 
+    [SerializeField] Vector2Int coord;
+    [SerializeField] List<Pipe> adjacencyPipes = new();
+    public List<Pipe> AdjacencyPipes { get => adjacencyPipes; }
+    List<Vector2Int> adjacencyPosList = new List<Vector2Int>();
+
+    private void SetAdjacencyPipe()
+    {
+        adjacencyPipes.Clear();
+        adjacencyPosList = new List<Vector2Int>()
+        {
+            coord + Vector2Int.right,  coord + Vector2Int.left, coord + Vector2Int.up, coord + Vector2Int.down
+        };
+
+        var allPipes = PipeManager.Instance.allPipes;
+
+        foreach(var pos in adjacencyPosList)
+        {
+            var pipe = allPipes.Find(x => x.coord == pos);
+            if(pipe != null) adjacencyPipes.Add(pipe);
+        }
+    }
+
     private void Start()
     {
         rectTransform = GetComponent<RectTransform>();
+        SetAdjacencyPipe();
         currentRotation = Mathf.RoundToInt(rectTransform.eulerAngles.z);
 
         SetDefaultConnectionPoints();
@@ -43,7 +69,7 @@ public class Pipe : MonoBehaviour, IPointerClickHandler
         }
         else if (pipeType == PipeType.End)
         {
-            defaultConnectionPoints = new Vector2Int[1] { new Vector2Int(-1, 0) };
+            defaultConnectionPoints = new Vector2Int[1] { new Vector2Int(1, 0) };
         }
         else if (pipeType == PipeType.Straight)
         {
@@ -67,7 +93,13 @@ public class Pipe : MonoBehaviour, IPointerClickHandler
         {
             connectionPoints[i] = RotateVector(defaultConnectionPoints[i], currentRotation);
         }
+
+        // 업데이트된 연결 포인트를 출력하여 제대로 설정되었는지 확인
+        //Debug.Log($"{gameObject.name}의 업데이트된 connectionPoints: {string.Join(", ", connectionPoints)}");
+        PipeManager.Instance.CheckAllConnectedPipes();
     }
+
+
 
     Vector2Int RotateVector(Vector2Int vector, int angle)
     {
@@ -84,29 +116,66 @@ public class Pipe : MonoBehaviour, IPointerClickHandler
         }
     }
 
-    // 다른 파이프와의 연결 상태를 확인하는 함수
-    // 두 파이프가 서로 연결되었는지 확인하는 함수
     public bool IsConnected(Pipe otherPipe)
     {
-        foreach (var point in connectionPoints)
-        {
-            foreach (var otherPoint in otherPipe.connectionPoints)
-            {
-                // 연결 포인트 디버그 출력
-                Debug.Log($"현재 파이프 {gameObject.name} 연결 포인트: {point}, 다른 파이프 {otherPipe.gameObject.name} 연결 포인트: {otherPoint}");
+        //Debug.Log($"IsConnected: {gameObject.name}과 {otherPipe.name} 연결 확인 중");
 
-                // 파이프의 연결 포인트가 반대 방향이거나 같은 경우 연결된 것으로 간주
-                if (point == otherPoint)  // 같은 방향일 경우도 연결된 것으로 간주
+        if (!adjacencyPipes.Contains(otherPipe)) return false;
+        //if (!IsAdjacent(otherPipe))
+        //{
+        //    //Debug.Log($"{gameObject.name}과 {otherPipe.name}은 인접하지 않습니다.");
+        //    return false;
+        //}
+        foreach (var myPoint in connectionPoints) // 연결된 포인트
+        {
+            if(otherPipe.coord == coord + myPoint)
+            {
+                foreach (var other in otherPipe.connectionPoints)
                 {
-                    Debug.Log($"{gameObject.name}이(가) {otherPipe.gameObject.name}과 연결되었습니다.");
-                    otherPipe.isChecked = true;  // 연결된 파이프의 체크 상태를 업데이트
-                    return true;
+                    if (coord == otherPipe.coord + other)
+                    {
+                        isChecked = true;
+                        return true;
+                    }
                 }
             }
+            //foreach (var otherPoint in otherPipe.connectionPoints)
+            //{
+            //    if (point == -otherPoint)
+            //    {
+            //        Debug.Log($"{gameObject.name}과 {otherPipe.name}가 연결됨");
+            //        isChecked = true;
+            //        return true;
+            //    }
+            //}
         }
 
-        Debug.Log($"{gameObject.name}이(가) {otherPipe.gameObject.name}과 연결되지 않았습니다.");
+        //Debug.Log($"{gameObject.name}과 {otherPipe.name}는 연결되지 않음");
         return false;
     }
+/*
+    public bool IsAdjacent(Pipe otherPipe)
+    {
+        Vector2 currentPos = rectTransform.anchoredPosition;
+        Vector2 otherPos = otherPipe.rectTransform.anchoredPosition;
 
+        //Debug.Log($"{gameObject.name} 위치: {currentPos}, {otherPipe.gameObject.name} 위치: {otherPos}");
+
+        float distanceX = Mathf.Abs(currentPos.x - otherPos.x);
+        float distanceY = Mathf.Abs(currentPos.y - otherPos.y);
+
+        return (distanceX == 200 && distanceY == 0) ||
+               (distanceY == 200 && distanceX == 0);
+    }
+*/
+
+    public void CheckConnection(Pipe otherPipe)
+    {
+        // 현재 파이프가 체크되지 않았고, 다른 파이프가 이미 체크된 경우 연결을 확인
+        if (!isChecked && otherPipe.isChecked && IsConnected(otherPipe))
+        {
+            isChecked = true;
+            //Debug.Log($"{gameObject.name}이(가) {otherPipe.gameObject.name}과 연결되어 isChecked = true로 설정됨");
+        }
+    }
 }
