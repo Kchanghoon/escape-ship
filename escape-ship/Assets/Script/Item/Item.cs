@@ -61,7 +61,7 @@ public class Item : MonoBehaviour
     private void PickUpItem()
     {
         ItemController.Instance.SetCanPickUp(itemData);  // 아이템을 인벤토리에 추가
-        //Destroy(gameObject);  // 아이템을 획득한 후 파괴
+        Destroy(gameObject);  // 아이템을 획득한 후 파괴
         pickUpText.gameObject.SetActive(false);  // 아이템을 집으면 텍스트 비활성화
         Debug.Log($"아이템 {itemData.id}을(를) 획득했습니다.");
     }
