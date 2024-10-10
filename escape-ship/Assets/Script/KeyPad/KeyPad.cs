@@ -1,72 +1,90 @@
-using System.Collections;
 using TMPro;
 using UnityEngine;
 
 public class KeyPad : MonoBehaviour
 {
-    private bool isMouseOverItem = false;  // 에임이 아이템에 맞춰졌는지 여부
-    [SerializeField] TextMeshProUGUI pickUpText;  // 화면에 출력할 텍스트 (TextMeshPro 사용 시)
-    [SerializeField] GameObject keyPadPanel;  // 비밀번호 입력 패널
-    [SerializeField] Transform player;  // 플레이어의 Transform
-    [SerializeField] float interactDistance = 3f;  // 상호작용 가능 거리
-    [SerializeField] Canvas keyPadCanvas;  // 키패드 패널의 Canvas
-    private int originalSortingOrder;  // 원래의 Canvas 순서
+    private bool isMouseOverItem = false;
+    [SerializeField] TextMeshProUGUI pickUpText;
+    [SerializeField] GameObject keyPadPanel;
+    [SerializeField] Transform player;
+    [SerializeField] float interactDistance = 3f;
+    [SerializeField] Canvas keyPadCanvas;
+    [SerializeField] string correctPassword = "1234";  // 올바른 비밀번호 (개별 설정 가능)
+    [SerializeField] ZDoorMotion doorMotion;  // 할당할 문 동작 (다른 오브젝트에 할당 가능)
+
+    private int originalSortingOrder;
 
     private void Start()
     {
-        pickUpText.gameObject.SetActive(false);  // 처음엔 텍스트를 비활성화
-        keyPadPanel.SetActive(false);  // 패널도 처음에는 비활성화
-        originalSortingOrder = keyPadCanvas.sortingOrder;  // 초기 Canvas 순서를 저장
+        pickUpText.gameObject.SetActive(false);
+        keyPadPanel.SetActive(false);
+        originalSortingOrder = keyPadCanvas.sortingOrder;
         KeyManager.Instance.keyDic[KeyAction.Play] += OnPlay;
     }
 
     private void Update()
     {
-        // 플레이어와 KeyPad 사이의 거리 계산
         float distanceToPlayer = Vector3.Distance(player.position, transform.position);
-
-        // 마우스가 KeyPad에 있을 때, 일정 거리 내에 있으면 상호작용 텍스트를 보여줌
         if (isMouseOverItem && distanceToPlayer <= interactDistance)
         {
-            pickUpText.gameObject.SetActive(true);  // 텍스트 활성화
-            pickUpText.text = "E키를 눌러 비밀번호 패드를 여세요";  // 안내 문구 설정       
+            pickUpText.gameObject.SetActive(true);
+            pickUpText.text = "E키를 눌러 비밀번호 패드를 여세요";
         }
         else
         {
-            pickUpText.gameObject.SetActive(false);  // 범위 밖이거나 에임이 벗어나면 텍스트 비활성화
+            pickUpText.gameObject.SetActive(false);
         }
     }
 
-    // 플레이어가 마우스를 KeyPad에 올렸을 때 (에임이 맞춰졌을 때)
     private void OnMouseEnter()
     {
-        isMouseOverItem = true;  // 에임이 KeyPad에 맞춰짐
+        isMouseOverItem = true;
     }
 
-    // 플레이어가 마우스를 KeyPad에서 뗐을 때 (에임이 벗어났을 때)
     private void OnMouseExit()
     {
-        isMouseOverItem = false;  // 에임이 KeyPad에서 벗어남
+        isMouseOverItem = false;
     }
-
-     
 
     public void OnPlay()
     {
         if (isMouseOverItem)
         {
-            keyPadPanel.SetActive(true);  // 패널 활성화
-            keyPadCanvas.sortingOrder = 999;  // Canvas를 최상위로 설정
-            Time.timeScale = 0;  // 패널이 활성화되면 게임을 일시정지
-                                 // 커서 상태 변경
-            MouseCam mouseCam = FindObjectOfType<MouseCam>();  // MouseCam 스크립트 인스턴스 가져오기
+            keyPadPanel.SetActive(true);
+            keyPadCanvas.sortingOrder = 999;
+            Time.timeScale = 0;
+            MouseCam mouseCam = FindObjectOfType<MouseCam>();
             if (mouseCam != null)
             {
-                mouseCam.UnlockCursor();  // MouseCam의 UnlockCursor 함수 사용
+                mouseCam.UnlockCursor();
             }
         }
-
     }
 
-   
+    // 비밀번호 확인 함수
+    public void CheckPassword(string inputPassword)  // 매개변수로 입력된 비밀번호 받기
+    {
+        if (inputPassword == correctPassword)  // 전달받은 비밀번호가 맞는지 확인
+        {
+            Debug.Log("비밀번호가 맞았습니다. 문을 엽니다.");
+            doorMotion.OpenDoor();  // 문 열기
+            CloseKeyPad();  // 패널 닫기
+        }
+        else
+        {
+            Debug.Log("비밀번호가 틀렸습니다.");
+        }
+    }
+
+    public void CloseKeyPad()
+    {
+        keyPadPanel.SetActive(false);
+        keyPadCanvas.sortingOrder = originalSortingOrder;
+        Time.timeScale = 1;
+        MouseCam mouseCam = FindObjectOfType<MouseCam>();
+        if (mouseCam != null)
+        {
+            mouseCam.LockCursor();
+        }
+    }
 }
