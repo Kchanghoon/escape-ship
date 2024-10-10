@@ -25,6 +25,7 @@ public enum KeyAction
     SelectItem10,
     Use,
     Drop,
+    Panel,
     Sit
 }
 
@@ -59,6 +60,7 @@ public class KeyManager : Singleton<KeyManager>
     private event KeyEvent OnPickUp;
     private event KeyEvent OnPlay;
     private event KeyEvent OnSit;
+    private event KeyEvent OnPanel;
 
     private event KeyEvent OnSelectItem1;
     private event KeyEvent OnSelectItem2;
@@ -87,6 +89,8 @@ public class KeyManager : Singleton<KeyManager>
         keyDic.Add(KeyAction.Use, OnUse);
         keyDic.Add(KeyAction.Drop, OnDrop);
         keyDic.Add(KeyAction.Sit, OnSit);
+        keyDic.Add(KeyAction.Panel, OnPanel);
+
 
         keyDic[KeyAction.SelectItem1] = () => InventoryUIExmaple.Instance.selectItem(0);
         keyDic[KeyAction.SelectItem2] = () => InventoryUIExmaple.Instance.selectItem(1);

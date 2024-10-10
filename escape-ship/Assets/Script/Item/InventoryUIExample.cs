@@ -15,7 +15,6 @@ public class InventoryUIExmaple : Singleton<InventoryUIExmaple>
     }
     [SerializeField] CanvasGroup canvasGroup;
     [SerializeField] Image dragItemImage;
-    [SerializeField] private GameObject itemInfoPanel;  // ID 10인 아이템을 선택 시 표시될 패널
     ItemSlotUI dragItemSlotUI;
     ItemSlotUI targetItemSlotUI;
     bool isDrag;
@@ -35,20 +34,7 @@ public class InventoryUIExmaple : Singleton<InventoryUIExmaple>
 
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            // 선택된 아이템 가져오기
-            var selectedItem = GetSelectedItem();
 
-            // 선택된 아이템이 있고, ID가 10인 경우
-            if (selectedItem != null && selectedItem.id == "10")
-            {
-                ToggleItemInfoPanel();  // 캔버스 활성화/비활성화 토글
-            }
-        }
-    }
 
     public ItemDataExample GetSelectedItem()
     {
@@ -276,16 +262,6 @@ public class InventoryUIExmaple : Singleton<InventoryUIExmaple>
         else ChangeItemSlot(dragItemSlotUI, targetItemSlotUI);
     }
 
-
-    private void ToggleItemInfoPanel()
-    {
-        // Panel이 이미 활성화되어 있으면 비활성화, 비활성화되어 있으면 활성화
-        if (itemInfoPanel != null)
-        {
-            bool isActive = itemInfoPanel.activeSelf;
-            itemInfoPanel.SetActive(!isActive);  // 현재 상태 반전
-        }
-    }
 
 
 

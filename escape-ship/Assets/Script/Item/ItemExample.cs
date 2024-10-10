@@ -12,6 +12,7 @@ public class ItemDataExample
     public int quantity;     // 아이템의 수량
     public string descriptions;
 
+
     public ItemDataExample (ItemDataExample itemDataExample)
     {
         this.id = itemDataExample.id;
