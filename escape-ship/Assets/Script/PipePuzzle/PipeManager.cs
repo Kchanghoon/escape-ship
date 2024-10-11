@@ -7,6 +7,11 @@ public class PipeManager : Singleton<PipeManager>
     public List<Pipe> allPipes;  // 퍼즐에 포함된 모든 파이프 리스트
     public Pipe startPipe;       // 시작 파이프
     public Pipe endPipe;         // 끝 파이프
+    public GameObject panel;     // 퍼즐 완료 시 비활성화할 패널
+    public GameObject recoveryZone; // 퍼즐 완료 시 활성화할 회복존
+    public Canvas panelCanvas;  // 패널의 Canvas 컴포넌트
+
+
     private bool reachedEndPipe = false;  // End 파이프에 도달했는지 여부 확인용 변수
 
     [ContextMenu("Test")]
@@ -25,29 +30,6 @@ public class PipeManager : Singleton<PipeManager>
         CheckAllConnectedPipes();
     }
 
-    //public void CheckAllConnections()
-    //{
-    //    Debug.Log("CheckAllConnections 호출됨");
-
-    //    // 모든 파이프를 체크되지 않은 상태로 초기화
-    //    foreach (Pipe pipe in allPipes)
-    //    {
-    //        pipe.isChecked = false;
-    //    }
-
-    //    // 시작 파이프부터 연결된 모든 파이프를 체크
-    //    if (startPipe != null)
-    //    {
-    //        Debug.Log("시작 파이프에서 연결 상태를 확인합니다.");
-    //        CheckAllConnectedPipes();
-    //        if (endPipe.isChecked) OnPuzzleComplete();
-    //    }
-    //    else
-    //    {
-    //        Debug.LogError("startPipe가 설정되지 않았습니다!");
-    //    }
-    //}
-
     private List<Pipe> CheckAdjacencyPipesPipes(Pipe centerPipe)
     {
         List<Pipe> connectedPipes = new();
@@ -59,13 +41,13 @@ public class PipeManager : Singleton<PipeManager>
         return connectedPipes;
     }
 
-    public  void CheckAllConnectedPipes()
+    public void CheckAllConnectedPipes()
     {
         allPipes.ForEach(x => x.isChecked = false);
         startPipe.isChecked = true;
-        
+
         List<Pipe> beforeConnectedPipes = new List<Pipe>() { startPipe }; // 첫 연결점 시작 파이프라인
-        while(beforeConnectedPipes.Count != 0 || beforeConnectedPipes.Count > 10)
+        while (beforeConnectedPipes.Count != 0 || beforeConnectedPipes.Count > 10)
         {
             if (beforeConnectedPipes.Count > 10) break;
 
@@ -79,21 +61,6 @@ public class PipeManager : Singleton<PipeManager>
         }
 
         if (endPipe.isChecked) OnPuzzleComplete();
-
-        //Debug.Log($"CheckConnectedPipes: {currentPipe.name}");
-        //if (currentPipe.isChecked) return;
-
-        //currentPipe.isChecked = true;
-        //Debug.Log($"{currentPipe.name}이(가) 체크되었습니다.");
-
-        //foreach (Pipe otherPipe in allPipes)
-        //{
-        //    //Debug.Log($"다른 파이프 확인 중: {otherPipe.name}");
-        //    if (!otherPipe.isChecked && currentPipe.IsConnected(otherPipe))
-        //    {
-        //        CheckConnectedPipes(otherPipe);
-        //    }
-        //}
     }
 
     void UncheckDisconnectedPipes(Pipe currentPipe)
@@ -113,11 +80,64 @@ public class PipeManager : Singleton<PipeManager>
         }
     }
 
-
     // 퍼즐이 완료되었을 때 처리 (예: 문을 열거나, 다음 단계로 진행하는 로직)
     void OnPuzzleComplete()
     {
         Debug.Log("문이 열렸습니다!");
-        // 퍼즐 완료 로직 추가 가능
+
+        // 패널 비활성화
+        if (panel != null)
+        {
+            panel.SetActive(false);
+            Debug.Log("패널이 비활성화되었습니다.");
+
+            // Canvas 우선순위를 원래대로 복원
+            if (panelCanvas != null)
+            {
+                panelCanvas.sortingOrder = 0;  // 기본 값으로 복원
+                Debug.Log("패널 Canvas의 sortingOrder가 0으로 복원되었습니다.");
+            }
+
+            // 커서를 숨기고 잠금 설정
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+        else
+        {
+            Debug.LogWarning("패널이 할당되지 않았습니다.");
+        }
+
+        // 회복존 활성화
+        if (recoveryZone != null)
+        {
+            recoveryZone.SetActive(true);
+            Debug.Log("회복존이 활성화되었습니다.");
+        }
+        else
+        {
+            Debug.LogWarning("회복존이 할당되지 않았습니다.");
+        }
     }
+
+
+    // 패널을 열 때 호출되는 함수 (필요한 경우 구현)
+    public void OpenPanel()
+    {
+        if (panel != null)
+        {
+            panel.SetActive(true);
+            Debug.Log("패널이 활성화되었습니다.");
+
+            // Canvas 우선순위를 가장 높게 설정
+            if (panelCanvas != null)
+            {
+                panelCanvas.sortingOrder = 9999;  
+            }
+
+            // 커서를 보이고 잠금 해제
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+        }
+    }
+
 }

@@ -121,11 +121,7 @@ public class Pipe : MonoBehaviour, IPointerClickHandler
         //Debug.Log($"IsConnected: {gameObject.name}과 {otherPipe.name} 연결 확인 중");
 
         if (!adjacencyPipes.Contains(otherPipe)) return false;
-        //if (!IsAdjacent(otherPipe))
-        //{
-        //    //Debug.Log($"{gameObject.name}과 {otherPipe.name}은 인접하지 않습니다.");
-        //    return false;
-        //}
+
         foreach (var myPoint in connectionPoints) // 연결된 포인트
         {
             if(otherPipe.coord == coord + myPoint)
@@ -139,35 +135,11 @@ public class Pipe : MonoBehaviour, IPointerClickHandler
                     }
                 }
             }
-            //foreach (var otherPoint in otherPipe.connectionPoints)
-            //{
-            //    if (point == -otherPoint)
-            //    {
-            //        Debug.Log($"{gameObject.name}과 {otherPipe.name}가 연결됨");
-            //        isChecked = true;
-            //        return true;
-            //    }
-            //}
+
         }
 
-        //Debug.Log($"{gameObject.name}과 {otherPipe.name}는 연결되지 않음");
         return false;
     }
-/*
-    public bool IsAdjacent(Pipe otherPipe)
-    {
-        Vector2 currentPos = rectTransform.anchoredPosition;
-        Vector2 otherPos = otherPipe.rectTransform.anchoredPosition;
-
-        //Debug.Log($"{gameObject.name} 위치: {currentPos}, {otherPipe.gameObject.name} 위치: {otherPos}");
-
-        float distanceX = Mathf.Abs(currentPos.x - otherPos.x);
-        float distanceY = Mathf.Abs(currentPos.y - otherPos.y);
-
-        return (distanceX == 200 && distanceY == 0) ||
-               (distanceY == 200 && distanceX == 0);
-    }
-*/
 
     public void CheckConnection(Pipe otherPipe)
     {
