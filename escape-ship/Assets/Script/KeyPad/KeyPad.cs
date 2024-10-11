@@ -9,7 +9,7 @@ public class KeyPad : MonoBehaviour
     [SerializeField] Transform player;
     [SerializeField] float interactDistance = 3f;
     [SerializeField] Canvas keyPadCanvas;
-    [SerializeField] string correctPassword = "1234";  // 올바른 비밀번호 (개별 설정 가능)
+    [SerializeField] string correctPassword;  // 올바른 비밀번호 (개별 설정 가능)
     [SerializeField] ZDoorMotion doorMotion;  // 할당할 문 동작 (다른 오브젝트에 할당 가능)
     [SerializeField] AudioSource doorSound;  // 문이 열릴 때 재생할 사운드
 
