@@ -11,7 +11,7 @@ public class ItemController : Singleton<ItemController>
     public event ItemEvent OnRemoveItem;
 
     [SerializeField] List<ItemDataExample> allItemDatas;
-    [SerializeField] List<ItemDataExample> curItemDatas;
+    public List<ItemDataExample> curItemDatas;
     private bool canPickUp = false; // 아이템을 받을 수 있는지 여부를 저장하는 변수
     private ItemDataExample nearbyItem; // 플레이어가 가까이 있는 아이템을 저장
 

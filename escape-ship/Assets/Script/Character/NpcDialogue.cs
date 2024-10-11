@@ -1,7 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 
 public class NpcDialogue : MonoBehaviour
 {
@@ -20,9 +19,9 @@ public class NpcDialogue : MonoBehaviour
     {
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;  // 플레이어의 Transform 가져오기
         dialoguePanel.SetActive(false);  // 대화 패널 처음엔 비활성화
-                                         // 대화 패널의 Canvas 가져오기
         dialogueCanvas = dialoguePanel.GetComponentInParent<Canvas>();
         TalktoText.gameObject.SetActive(false);  // 처음엔 텍스트를 비활성화
+
         // 키 입력 이벤트를 KeyManager의 keyDic에 등록 (PlayAction에 연결)
         KeyManager.Instance.keyDic[KeyAction.Play] += TryToggleDialoguePanel;
 
@@ -34,8 +33,12 @@ public class NpcDialogue : MonoBehaviour
     private void OnMouseEnter()
     {
         isMouseOverNPC = true;  // 마우스가 NPC 위에 있음
-        TalktoText.gameObject.SetActive(true);  // 텍스트 활성화
-        TalktoText.text = "E키를 눌러 대화하세요";  // 문구 설정
+
+        if (!isDialogueActive)  // 대화 중이 아닐 때만 텍스트 활성화
+        {
+            TalktoText.gameObject.SetActive(true);
+            TalktoText.text = "E키를 눌러 대화하세요";
+        }
     }
 
     // 마우스가 NPC에서 벗어났을 때 호출
@@ -57,10 +60,6 @@ public class NpcDialogue : MonoBehaviour
             {
                 ToggleDialoguePanel();
             }
-            else
-            {
-                TalktoText.gameObject.SetActive(false);  // 거리가 멀어지면 텍스트 비활성화
-            }
         }
     }
 
@@ -72,13 +71,15 @@ public class NpcDialogue : MonoBehaviour
 
         if (isDialogueActive)
         {
+            // 대화가 시작되면 안내 텍스트 숨김
+            TalktoText.gameObject.SetActive(false);
             currentDialogueIndex = 0;  // 대화를 처음부터 시작
             ShowNextDialogue();
 
             // 시간을 멈춤
             Time.timeScale = 0f;
             // Canvas의 Sorting Order를 100으로 설정 (값을 원하는 만큼 높게 설정)
-            dialogueCanvas.sortingOrder = 100;
+            dialogueCanvas.sortingOrder = 999;
         }
         else
         {
