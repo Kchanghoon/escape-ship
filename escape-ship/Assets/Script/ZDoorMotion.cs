@@ -21,10 +21,12 @@ public class ZDoorMotion : MonoBehaviour
     // 문을 여는 함수
     public void OpenDoor()
     {
-        if (isAnimating || isDoorOpen) return;  // 이미 애니메이션 중이거나 문이 열려 있으면 아무 작업도 하지 않음
+        DOTween.Kill($"Open Door{GetInstanceID()}");
+        //if (isAnimating || isDoorOpen) return;  // 이미 애니메이션 중이거나 문이 열려 있으면 아무 작업도 하지 않음
         isAnimating = true;  // 애니메이션이 실행 중임을 기록
         door.DOLocalMoveY(startPosY + endPosY, duration)  // 문을 위로 이동
             .SetEase(motionEase)
+            .SetId($"Open Door{GetInstanceID()}")
             .OnComplete(() =>
             {
                 isAnimating = false;  // 애니메이션이 끝났음을 기록
