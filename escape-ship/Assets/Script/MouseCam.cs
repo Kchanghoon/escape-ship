@@ -205,7 +205,7 @@ public class MouseCam : MonoBehaviour
             rotationX -= mouseMoveY * sensitivity * Time.deltaTime;
 
             // X축 회전을 제한하여 고개가 과도하게 젖혀지지 않도록
-            rotationX = Mathf.Clamp(rotationX, -50f, 40f);
+            rotationX = Mathf.Clamp(rotationX, -50f, 60f);
 
             // 현재 회전값을 보간하여 부드럽게 처리
             Vector3 targetRotation = new Vector3(rotationX, rotationY, 0);
