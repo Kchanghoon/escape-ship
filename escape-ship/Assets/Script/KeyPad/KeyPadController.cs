@@ -106,4 +106,16 @@ public class KeypadController : MonoBehaviour
         currentInput = "";
         inputField.text = "";
     }
+
+    public void OnCancelButtonClick() 
+        {
+        keyPadPanel.SetActive(false);
+        Time.timeScale = 1;
+
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+
+        currentInput = "";
+        inputField.text = "";
+    }
 }

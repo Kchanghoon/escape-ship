@@ -84,7 +84,16 @@ public class PipeManager : Singleton<PipeManager>
     void OnPuzzleComplete()
     {
         Debug.Log("문이 열렸습니다!");
-
+        // 회복존 활성화
+        if (recoveryZone != null)
+        {
+            recoveryZone.SetActive(true);
+            Debug.Log("회복존이 활성화되었습니다.");
+        }
+        else
+        {
+            Debug.LogWarning("회복존이 할당되지 않았습니다.");
+        }
         // 패널 비활성화
         if (panel != null)
         {
@@ -107,16 +116,7 @@ public class PipeManager : Singleton<PipeManager>
             Debug.LogWarning("패널이 할당되지 않았습니다.");
         }
 
-        // 회복존 활성화
-        if (recoveryZone != null)
-        {
-            recoveryZone.SetActive(true);
-            Debug.Log("회복존이 활성화되었습니다.");
-        }
-        else
-        {
-            Debug.LogWarning("회복존이 할당되지 않았습니다.");
-        }
+      
     }
 
 

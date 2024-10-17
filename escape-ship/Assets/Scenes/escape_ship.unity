@@ -2676,7 +2676,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panel: {fileID: 1793789797}
   requiredItemId: 10
-  itemController: {fileID: 348724990}
   ToggleCanvas: {fileID: 1695194539}
   sortingCanvas: 990
 --- !u!1 &184555757 stripped
@@ -6034,17 +6033,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1164603166913248891, guid: 8809bf6169090444b94e702fbc61c496, type: 3}
   m_PrefabInstance: {fileID: 1311393024}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &348724990 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6001424212227759435, guid: df15bc94969b8ac428a097d646dd7eff, type: 3}
-  m_PrefabInstance: {fileID: 3625339458236109373}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93cf7246403abe24fa87aaa2b59e66f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &353120133
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22897,7 +22885,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panel: {fileID: 1793789797}
   requiredItemId: 10
-  itemController: {fileID: 348724990}
   ToggleCanvas: {fileID: 1695194539}
   sortingCanvas: 998
 --- !u!4 &1126800080 stripped
@@ -29996,9 +29983,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panel: {fileID: 1502510047}
   requiredItemId: 9
-  itemController: {fileID: 348724990}
   ToggleCanvas: {fileID: 1695194539}
-  sortingCanvas: 999
+  sortingCanvas: 990
 --- !u!4 &1541744170 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8604171486087928635, guid: 189c3cd30874c82489bbcf7029d8859c, type: 3}
@@ -40179,6 +40165,10 @@ PrefabInstance:
       propertyPath: pickUpText
       value: 
       objectReference: {fileID: 2123831496}
+    - target: {fileID: 3720207339635250171, guid: 189c3cd30874c82489bbcf7029d8859c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4439040815395369557, guid: 189c3cd30874c82489bbcf7029d8859c, type: 3}
       propertyPath: m_Name
       value: StartDoor
