@@ -159,11 +159,12 @@ public class PlayerState : MonoBehaviour
         isInRecoverZone = false;  // 회복존에서 나간 상태로 기록
     }
 
-    private void GameOver()
-    {
-        Debug.Log("게임 오버! 스트레스가 최대치에 도달했습니다.");
-        // 여기서 게임 오버 처리를 할 수 있음. 예: 씬을 리로드하거나 게임 오버 화면을 띄우는 코드
-        // 예시로 현재 씬을 다시 로드 (게임을 재시작)
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
+void GameOver()
+{
+
+    // 씬 로드
+    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+}
+
+
 }

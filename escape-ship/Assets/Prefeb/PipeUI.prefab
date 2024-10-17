@@ -89,11 +89,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pipeType: 4
+  isChecked: 0
   rectTransform: {fileID: 4821536323141043158}
   connectionPoints:
   - {x: 1, y: 0}
   - {x: 0, y: 1}
   - {x: 0, y: -1}
+  coord: {x: 0, y: 0}
+  adjacencyPipes: []
 --- !u!1 &994123994661464497
 GameObject:
   m_ObjectHideFlags: 0
@@ -183,11 +186,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pipeType: 4
+  isChecked: 0
   rectTransform: {fileID: 3348064892767149354}
   connectionPoints:
   - {x: 1, y: 0}
   - {x: -1, y: 0}
   - {x: 0, y: -1}
+  coord: {x: 0, y: 0}
+  adjacencyPipes: []
 --- !u!1 &1224607307589052543
 GameObject:
   m_ObjectHideFlags: 0
@@ -277,10 +283,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pipeType: 2
+  isChecked: 0
   rectTransform: {fileID: 7741727086296798517}
   connectionPoints:
   - {x: 0, y: -1}
   - {x: 0, y: 1}
+  coord: {x: 0, y: 0}
+  adjacencyPipes: []
 --- !u!1 &1821518682834833929
 GameObject:
   m_ObjectHideFlags: 0
@@ -370,11 +379,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pipeType: 4
+  isChecked: 0
   rectTransform: {fileID: 8723619817919829761}
   connectionPoints:
   - {x: 1, y: 0}
   - {x: -1, y: 0}
   - {x: 0, y: 1}
+  coord: {x: 0, y: 0}
+  adjacencyPipes: []
 --- !u!1 &1853101780728524268
 GameObject:
   m_ObjectHideFlags: 0
@@ -464,10 +476,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pipeType: 2
+  isChecked: 0
   rectTransform: {fileID: 1840921411936981000}
   connectionPoints:
   - {x: 0, y: -1}
   - {x: 0, y: 1}
+  coord: {x: 0, y: 0}
+  adjacencyPipes: []
 --- !u!1 &2111818281728572603
 GameObject:
   m_ObjectHideFlags: 0
@@ -557,11 +572,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pipeType: 4
+  isChecked: 0
   rectTransform: {fileID: 5731553652802489838}
   connectionPoints:
   - {x: 1, y: 0}
   - {x: 0, y: 1}
   - {x: 0, y: -1}
+  coord: {x: 0, y: 0}
+  adjacencyPipes: []
 --- !u!1 &2255122358203953936
 GameObject:
   m_ObjectHideFlags: 0
@@ -651,9 +669,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pipeType: 0
+  isChecked: 0
   rectTransform: {fileID: 3429705088244330522}
   connectionPoints:
   - {x: 1, y: 0}
+  coord: {x: 0, y: 0}
+  adjacencyPipes: []
 --- !u!1 &2500441873800436027
 GameObject:
   m_ObjectHideFlags: 0
@@ -743,10 +764,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pipeType: 2
+  isChecked: 0
   rectTransform: {fileID: 7842235946158238627}
   connectionPoints:
   - {x: 1, y: 0}
   - {x: -1, y: 0}
+  coord: {x: 0, y: 0}
+  adjacencyPipes: []
 --- !u!1 &2607521365996372785
 GameObject:
   m_ObjectHideFlags: 0
@@ -836,10 +860,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pipeType: 3
+  isChecked: 0
   rectTransform: {fileID: 2474886975222996114}
   connectionPoints:
   - {x: 1, y: 0}
   - {x: 0, y: -1}
+  coord: {x: 0, y: 0}
+  adjacencyPipes: []
 --- !u!1 &2661257717278937683
 GameObject:
   m_ObjectHideFlags: 0
@@ -929,10 +956,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pipeType: 2
+  isChecked: 0
   rectTransform: {fileID: 4145543843692309208}
   connectionPoints:
   - {x: 1, y: 0}
   - {x: -1, y: 0}
+  coord: {x: 0, y: 0}
+  adjacencyPipes: []
 --- !u!1 &2796908186119057542
 GameObject:
   m_ObjectHideFlags: 0
@@ -1022,11 +1052,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pipeType: 4
+  isChecked: 0
   rectTransform: {fileID: 3873278377108482174}
   connectionPoints:
   - {x: 1, y: 0}
   - {x: 0, y: 1}
   - {x: 0, y: -1}
+  coord: {x: 0, y: 0}
+  adjacencyPipes: []
 --- !u!1 &3088364440794918539
 GameObject:
   m_ObjectHideFlags: 0
@@ -1116,11 +1149,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pipeType: 4
+  isChecked: 0
   rectTransform: {fileID: 5142722338635236671}
   connectionPoints:
   - {x: 1, y: 0}
   - {x: 0, y: 1}
   - {x: 0, y: -1}
+  coord: {x: 0, y: 0}
+  adjacencyPipes: []
 --- !u!1 &3116821160896504578
 GameObject:
   m_ObjectHideFlags: 0
@@ -1132,7 +1168,6 @@ GameObject:
   - component: {fileID: 683730294140611901}
   - component: {fileID: 6515870700079123869}
   - component: {fileID: 8161511133595553138}
-  - component: {fileID: 6785674587989088808}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -1225,49 +1260,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &6785674587989088808
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3116821160896504578}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12c667a239c1d2942b5e014fe1d92f3a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  allPipes:
-  - {fileID: 1614729640830810892}
-  - {fileID: 1808010519173684892}
-  - {fileID: 655701369607864597}
-  - {fileID: 4391642980640221470}
-  - {fileID: 3502712584343056219}
-  - {fileID: 6403941508162126569}
-  - {fileID: 6995004539728073236}
-  - {fileID: 6330406213212989206}
-  - {fileID: 3676197587675826373}
-  - {fileID: 8584475003317804207}
-  - {fileID: 3117825013218624862}
-  - {fileID: 6651559149750145548}
-  - {fileID: 6245352068715726749}
-  - {fileID: 5630013185383709420}
-  - {fileID: 7283744592400815238}
-  - {fileID: 9015772235787153199}
-  - {fileID: 2823864665994680436}
-  - {fileID: 4652679858471011324}
-  - {fileID: 1657152883987336735}
-  - {fileID: 347489580550461054}
-  - {fileID: 5016349935003039323}
-  - {fileID: 2523186356859212501}
-  - {fileID: 6893970303415251103}
-  - {fileID: 1983957974367537247}
-  - {fileID: 1657608333577507981}
-  - {fileID: 6341295147482893165}
-  - {fileID: 5652762656927849708}
-  - {fileID: 9222032854725421039}
-  startPipe: {fileID: 1614729640830810892}
-  endPipe: {fileID: 9222032854725421039}
 --- !u!1 &3851123631349243244
 GameObject:
   m_ObjectHideFlags: 0
@@ -1357,10 +1349,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pipeType: 3
+  isChecked: 0
   rectTransform: {fileID: 5689061266649294541}
   connectionPoints:
   - {x: 1, y: 0}
   - {x: 0, y: -1}
+  coord: {x: 0, y: 0}
+  adjacencyPipes: []
 --- !u!1 &3971026558836397536
 GameObject:
   m_ObjectHideFlags: 0
@@ -1450,10 +1445,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pipeType: 3
+  isChecked: 0
   rectTransform: {fileID: 4130011218121952861}
   connectionPoints:
   - {x: 1, y: 0}
   - {x: 0, y: -1}
+  coord: {x: 0, y: 0}
+  adjacencyPipes: []
 --- !u!1 &4039785750939665556
 GameObject:
   m_ObjectHideFlags: 0
@@ -1645,10 +1643,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pipeType: 2
+  isChecked: 0
   rectTransform: {fileID: 1667046651671626067}
   connectionPoints:
   - {x: 1, y: 0}
   - {x: -1, y: 0}
+  coord: {x: 0, y: 0}
+  adjacencyPipes: []
 --- !u!1 &4412503977591455345
 GameObject:
   m_ObjectHideFlags: 0
@@ -1738,11 +1739,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pipeType: 4
+  isChecked: 0
   rectTransform: {fileID: 8608265379661972621}
   connectionPoints:
   - {x: 1, y: 0}
   - {x: 0, y: 1}
   - {x: 0, y: -1}
+  coord: {x: 0, y: 0}
+  adjacencyPipes: []
 --- !u!1 &4438621789321389895
 GameObject:
   m_ObjectHideFlags: 0
@@ -1832,10 +1836,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pipeType: 2
+  isChecked: 0
   rectTransform: {fileID: 884926855653790132}
   connectionPoints:
   - {x: 0, y: -1}
   - {x: 0, y: 1}
+  coord: {x: 0, y: 0}
+  adjacencyPipes: []
 --- !u!1 &4663230968340514980
 GameObject:
   m_ObjectHideFlags: 0
@@ -1925,10 +1932,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pipeType: 2
+  isChecked: 0
   rectTransform: {fileID: 2674798649037210038}
   connectionPoints:
   - {x: 0, y: -1}
   - {x: 0, y: 1}
+  coord: {x: 0, y: 0}
+  adjacencyPipes: []
 --- !u!1 &4719452067501343838
 GameObject:
   m_ObjectHideFlags: 0
@@ -2050,11 +2060,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pipeType: 4
+  isChecked: 0
   rectTransform: {fileID: 3316744217358740614}
   connectionPoints:
   - {x: 1, y: 0}
   - {x: -1, y: 0}
   - {x: 0, y: 1}
+  coord: {x: 0, y: 0}
+  adjacencyPipes: []
 --- !u!1 &5928772677219013087
 GameObject:
   m_ObjectHideFlags: 0
@@ -2144,11 +2157,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pipeType: 4
+  isChecked: 0
   rectTransform: {fileID: 940956432830285225}
   connectionPoints:
   - {x: 1, y: 0}
   - {x: 0, y: 1}
   - {x: 0, y: -1}
+  coord: {x: 0, y: 0}
+  adjacencyPipes: []
 --- !u!1 &6044004296149975665
 GameObject:
   m_ObjectHideFlags: 0
@@ -2238,10 +2254,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pipeType: 2
+  isChecked: 0
   rectTransform: {fileID: 6282413894748312596}
   connectionPoints:
   - {x: 0, y: -1}
   - {x: 0, y: 1}
+  coord: {x: 0, y: 0}
+  adjacencyPipes: []
 --- !u!1 &6456061175933364345
 GameObject:
   m_ObjectHideFlags: 0
@@ -2331,11 +2350,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pipeType: 4
+  isChecked: 0
   rectTransform: {fileID: 2292318564364020215}
   connectionPoints:
   - {x: 1, y: 0}
   - {x: 0, y: 1}
   - {x: 0, y: -1}
+  coord: {x: 0, y: 0}
+  adjacencyPipes: []
 --- !u!1 &6911598052526896648
 GameObject:
   m_ObjectHideFlags: 0
@@ -2425,10 +2447,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pipeType: 3
+  isChecked: 0
   rectTransform: {fileID: 5920284539413027719}
   connectionPoints:
   - {x: -1, y: 0}
   - {x: 0, y: -1}
+  coord: {x: 0, y: 0}
+  adjacencyPipes: []
 --- !u!1 &7473764822155219483
 GameObject:
   m_ObjectHideFlags: 0
@@ -2518,10 +2543,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pipeType: 2
+  isChecked: 0
   rectTransform: {fileID: 3613401422094750497}
   connectionPoints:
   - {x: 0, y: -1}
   - {x: 0, y: 1}
+  coord: {x: 0, y: 0}
+  adjacencyPipes: []
 --- !u!1 &7925250950241917374
 GameObject:
   m_ObjectHideFlags: 0
@@ -2611,10 +2639,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pipeType: 3
+  isChecked: 0
   rectTransform: {fileID: 5964843848365681088}
   connectionPoints:
   - {x: 1, y: 0}
   - {x: 0, y: -1}
+  coord: {x: 0, y: 0}
+  adjacencyPipes: []
 --- !u!1 &8373859590263010803
 GameObject:
   m_ObjectHideFlags: 0
@@ -2704,10 +2735,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pipeType: 2
+  isChecked: 0
   rectTransform: {fileID: 7623000892814095596}
   connectionPoints:
   - {x: 0, y: -1}
   - {x: 0, y: 1}
+  coord: {x: 0, y: 0}
+  adjacencyPipes: []
 --- !u!1 &9173309292546200050
 GameObject:
   m_ObjectHideFlags: 0
@@ -2797,10 +2831,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pipeType: 2
+  isChecked: 0
   rectTransform: {fileID: 7183709472300174921}
   connectionPoints:
   - {x: 1, y: 0}
   - {x: -1, y: 0}
+  coord: {x: 0, y: 0}
+  adjacencyPipes: []
 --- !u!1 &9203065280157098073
 GameObject:
   m_ObjectHideFlags: 0
@@ -2890,6 +2927,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pipeType: 1
+  isChecked: 0
   rectTransform: {fileID: 2304218639466194379}
   connectionPoints:
   - {x: -1, y: 0}
+  coord: {x: 0, y: 0}
+  adjacencyPipes: []
