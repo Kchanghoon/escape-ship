@@ -1,10 +1,7 @@
 using UnityEngine;
 
-public class StageManager : MonoBehaviour
+public class StageManager : Singleton<StageManager>
 {
-    // 싱글톤 인스턴스
-    public static StageManager Instance { get; private set; }
-
     // 스테이지를 저장할 배열
     public GameObject[] stages;
 
@@ -13,22 +10,6 @@ public class StageManager : MonoBehaviour
 
     // 각 스테이지별 플레이어 시작 위치
     public Transform[] playerStartPoints;
-
-    // Awake 메서드에서 싱글톤 인스턴스 설정
-    private void Awake()
-    {
-        // 인스턴스가 비어 있으면 현재 오브젝트를 인스턴스로 설정
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject); // 씬 전환 시에도 유지하고 싶다면 사용
-        }
-        else
-        {
-            // 이미 인스턴스가 존재하면 현재 오브젝트를 파괴
-            Destroy(gameObject);
-        }
-    }
 
     public void ActivateStage(int stageIndex)
     {
