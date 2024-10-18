@@ -69,17 +69,10 @@ public class PlayerState : MonoBehaviour
         var selectedItem = InventoryUIExmaple.Instance.GetSelectedItem();
         if (selectedItem != null)
         {
-            // 물약 (id = 5): 스트레스 -10
-            if (selectedItem.id == "5")
+            if (selectedItem.id == "2")
             {
                 DecreaseStress(5f);
-                Debug.Log("물약을 사용하여 스트레스가 5 감소했습니다.");
-            }
-            // 책 (id = 4): 스트레스 -5
-            else if (selectedItem.id == "4")
-            {
-                DecreaseStress(10f);
-                Debug.Log("책을 사용하여 스트레스가 10 감소했습니다.");
+                Debug.Log("알약을 사용하여 스트레스가 10 감소했습니다.");
             }
 
             // 사용 후 아이템 수량 감소

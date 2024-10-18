@@ -178,14 +178,13 @@ public class ItemController : Singleton<ItemController>
         InventoryUIExmaple.Instance.UpdateInventoryUI();
     }
 
-
     // 아이템 수량 감소 메서드
     public void DecreaseItemQuantity(string id)
     {
         var item = curItemDatas.Find(x => x.id == id);
 
-        // 소모되지 않는 아이템은 여기서 바로 리턴
-        if (id == "2")
+        // 소모 가능한 아이템은 id가 "1", "2", "3"인 경우에만 소모
+        if (id != "1" && id != "2" && id != "3")
         {
             Debug.Log($"아이템 {id}은(는) 소모되지 않습니다.");
             return;
@@ -205,6 +204,8 @@ public class ItemController : Singleton<ItemController>
                 // 수량이 줄었을 때 UI 업데이트
                 InventoryUIExmaple.Instance.UpdateInventoryUI();
             }
+
+            Debug.Log($"아이템 {id}의 수량이 감소했습니다. 남은 수량: {item.quantity}");
         }
     }
 
