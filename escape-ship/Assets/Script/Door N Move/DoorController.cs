@@ -6,17 +6,19 @@ public class DoorController : MonoBehaviour
 {
     public Transform doorLeft;
     public Transform doorRight;
+    public Transform player;  // 플레이어의 Transform을 추가하여 거리 계산
 
     public float leftStartPosZ;
     public float rightStartPosZ;
     public float endPosZ = 3f;  // 문이 열릴 때 이동할 거리
     public float duration = 1f;  // 문이 열리는 데 걸리는 시간
+    public float interactionDistance = 5f;  // 플레이어와 문 사이의 상호작용 거리
     public Ease motionEase = Ease.OutQuad;
 
     public TextMeshProUGUI statusText;  // 상태를 표시할 TMP 텍스트
     private bool isDoorOpen = false;  // 문이 열려 있는지 여부를 저장하는 변수
     private bool isAnimating = false;  // 애니메이션이 실행 중인지 확인하는 플래그
-    private bool playerInRange = false;  // 플레이어가 범위 안에 있는지 확인하는 플래그
+    private bool isMouseOverDoor = false;  // 마우스가 문 위에 있는지 여부
 
     void Start()
     {
@@ -33,21 +35,30 @@ public class DoorController : MonoBehaviour
 
     void Update()
     {
-        // 플레이어가 범위 안에 있는 동안 아이템 상태에 따라 문구를 업데이트
-        if (playerInRange)
+        // 플레이어와 문의 거리가 상호작용 거리 내에 있는지 계산
+        float distanceToPlayer = Vector3.Distance(player.position, transform.position);
+
+        // 플레이어가 상호작용 거리 안에 있고, 마우스가 문 위에 있을 때만 상태 문구를 표시
+        if (distanceToPlayer <= interactionDistance && isMouseOverDoor)
         {
             UpdateStatusText();
+        }
+        else
+        {
+            statusText.gameObject.SetActive(false);  // 문구 숨기기
         }
     }
 
     // KeyManager에서 Play 액션이 호출될 때 상자 열기/닫기 처리
     public void OnPlay()
     {
-        if (playerInRange && !isAnimating)
+        float distanceToPlayer = Vector3.Distance(player.position, transform.position);
+
+        if (distanceToPlayer <= interactionDistance && isMouseOverDoor && !isAnimating)
         {
             // 노랑 카드키(ID = 2)를 들고 있어야만 문을 열 수 있음
             var selectedItem = InventoryUIExmaple.Instance.GetSelectedItem();
-            if (selectedItem != null && selectedItem.id == "2")
+            if (selectedItem != null && (selectedItem.id == "5" || selectedItem.id == "6" || selectedItem.id == "7" || selectedItem.id == "8"))
             {
                 if (isDoorOpen)
                 {
@@ -61,8 +72,7 @@ public class DoorController : MonoBehaviour
             }
             else
             {
-                Debug.Log("노랑 카드키를 들고 있어야 문을 열 수 있습니다.");
-                statusText.text = "노랑 카드가 필요합니다.";
+                statusText.text = "보안 카드가 필요합니다.";
             }
         }
     }
@@ -71,35 +81,27 @@ public class DoorController : MonoBehaviour
     private void UpdateStatusText()
     {
         var selectedItem = InventoryUIExmaple.Instance.GetSelectedItem();
-        if (selectedItem == null || selectedItem.id != "2")
+        if (selectedItem == null || (selectedItem.id != "5" && selectedItem.id != "6" && selectedItem.id != "7" && selectedItem.id != "8"))
         {
-            statusText.text = "노랑 카드가 필요합니다.";  // 노랑 카드가 없을 때
+            statusText.text = "최소 3급 보안 카드가 필요합니다.";  // 보안 카드가 없을 때
         }
         else
         {
-            statusText.text = "E키를 눌러 문을 여닫아주세요.";  // 노랑 카드가 있을 때
+            statusText.text = "E키를 눌러 문을 여닫아주세요.";  // 보안 카드가 있을 때
         }
         statusText.gameObject.SetActive(true);  // 텍스트 표시
     }
 
-    // 플레이어가 트리거 범위 안에 들어왔을 때
-    void OnTriggerEnter(Collider other)
+    // 마우스가 문 위에 있을 때 호출
+    private void OnMouseEnter()
     {
-        if (other.CompareTag("Player"))  // 플레이어에게 'Player' 태그가 붙어 있다고 가정
-        {
-            playerInRange = true;  // 플레이어가 범위 안에 있음을 기록
-            UpdateStatusText();  // 범위에 들어오자마자 상태 문구 업데이트
-        }
+        isMouseOverDoor = true;
     }
 
-    // 플레이어가 트리거 범위를 벗어났을 때
-    void OnTriggerExit(Collider other)
+    // 마우스가 문에서 벗어났을 때 호출
+    private void OnMouseExit()
     {
-        if (other.CompareTag("Player"))
-        {
-            playerInRange = false;  // 플레이어가 범위를 벗어났음을 기록
-            statusText.gameObject.SetActive(false);  // TMP 텍스트 숨김
-        }
+        isMouseOverDoor = false;
     }
 
     // 문을 여는 함수
