@@ -97,23 +97,7 @@ public class PipeManager : Singleton<PipeManager>
         // 패널 비활성화
         if (panel != null)
         {
-            panel.SetActive(false);
-            Debug.Log("패널이 비활성화되었습니다.");
-
-            // Canvas 우선순위를 원래대로 복원
-            if (panelCanvas != null)
-            {
-                panelCanvas.sortingOrder = 0;  // 기본 값으로 복원
-                Debug.Log("패널 Canvas의 sortingOrder가 0으로 복원되었습니다.");
-            }
-
-            // 커서를 숨기고 잠금 설정
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
-        }
-        else
-        {
-            Debug.LogWarning("패널이 할당되지 않았습니다.");
+            CloseBtn();
         }
 
       
@@ -128,16 +112,29 @@ public class PipeManager : Singleton<PipeManager>
             panel.SetActive(true);
             Debug.Log("패널이 활성화되었습니다.");
 
+            Time.timeScale = 0;  // 게임 일시정지
             // Canvas 우선순위를 가장 높게 설정
             if (panelCanvas != null)
             {
-                panelCanvas.sortingOrder = 9999;  
+                panelCanvas.sortingOrder = 999;  
             }
-
-            // 커서를 보이고 잠금 해제
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
+            MouseCam mouseCam = FindObjectOfType<MouseCam>();
+            if (mouseCam != null)
+            {
+                mouseCam.UnlockCursor();
+            }
         }
     }
-
+    
+    public void CloseBtn()
+    {
+        panelCanvas.sortingOrder = 0; // 원래 순서로 복원
+        Time.timeScale = 1;  // 게임 재개
+        panel.SetActive(false);
+        MouseCam mouseCam = FindObjectOfType<MouseCam>();
+        if (mouseCam != null)
+        {
+            mouseCam.LockCursor();
+        }
+    }
 }

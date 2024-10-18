@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class ObjectPipe : MonoBehaviour
@@ -9,6 +10,8 @@ public class ObjectPipe : MonoBehaviour
     private int originalSortingOrder;  // 원래 Canvas의 sortingOrder
     private bool isPanelActive = false;  // 패널이 현재 활성화되어 있는지 여부
     private bool isMouseOverObject = false;  // 마우스가 오브젝트 위에 있는지 여부
+
+    public TextMeshProUGUI statusText;  // 상태를 표시할 TMP 텍스트
 
     void Start()
     {
@@ -30,6 +33,8 @@ public class ObjectPipe : MonoBehaviour
         {
             Debug.LogWarning("panelCanvas가 할당되지 않았습니다.");
         }
+        // 시작 시 텍스트 숨기기
+        statusText.gameObject.SetActive(false);  // TMP 텍스트 숨김
 
         KeyManager.Instance.keyDic[KeyAction.Play] += TryTogglePanel;
     }
@@ -51,13 +56,39 @@ public class ObjectPipe : MonoBehaviour
     {
         if (IsPlayerInRange() && isMouseOverObject)
         {
-            TogglePanel();
+            var selectedItem = InventoryUIExmaple.Instance.GetSelectedItem();
+            if (selectedItem != null && selectedItem.id == "3")
+            {
+                TogglePanel();
+            }
+            else
+            {
+                statusText.text = "벨브가 필요합니다.";  // 노랑 카드가 없을 때
+            }
         }
         else
         {
             Debug.Log("플레이어가 너무 멀거나 마우스가 오브젝트 위에 있지 않습니다.");
+            
         }
     }
+
+    //// 상태 텍스트를 업데이트하는 함수
+    //private void UpdateStatusText()
+    //{
+    //    var selectedItem = InventoryUIExmaple.Instance.GetSelectedItem();
+    //    if (selectedItem == null || selectedItem.id != "3")
+    //    {
+    //        statusText.text = "벨브가 필요합니다.";  // 노랑 카드가 없을 때
+    //    }
+    //    else
+    //    {
+    //        statusText.text = "활성화 준비 완료.";  // 노랑 카드가 있을 때
+    //    }
+    //    statusText.gameObject.SetActive(true);  // 텍스트 표시
+    //}
+
+
 
     // 패널을 토글하는 함수
     private void TogglePanel()
@@ -66,13 +97,18 @@ public class ObjectPipe : MonoBehaviour
         {
             isPanelActive = !isPanelActive;  // 패널의 활성화 상태를 반전
             panel.SetActive(isPanelActive);  // 패널을 활성화 또는 비활성화
-
+            
             if (isPanelActive)
             {
                 // 패널이 활성화될 때 Canvas의 우선순위를 높임
                 if (panelCanvas != null)
                 {
                     panelCanvas.sortingOrder = 999;  // 우선순위를 최상위로 설정
+                    MouseCam mouseCam = FindObjectOfType<MouseCam>();
+                    if (mouseCam != null)
+                    {
+                        mouseCam.UnlockCursor();
+                    }
                 }
             }
             else
@@ -81,6 +117,11 @@ public class ObjectPipe : MonoBehaviour
                 if (panelCanvas != null)
                 {
                     panelCanvas.sortingOrder = originalSortingOrder;  // 원래 순서로 복원
+                    MouseCam mouseCam = FindObjectOfType<MouseCam>();
+                    if (mouseCam != null)
+                    {
+                        mouseCam.LockCursor();
+                    }
                 }
             }
 
