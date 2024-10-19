@@ -64,27 +64,28 @@ public class CheckChestOpen : MonoBehaviour
     }
 
     // 키 입력이 발생했을 때 호출되는 메서드, 상자를 열거나 닫음
-    public void OnPlay()
+   public void OnPlay()
+{
+    // 플레이어가 상자와 상호작용할 수 있는 거리에 있고 마우스가 상자 위에 있을 때만 작동
+    float distanceToPlayer = Vector3.Distance(playerTransform.position, transform.position);
+    if (distanceToPlayer <= interactionDistance && isMouseOverChest)
     {
-        // 플레이어가 상자와 상호작용할 수 있는 거리에 있고 마우스가 상자 위에 있을 때만 작동
-        float distanceToPlayer = Vector3.Distance(playerTransform.position, transform.position);
-        if (distanceToPlayer <= interactionDistance && isMouseOverChest)
+        // 아이템 ID가 "5", "6", "7" 중 하나인 경우 상자를 열거나 닫을 수 있음
+        var selectedItem = InventoryUIExmaple.Instance.GetSelectedItem();
+        if (selectedItem != null && (selectedItem.id == "7" || selectedItem.id == "6" || selectedItem.id == "5"))
         {
-            // 아이템 ID가 "7"인 경우 상자를 열거나 닫을 수 있음
-            var selectedItem = InventoryUIExmaple.Instance.GetSelectedItem();
-            if (selectedItem != null && selectedItem.id == "7")
-            {
-                UpdateStatusText();  // 상태 텍스트 업데이트
-                ToggleChest();  // 상자 열기 또는 닫기
-            }
-            else
-            {
-                // "7"번 아이템이 없을 경우
-                Debug.Log("아이템이 필요합니다.");
-                statusText.text = "아이템이 필요합니다. (ID = 7)";
-            }
+            UpdateStatusText();  // 상태 텍스트 업데이트
+            ToggleChest();  // 상자 열기 또는 닫기
+        }
+        else
+        {
+            // 해당하는 아이템이 없을 경우
+            Debug.Log("아이템이 필요합니다.");
+            statusText.text = "아이템이 필요합니다. (ID = 5, 6, 7 중 하나)";
         }
     }
+}
+
 
     // 상태 텍스트를 업데이트하는 메서드
     private void UpdateStatusText()

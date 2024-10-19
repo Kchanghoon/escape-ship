@@ -6,208 +6,224 @@ using UnityEngine;
 
 public class ItemController : Singleton<ItemController>
 {
+    // ì•„ì´í…œ ì´ë²¤íŠ¸ ì •ì˜ (ì•„ì´í…œì´ ì¶”ê°€ë˜ê±°ë‚˜ ì‚­ì œë  ë•Œ ì‚¬ìš©)
     public delegate void ItemEvent(ItemDataExample itemData);
-    public event ItemEvent OnAddItem;
-    public event ItemEvent OnRemoveItem;
+    public event ItemEvent OnAddItem;  // ì•„ì´í…œ ì¶”ê°€ ì‹œ ë°œìƒí•˜ëŠ” ì´ë²¤íŠ¸
+    public event ItemEvent OnRemoveItem;  // ì•„ì´í…œ ì‚­ì œ ì‹œ ë°œìƒí•˜ëŠ” ì´ë²¤íŠ¸
 
-    [SerializeField] List<ItemDataExample> allItemDatas;
-    public List<ItemDataExample> curItemDatas;
-    private bool canPickUp = false; // ¾ÆÀÌÅÛÀ» ¹ŞÀ» ¼ö ÀÖ´ÂÁö ¿©ºÎ¸¦ ÀúÀåÇÏ´Â º¯¼ö
-    private ItemDataExample nearbyItem; // ÇÃ·¹ÀÌ¾î°¡ °¡±îÀÌ ÀÖ´Â ¾ÆÀÌÅÛÀ» ÀúÀå
+    [SerializeField] List<ItemDataExample> allItemDatas;  // ëª¨ë“  ì•„ì´í…œ ë°ì´í„°ë¥¼ ì €ì¥í•˜ëŠ” ë¦¬ìŠ¤íŠ¸
+    public List<ItemDataExample> curItemDatas;  // í˜„ì¬ ë³´ìœ í•˜ê³  ìˆëŠ” ì•„ì´í…œ ë°ì´í„°ë¥¼ ì €ì¥í•˜ëŠ” ë¦¬ìŠ¤íŠ¸
+    private bool canPickUp = false;  // ì•„ì´í…œì„ íšë“í•  ìˆ˜ ìˆëŠ”ì§€ ì—¬ë¶€ë¥¼ ì €ì¥í•˜ëŠ” í”Œë˜ê·¸
+    private ItemDataExample nearbyItem;  // í”Œë ˆì´ì–´ê°€ ê°€ê¹Œì´ì— ìˆëŠ” ì•„ì´í…œ ì •ë³´
 
     private void Start()
     {
+        // PickUp ë° Drop í‚¤ ì´ë²¤íŠ¸ ì—°ê²°
         KeyManager.Instance.keyDic[KeyAction.PickUp] += OnPickUp;
         KeyManager.Instance.keyDic[KeyAction.Drop] += OnDrop;
-
     }
-    public string testAddId;
 
+    public string testAddId;  // í…ŒìŠ¤íŠ¸ìš© ì•„ì´í…œ ID
+
+    // ì•„ì´í…œì„ ê³ ìœ  IDë¡œ ì‚­ì œí•˜ëŠ” ë©”ì„œë“œ
     public void RemoveItem(string uniqueId)
     {
-        var item = curItemDatas.Find(x => x.uniqueId == uniqueId);
+        var item = curItemDatas.Find(x => x.uniqueId == uniqueId);  // ê³ ìœ  IDë¡œ ì•„ì´í…œ ì°¾ê¸°
         if (item != null)
         {
-            OnRemoveItem?.Invoke(item);
-            curItemDatas.Remove(item);
+            OnRemoveItem?.Invoke(item);  // ì•„ì´í…œ ì‚­ì œ ì´ë²¤íŠ¸ í˜¸ì¶œ
+            curItemDatas.Remove(item);  // í˜„ì¬ ì•„ì´í…œ ë¦¬ìŠ¤íŠ¸ì—ì„œ ì‚­ì œ
         }
     }
 
+    // ì•„ì´í…œì„ ì¼ë°˜ IDë¡œ ì‚­ì œí•˜ëŠ” ë©”ì„œë“œ
     public void RemoveItemById(string id)
     {
-        var item = curItemDatas.Find(x => x.id == id);
+        var item = curItemDatas.Find(x => x.id == id);  // IDë¡œ ì•„ì´í…œ ì°¾ê¸°
         if (item != null)
         {
-            OnRemoveItem?.Invoke(item);
-            curItemDatas.Remove(item);
+            OnRemoveItem?.Invoke(item);  // ì•„ì´í…œ ì‚­ì œ ì´ë²¤íŠ¸ í˜¸ì¶œ
+            curItemDatas.Remove(item);  // í˜„ì¬ ì•„ì´í…œ ë¦¬ìŠ¤íŠ¸ì—ì„œ ì‚­ì œ
         }
     }
 
-    //public ItemDataExample GetItemDBData(string id)
-    //{
-    //    return new ItemDataExample( allItemDatas.Find(x => x.id == id));
-    //}
-
+    // ì•„ì´í…œ ë°ì´í„°ë¥¼ ë°ì´í„°ë² ì´ìŠ¤ì—ì„œ ê°€ì ¸ì˜¤ëŠ” ë©”ì„œë“œ
     public ItemDataExample GetItemDBData(string id)
     {
-        var foundItem = allItemDatas.Find(x => x.id == id);
+        var foundItem = allItemDatas.Find(x => x.id == id);  // IDë¡œ ì•„ì´í…œ ë°ì´í„°ë² ì´ìŠ¤ì—ì„œ ì•„ì´í…œ ì°¾ê¸°
         if (foundItem == null)
         {
-            Debug.LogError($"ID {id}¿¡ ÇØ´çÇÏ´Â ¾ÆÀÌÅÛ µ¥ÀÌÅÍ¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù.");
+            Debug.LogError($"ID {id}ì— í•´ë‹¹í•˜ëŠ” ì•„ì´í…œ ë°ì´í„°ë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");  // ì•„ì´í…œì´ ì—†ì„ ë•Œ ì˜¤ë¥˜ ì¶œë ¥
             return null;
         }
-        return new ItemDataExample(foundItem); // ¿©±â¿¡¼­ º¹»çº»À» ¹İÈ¯
+        return new ItemDataExample(foundItem);  // ì•„ì´í…œ ë°ì´í„°ë¥¼ ë³µì‚¬í•˜ì—¬ ë°˜í™˜
     }
 
-
-
-    // ¾ÆÀÌÅÛ ÇÈ¾÷
+    // ì•„ì´í…œì„ íšë“í•˜ëŠ” ë©”ì„œë“œ
     public void OnPickUp()
     {
-        if (canPickUp && nearbyItem != null)
+        if (canPickUp && nearbyItem != null)  // íšë“ ê°€ëŠ¥í•œ ìƒíƒœì¸ì§€ í™•ì¸
         {
-            Debug.Log($"¾ÆÀÌÅÛ {nearbyItem.id}À»(¸¦) ÇÈ¾÷Çß½À´Ï´Ù OnPickUP.");
-            AddItem(nearbyItem.id); // ÀÎº¥Åä¸®¿¡ ¾ÆÀÌÅÛ Ãß°¡
-            nearbyItem = null; // ¾ÆÀÌÅÛÀ» ÇÈ¾÷ÇÑ ÈÄ ÃÊ±âÈ­
-            canPickUp = false; // ´Ù½Ã ¾ÆÀÌÅÛÀ» ÇÈ¾÷ÇÒ ¼ö ¾øµµ·Ï ÃÊ±âÈ­
-                               // UI ¾÷µ¥ÀÌÆ® È£Ãâ
+            Debug.Log($"ì•„ì´í…œ {nearbyItem.id}ì„(ë¥¼) íšë“í–ˆìŠµë‹ˆë‹¤ OnPickUP.");
+            AddItem(nearbyItem.id);  // ì¸ë²¤í† ë¦¬ì— ì•„ì´í…œ ì¶”ê°€
+            nearbyItem = null;  // ê°€ê¹Œìš´ ì•„ì´í…œ ì •ë³´ ì´ˆê¸°í™”
+            canPickUp = false;  // ì•„ì´í…œ íšë“ ê°€ëŠ¥ ìƒíƒœ ì´ˆê¸°í™”
+
+            // UI ì—…ë°ì´íŠ¸ í˜¸ì¶œ
             InventoryUIExmaple.Instance.UpdateInventoryUI();
         }
     }
 
+    // ì•„ì´í…œì„ ë²„ë¦¬ëŠ” ë©”ì„œë“œ
     public void OnDrop()
     {
-        // ÀÎº¥Åä¸®¿¡¼­ ¼±ÅÃµÈ ¾ÆÀÌÅÛ °¡Á®¿À±â
-        var selectedItem = InventoryUIExmaple.Instance.GetSelectedItem();
+        var selectedItem = InventoryUIExmaple.Instance.GetSelectedItem();  // ì„ íƒëœ ì•„ì´í…œ ê°€ì ¸ì˜¤ê¸°
 
         if (selectedItem != null)
         {
-            // ¼±ÅÃµÈ ¾ÆÀÌÅÛÀ» ÇÃ·¹ÀÌ¾îÀÇ ¾Õ¿¡ µå·Ó
-            DropItem(selectedItem.id);
+            DropItem(selectedItem.id);  // ì„ íƒëœ ì•„ì´í…œì„ ë“œë
         }
         else
         {
-            Debug.Log("¼±ÅÃµÈ ¾ÆÀÌÅÛÀÌ ¾ø½À´Ï´Ù.");
+            Debug.Log("ì„ íƒëœ ì•„ì´í…œì´ ì—†ìŠµë‹ˆë‹¤.");  // ì„ íƒëœ ì•„ì´í…œì´ ì—†ì„ ë•Œ ë©”ì‹œì§€ ì¶œë ¥
         }
     }
 
-
+    // ì•„ì´í…œì„ ë“œëí•˜ëŠ” ë©”ì„œë“œ
     public void DropItem(string id)
     {
-        // ÇÃ·¹ÀÌ¾î À§Ä¡ ¹× ¹æÇâ ¼³Á¤
+        // í”Œë ˆì´ì–´ì˜ ìœ„ì¹˜ì—ì„œ ì•„ì´í…œ ë“œë
         Transform playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
-        //Vector3 dropPosition = playerTransform.position + playerTransform.forward * 1.5f;  // ÇÃ·¹ÀÌ¾î ¾ÕÂÊ¿¡ µå·Ó
-        Vector3 dropPosition = playerTransform.position;  // ÇÃ·¹ÀÌ¾î À§Ä¡¿¡ µå·Ó
+        Vector3 dropPosition = playerTransform.position;  // í”Œë ˆì´ì–´ì˜ í˜„ì¬ ìœ„ì¹˜ì—ì„œ ë“œë
 
-        // µå·ÓÇÒ ¾ÆÀÌÅÛ ÇÁ¸®ÆÕÀ» °¡Á®¿Í »ı¼º
-        GameObject itemPrefab = GetItemPrefab(id);  // ÇÁ¸®ÆÕÀ» ¹Ì¸® µî·ÏÇØ³õ¾Ò´Ù°í °¡Á¤
+        // ë“œëí•  ì•„ì´í…œì˜ í”„ë¦¬íŒ¹ì„ ê°€ì ¸ì˜´
+        GameObject itemPrefab = GetItemPrefab(id);
         if (itemPrefab != null)
         {
-            GameObject droppedItem = Instantiate(itemPrefab, dropPosition, Quaternion.identity);
-            droppedItem.GetComponent<Item>().itemData = curItemDatas.Find(x => x.id == id);  // ¾ÆÀÌÅÛ µ¥ÀÌÅÍ ¼³Á¤
-            Debug.Log($"¾ÆÀÌÅÛ {id}ÀÌ(°¡) ¹ö·ÁÁ³½À´Ï´Ù.");
+            GameObject droppedItem = Instantiate(itemPrefab, dropPosition, Quaternion.identity);  // ì•„ì´í…œ ìƒì„±
+            droppedItem.GetComponent<Item>().itemData = curItemDatas.Find(x => x.id == id);  // ë“œëëœ ì•„ì´í…œì— ë°ì´í„° í• ë‹¹
+            Debug.Log($"ì•„ì´í…œ {id}ì„(ë¥¼) ë“œëí–ˆìŠµë‹ˆë‹¤.");
 
-            // ÀÎº¥Åä¸®¿¡¼­ ¾ÆÀÌÅÛ Á¦°Å
-            RemoveItemById(id);
-            InventoryUIExmaple.Instance.UpdateInventoryUI();  // ÀÎº¥Åä¸® °»½Å
+            RemoveItemById(id);  // ì¸ë²¤í† ë¦¬ì—ì„œ ì•„ì´í…œ ì œê±°
+            InventoryUIExmaple.Instance.UpdateInventoryUI();  // ì¸ë²¤í† ë¦¬ UI ì—…ë°ì´íŠ¸
         }
         else
         {
-            Debug.LogError("¾ÆÀÌÅÛ ÇÁ¸®ÆÕÀÌ ¼³Á¤µÇÁö ¾Ê¾Ò½À´Ï´Ù.");
+            Debug.LogError("ì•„ì´í…œ í”„ë¦¬íŒ¹ì„ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");  // ì•„ì´í…œ í”„ë¦¬íŒ¹ì´ ì—†ì„ ë•Œ ì˜¤ë¥˜ ì¶œë ¥
         }
-    
-}
+    }
 
-    // ¾ÆÀÌÅÛ ÇÁ¸®ÆÕÀ» Ã£´Â ¸Ş¼­µå (ÇÁ¸®ÆÕÀÌ ¸®¼Ò½º¿¡ ÀúÀåµÇ¾î ÀÖ´Ù°í °¡Á¤)
+    // ì•„ì´í…œ í”„ë¦¬íŒ¹ì„ ì°¾ëŠ” ë©”ì„œë“œ
     private GameObject GetItemPrefab(string id)
     {
-        // ResourceDB¿¡¼­ id¿¡ ÇØ´çÇÏ´Â ÇÁ¸®ÆÕÀ» Ã£´Â ·ÎÁ÷
+        // ResourceDBì—ì„œ ì•„ì´í…œì˜ ë¦¬ì†ŒìŠ¤ë¥¼ ê°€ì ¸ì˜´
         var itemResource = ResourceDB.Instance.GetItemResource(id);
         if (itemResource != null)
         {
-            return itemResource.object3D;  // 3D ¿ÀºêÁ§Æ®·Î µå·Ó
+            return itemResource.object3D;  // 3D ì˜¤ë¸Œì íŠ¸ ë°˜í™˜
         }
         return null;
     }
 
-    // ÇÃ·¹ÀÌ¾î°¡ ¾ÆÀÌÅÛ¿¡ °¡±î¿öÁö¸é È£ÃâµÇ´Â ¸Ş¼­µå
+    // í”Œë ˆì´ì–´ê°€ ì•„ì´í…œê³¼ ê°€ê¹Œì›Œì¡Œì„ ë•Œ í˜¸ì¶œë˜ëŠ” ë©”ì„œë“œ
     public void SetCanPickUp(ItemDataExample itemData)
     {
-        nearbyItem = itemData;
-        canPickUp = true; // ¾ÆÀÌÅÛÀ» ¹ŞÀ» ¼ö ÀÖ´Â »óÅÂ·Î ¼³Á¤
-        Debug.Log($"¾ÆÀÌÅÛ {nearbyItem.id}ÀÌ(°¡) ÇÈ¾÷ °¡´ÉÇÑ »óÅÂÀÔ´Ï´Ù.");
+        nearbyItem = itemData;  // ê°€ê¹Œìš´ ì•„ì´í…œ ì •ë³´ ì €ì¥
+        canPickUp = true;  // ì•„ì´í…œ íšë“ ê°€ëŠ¥ ìƒíƒœë¡œ ì „í™˜
+        Debug.Log($"ì•„ì´í…œ {nearbyItem.id}ì„(ë¥¼) íšë“í•  ìˆ˜ ìˆìŠµë‹ˆë‹¤.");
     }
 
-    // ÇÃ·¹ÀÌ¾î°¡ ¾ÆÀÌÅÛ¿¡¼­ ¸Ö¾îÁö¸é È£ÃâµÇ´Â ¸Ş¼­µå
+    // í”Œë ˆì´ì–´ê°€ ì•„ì´í…œì—ì„œ ë©€ì–´ì¡Œì„ ë•Œ í˜¸ì¶œë˜ëŠ” ë©”ì„œë“œ
     public void ClearCanPickUp()
     {
-        nearbyItem = null;
-        canPickUp = false; // ¾ÆÀÌÅÛÀ» ¹ŞÀ» ¼ö ¾ø´Â »óÅÂ·Î ¼³Á¤
+        nearbyItem = null;  // ê°€ê¹Œìš´ ì•„ì´í…œ ì •ë³´ ì´ˆê¸°í™”
+        canPickUp = false;  // ì•„ì´í…œ íšë“ ê°€ëŠ¥ ìƒíƒœ ì´ˆê¸°í™”
     }
-    // ¾ÆÀÌÅÛÀ» ¹ŞÀ» ¼ö ÀÖ´Â »óÅÂÀÎÁö È®ÀÎÇÏ´Â ¸Ş¼­µå
+
+    // ì•„ì´í…œì„ íšë“í•  ìˆ˜ ìˆëŠ”ì§€ ì—¬ë¶€ë¥¼ ë°˜í™˜í•˜ëŠ” ë©”ì„œë“œ
     public bool CanPickUp()
     {
         return canPickUp;
     }
 
-
+    // ì¸ë²¤í† ë¦¬ì— ì•„ì´í…œì„ ì¶”ê°€í•˜ëŠ” ë©”ì„œë“œ
     public void AddItem(string id)
     {
-        var existingItem = curItemDatas.Find(x => x.id == id);
+        var existingItem = curItemDatas.Find(x => x.id == id);  // ì´ë¯¸ ì¡´ì¬í•˜ëŠ” ì•„ì´í…œì¸ì§€ í™•ì¸
 
         if (existingItem != null)
         {
-            // ÀÌ¹Ì ÀÎº¥Åä¸®¿¡ ÀÖ´Â ¾ÆÀÌÅÛÀÏ °æ¿ì ¼ö·®¸¸ Áõ°¡
-            existingItem.quantity++;
-            Debug.Log($"¾ÆÀÌÅÛ {existingItem.id}ÀÇ ¼ö·®ÀÌ {existingItem.quantity}·Î Áõ°¡Çß½À´Ï´Ù.");
+            existingItem.quantity++;  // ì´ë¯¸ ì¡´ì¬í•˜ë©´ ìˆ˜ëŸ‰ ì¦ê°€
+            Debug.Log($"ì•„ì´í…œ {existingItem.id}ì˜ ìˆ˜ëŸ‰ì´ {existingItem.quantity}ë¡œ ì¦ê°€í–ˆìŠµë‹ˆë‹¤.");
         }
         else
         {
-            // »õ·Î¿î ¾ÆÀÌÅÛÀ» Ãß°¡
-            var itemDataExample = GetItemDBData(id);
-            if (itemDataExample == null) return;  // ¾ÆÀÌÅÛ µ¥ÀÌÅÍ°¡ ¾øÀ¸¸é Ãß°¡ÇÏÁö ¾ÊÀ½
-            itemDataExample.uniqueId = System.Guid.NewGuid().ToString();
-            itemDataExample.quantity = 1;  // »õ·Î Ãß°¡µÈ ¾ÆÀÌÅÛÀÇ ¼ö·®Àº 1·Î ¼³Á¤
-            curItemDatas.Add(itemDataExample);
+            var itemDataExample = GetItemDBData(id);  // ìƒˆë¡œìš´ ì•„ì´í…œ ì¶”ê°€
+            if (itemDataExample == null) return;  // ì•„ì´í…œ ë°ì´í„°ê°€ ì—†ì„ ê²½ìš° ë°˜í™˜
+            itemDataExample.uniqueId = System.Guid.NewGuid().ToString();  // ê³ ìœ  ID ë¶€ì—¬
+            itemDataExample.quantity = 1;  // ìˆ˜ëŸ‰ì„ 1ë¡œ ì„¤ì •
+            curItemDatas.Add(itemDataExample);  // ì¸ë²¤í† ë¦¬ì— ì¶”ê°€
 
-            OnAddItem?.Invoke(itemDataExample);  // ÀÎº¥Åä¸® UI °»½Å ÀÌº¥Æ®
-            Debug.Log($"¾ÆÀÌÅÛ {itemDataExample.id}ÀÌ(°¡) ÀÎº¥Åä¸®¿¡ Ãß°¡µÇ¾ú½À´Ï´Ù.");
+            OnAddItem?.Invoke(itemDataExample);  // ì•„ì´í…œ ì¶”ê°€ ì´ë²¤íŠ¸ í˜¸ì¶œ
+            Debug.Log($"ì•„ì´í…œ {itemDataExample.id}ì´(ê°€) ì¸ë²¤í† ë¦¬ì— ì¶”ê°€ë˜ì—ˆìŠµë‹ˆë‹¤.");
         }
 
-        // UI °»½Å (ÀÎº¥Åä¸® ½½·Ô °»½Å)
+        // ì¸ë²¤í† ë¦¬ UI ì—…ë°ì´íŠ¸
         InventoryUIExmaple.Instance.UpdateInventoryUI();
     }
 
-    // ¾ÆÀÌÅÛ ¼ö·® °¨¼Ò ¸Ş¼­µå
+    // ì•„ì´í…œì˜ ìˆ˜ëŸ‰ì„ ê°ì†Œì‹œí‚¤ëŠ” ë©”ì„œë“œ
     public void DecreaseItemQuantity(string id)
     {
-        var item = curItemDatas.Find(x => x.id == id);
+        var item = curItemDatas.Find(x => x.id == id);  // ì•„ì´í…œ ì°¾ê¸°
 
-        // ¼Ò¸ğ °¡´ÉÇÑ ¾ÆÀÌÅÛÀº id°¡ "1", "2", "3"ÀÎ °æ¿ì¿¡¸¸ ¼Ò¸ğ
+        // IDê°€ "1", "2", "3"ì¼ ë•Œë§Œ ê°ì†Œ ì²˜ë¦¬
         if (id != "1" && id != "2" && id != "3")
         {
-            Debug.Log($"¾ÆÀÌÅÛ {id}Àº(´Â) ¼Ò¸ğµÇÁö ¾Ê½À´Ï´Ù.");
+            Debug.Log($"ì•„ì´í…œ {id}ì€(ëŠ”) ìˆ˜ëŸ‰ ê°ì†Œ ëŒ€ìƒì´ ì•„ë‹™ë‹ˆë‹¤.");
             return;
         }
 
         if (item != null)
         {
-            item.quantity--;
+            item.quantity--;  // ìˆ˜ëŸ‰ ê°ì†Œ
 
             if (item.quantity <= 0)
             {
-                // ¼ö·®ÀÌ 0ÀÌ µÇ¸é ¾ÆÀÌÅÛÀ» ÀÎº¥Åä¸®¿¡¼­ Á¦°Å
-                RemoveItem(item.uniqueId);
+                RemoveItem(item.uniqueId);  // ìˆ˜ëŸ‰ì´ 0ì´ ë˜ë©´ ì•„ì´í…œ ì‚­ì œ
             }
             else
             {
-                // ¼ö·®ÀÌ ÁÙ¾úÀ» ¶§ UI ¾÷µ¥ÀÌÆ®
-                InventoryUIExmaple.Instance.UpdateInventoryUI();
+                InventoryUIExmaple.Instance.UpdateInventoryUI();  // UI ì—…ë°ì´íŠ¸
             }
 
-            Debug.Log($"¾ÆÀÌÅÛ {id}ÀÇ ¼ö·®ÀÌ °¨¼ÒÇß½À´Ï´Ù. ³²Àº ¼ö·®: {item.quantity}");
+            Debug.Log($"ì•„ì´í…œ {id}ì˜ ìˆ˜ëŸ‰ì´ ê°ì†Œí–ˆìŠµë‹ˆë‹¤. ë‚¨ì€ ìˆ˜ëŸ‰: {item.quantity}");
+        }
+    }public void DeleteItemQuantity(string id)
+    {
+        var item = curItemDatas.Find(x => x.id == id);  // ì•„ì´í…œ ì°¾ê¸°
+
+        // IDê°€ "1", "2", "3"ì¼ ë•Œë§Œ ê°ì†Œ ì²˜ë¦¬
+        if (id != "5" && id != "6" && id != "7")
+        {
+            Debug.Log($"ì•„ì´í…œ {id}ì€(ëŠ”) ìˆ˜ëŸ‰ ê°ì†Œ ëŒ€ìƒì´ ì•„ë‹™ë‹ˆë‹¤.");
+            return;
+        }
+
+        if (item != null)
+        {
+            item.quantity--;  // ìˆ˜ëŸ‰ ê°ì†Œ
+
+            if (item.quantity <= 0)
+            {
+                RemoveItem(item.uniqueId);  // ìˆ˜ëŸ‰ì´ 0ì´ ë˜ë©´ ì•„ì´í…œ ì‚­ì œ
+            }
+            else
+            {
+                InventoryUIExmaple.Instance.UpdateInventoryUI();  // UI ì—…ë°ì´íŠ¸
+            }
+
+            Debug.Log($"ì•„ì´í…œ {id}ì˜ ìˆ˜ëŸ‰ì´ ê°ì†Œí–ˆìŠµë‹ˆë‹¤. ë‚¨ì€ ìˆ˜ëŸ‰: {item.quantity}");
         }
     }
-
-
 }

@@ -7,28 +7,28 @@
 //    [SerializeField] InputField inputField;
 
 //    private string currentInput = "";
-//    private KeyPad activeKeyPad;  // ÇöÀç »óÈ£ÀÛ¿ë ÁßÀÎ KeyPad ÂüÁ¶
+//    private KeyPad activeKeyPad;  // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È£ï¿½Û¿ï¿½ ï¿½ï¿½ï¿½ï¿½ KeyPad ï¿½ï¿½ï¿½ï¿½
 
 //    private void Start()
 //    {
 //        inputField.text = "";
 //    }
 
-//    // ÇöÀç »óÈ£ÀÛ¿ë ÁßÀÎ KeyPad ¼³Á¤
+//    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È£ï¿½Û¿ï¿½ ï¿½ï¿½ï¿½ï¿½ KeyPad ï¿½ï¿½ï¿½ï¿½
 //    public void SetActiveKeyPad(KeyPad keyPad)
 //    {
 //        activeKeyPad = keyPad;
 //    }
 
 
-//    // ¼ýÀÚ ¹öÆ°À» ´­·¶À» ¶§ È£Ãâ
+//    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ È£ï¿½ï¿½
 //    public void OnNumberButtonClick(string number)
 //    {
 //        currentInput += number;
 //        inputField.text = currentInput;
 //    }
 
-//    // »èÁ¦ ¹öÆ°À» ´­·¶À» ¶§ È£Ãâ
+//    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ È£ï¿½ï¿½
 //    public void OnDeleteButtonClick()
 //    {
 //        if (currentInput.Length > 0)
@@ -38,27 +38,27 @@
 //        }
 //    }
 
-//    // ÀÔ·Â ¿Ï·á ¹öÆ°À» ´­·¶À» ¶§ È£Ãâ
+//    // ï¿½Ô·ï¿½ ï¿½Ï·ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ È£ï¿½ï¿½
 //    public void OnConfirmButtonClick()
 //    {
 //        if (activeKeyPad != null)
 //        {
-//            // ÇöÀç È°¼ºÈ­µÈ Å°ÆÐµå·Î ºñ¹Ð¹øÈ£ Àü¼Û
+//            // ï¿½ï¿½ï¿½ï¿½ È°ï¿½ï¿½È­ï¿½ï¿½ Å°ï¿½Ðµï¿½ï¿½ ï¿½ï¿½Ð¹ï¿½È£ ï¿½ï¿½ï¿½ï¿½
 //            activeKeyPad.CheckPassword(currentInput);
 //        }
 
-//        // ÀÔ·Â ÃÊ±âÈ­
+//        // ï¿½Ô·ï¿½ ï¿½Ê±ï¿½È­
 //        currentInput = "";
 //        inputField.text = "";
 //    }
 
-//    // Ãë¼Ò ¹öÆ°À» ´­·¶À» ¶§ È£Ãâ
+//    // ï¿½ï¿½ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ È£ï¿½ï¿½
 //    public void OnCancelButtonClick()
 //    {
 //        if (activeKeyPad != null)
 //        {
-//            // KeyPadÀÇ ÆÐ³ÎÀ» ºñÈ°¼ºÈ­ÇÏ°í ½Ã°£ º¹¿ø
-//            activeKeyPad.CloseKeyPad();  // activeKeyPad¿¡¼­ ÆÐ³ÎÀ» ´Ý´Â ÇÔ¼ö¸¦ È£Ãâ
+//            // KeyPadï¿½ï¿½ ï¿½Ð³ï¿½ï¿½ï¿½ ï¿½ï¿½È°ï¿½ï¿½È­ï¿½Ï°ï¿½ ï¿½Ã°ï¿½ ï¿½ï¿½ï¿½ï¿½
+//            activeKeyPad.CloseKeyPad();  // activeKeyPadï¿½ï¿½ï¿½ï¿½ ï¿½Ð³ï¿½ï¿½ï¿½ ï¿½Ý´ï¿½ ï¿½Ô¼ï¿½ï¿½ï¿½ È£ï¿½ï¿½
 //        }
 
 //        currentInput = "";
@@ -75,36 +75,46 @@ public class KeypadController : MonoBehaviour
     [SerializeField] InputField inputField;
 
     private string currentInput = "";
-    private KeyPad activeKeyPad;  // ÇöÀç »óÈ£ÀÛ¿ë ÁßÀÎ KeyPad ÂüÁ¶
-    private ElevaterKeyPad activeElevaterKeyPad;  // ÇöÀç »óÈ£ÀÛ¿ë ÁßÀÎ ElevaterKeyPad ÂüÁ¶
-
+    private KeyPad activeKeyPad;  // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È£ï¿½Û¿ï¿½ ï¿½ï¿½ï¿½ï¿½ KeyPad ï¿½ï¿½ï¿½ï¿½
+    private ElevaterKeyPad activeElevaterKeyPad;  // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È£ï¿½Û¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ElevaterKeyPad ï¿½ï¿½ï¿½ï¿½
+    private BoxKeyPad activeBoxKeyPad;  // ì¶”ê°€ëœ BoxKeyPad ì €ìž¥
+    
     private void Start()
     {
         inputField.text = "";
     }
 
-    // ÇöÀç »óÈ£ÀÛ¿ë ÁßÀÎ KeyPad ¼³Á¤
+   // ì¼ë°˜ KeyPadë¥¼ í™œì„±í™”í•˜ëŠ” ë©”ì„œë“œ
     public void SetActiveKeyPad(KeyPad keyPad)
     {
         activeKeyPad = keyPad;
-        activeElevaterKeyPad = null; // ´Ù¸¥ KeyPad°¡ È°¼ºÈ­µÉ °æ¿ì ElevaterKeyPad ºñÈ°¼ºÈ­
+        activeElevaterKeyPad = null;
+        activeBoxKeyPad = null;  // ë‹¤ë¥¸ KeyPad íƒ€ìž…ì„ ë¹„í™œì„±í™”
     }
 
-    // ÇöÀç »óÈ£ÀÛ¿ë ÁßÀÎ ElevaterKeyPad ¼³Á¤
+    // ElevaterKeyPadë¥¼ í™œì„±í™”í•˜ëŠ” ë©”ì„œë“œ
     public void SetActiveElevaterKeyPad(ElevaterKeyPad elevaterKeyPad)
     {
         activeElevaterKeyPad = elevaterKeyPad;
-        activeKeyPad = null; // ElevaterKeyPad°¡ È°¼ºÈ­µÉ °æ¿ì ÀÏ¹Ý KeyPad ºñÈ°¼ºÈ­
+        activeKeyPad = null;
+        activeBoxKeyPad = null;  // ë‹¤ë¥¸ KeyPad íƒ€ìž…ì„ ë¹„í™œì„±í™”
     }
 
-    // ¼ýÀÚ ¹öÆ°À» ´­·¶À» ¶§ È£Ãâ
+    // BoxKeyPadë¥¼ í™œì„±í™”í•˜ëŠ” ë©”ì„œë“œ
+    public void SetActiveBoxKeyPad(BoxKeyPad boxKeyPad)
+    {
+        activeBoxKeyPad = boxKeyPad;
+        activeKeyPad = null;
+        activeElevaterKeyPad = null;  // ë‹¤ë¥¸ KeyPad íƒ€ìž…ì„ ë¹„í™œì„±í™”
+    }
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ È£ï¿½ï¿½
     public void OnNumberButtonClick(string number)
     {
         currentInput += number;
         inputField.text = currentInput;
     }
 
-    // »èÁ¦ ¹öÆ°À» ´­·¶À» ¶§ È£Ãâ
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ È£ï¿½ï¿½
     public void OnDeleteButtonClick()
     {
         if (currentInput.Length > 0)
@@ -114,37 +124,44 @@ public class KeypadController : MonoBehaviour
         }
     }
 
-    // ÀÔ·Â ¿Ï·á ¹öÆ°À» ´­·¶À» ¶§ È£Ãâ
+    // ï¿½Ô·ï¿½ ï¿½Ï·ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ È£ï¿½ï¿½
     public void OnConfirmButtonClick()
     {
-        // KeyPad°¡ È°¼ºÈ­µÇ¾î ÀÖÀ¸¸é ±×ÂÊÀ¸·Î ºñ¹Ð¹øÈ£ Àü¼Û
+        // KeyPadï¿½ï¿½ È°ï¿½ï¿½È­ï¿½Ç¾ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ð¹ï¿½È£ ï¿½ï¿½ï¿½ï¿½
         if (activeKeyPad != null)
         {
             activeKeyPad.CheckPassword(currentInput);
         }
-        // ElevaterKeyPad°¡ È°¼ºÈ­µÇ¾î ÀÖÀ¸¸é ±×ÂÊÀ¸·Î ºñ¹Ð¹øÈ£ Àü¼Û
+        // ElevaterKeyPadï¿½ï¿½ È°ï¿½ï¿½È­ï¿½Ç¾ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ð¹ï¿½È£ ï¿½ï¿½ï¿½ï¿½
         else if (activeElevaterKeyPad != null)
         {
             activeElevaterKeyPad.CheckPassword(currentInput);
         }
+        else if (activeBoxKeyPad != null)
+        {
+            activeBoxKeyPad.CheckPassword(currentInput);
+        }
 
-        // ÀÔ·Â ÃÊ±âÈ­
+        // ï¿½Ô·ï¿½ ï¿½Ê±ï¿½È­
         currentInput = "";
         inputField.text = "";
     }
 
-    // Ãë¼Ò ¹öÆ°À» ´­·¶À» ¶§ È£Ãâ
+    // ï¿½ï¿½ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ È£ï¿½ï¿½
     public void OnCancelButtonClick()
     {
         if (activeKeyPad != null)
         {
-            activeKeyPad.CloseKeyPad(); // KeyPad¿¡¼­ ÆÐ³ÎÀ» ´Ý´Â ÇÔ¼ö¸¦ È£Ãâ
+            activeKeyPad.CloseKeyPad(); // KeyPadï¿½ï¿½ï¿½ï¿½ ï¿½Ð³ï¿½ï¿½ï¿½ ï¿½Ý´ï¿½ ï¿½Ô¼ï¿½ï¿½ï¿½ È£ï¿½ï¿½
         }
         else if (activeElevaterKeyPad != null)
         {
-            activeElevaterKeyPad.CloseKeyPad(); // ElevaterKeyPad¿¡¼­ ÆÐ³ÎÀ» ´Ý´Â ÇÔ¼ö¸¦ È£Ãâ
+            activeElevaterKeyPad.CloseKeyPad(); // ElevaterKeyPadï¿½ï¿½ï¿½ï¿½ ï¿½Ð³ï¿½ï¿½ï¿½ ï¿½Ý´ï¿½ ï¿½Ô¼ï¿½ï¿½ï¿½ È£ï¿½ï¿½
         }
-
+        else if (activeBoxKeyPad != null)
+        {
+            activeBoxKeyPad.CloseKeyPad(); 
+        }
         currentInput = "";
         inputField.text = "";
     }

@@ -3,33 +3,33 @@ using TMPro;
 
 public class PuzzleTrigger : MonoBehaviour
 {
-    public GameObject puzzlePanel;  // ÆÛÁñ ÆÐ³Î UI
-    public float interactDistance = 3f;  // »óÈ£ÀÛ¿ë °¡´ÉÇÑ °Å¸®
-    public TextMeshProUGUI interactText;  // »óÈ£ÀÛ¿ë ÅØ½ºÆ® (TextMeshPro »ç¿ë ½Ã)
-    private Transform playerTransform;  // ÇÃ·¹ÀÌ¾îÀÇ Transform
-    private bool isMouseOverObject = false;  // ¸¶¿ì½º°¡ ¿ÀºêÁ§Æ®¿¡ ´ê¾Ò´ÂÁö ¿©ºÎ
-    private bool isPuzzleCompleted = false;  // ÆÛÁñÀÌ ¿Ï·áµÇ¾ú´ÂÁö ¿©ºÎ
-    public DropSlot[] dropSlots;  // ÆÛÁñÀÇ ¸ðµç DropSlot
+    public GameObject puzzlePanel;  // ï¿½ï¿½ï¿½ï¿½ ï¿½Ð³ï¿½ UI
+    public float interactDistance = 3f;  // ï¿½ï¿½È£ï¿½Û¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½
+    public TextMeshProUGUI interactText;  // ï¿½ï¿½È£ï¿½Û¿ï¿½ ï¿½Ø½ï¿½Æ® (TextMeshPro ï¿½ï¿½ï¿½ ï¿½ï¿½)
+    private Transform playerTransform;  // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ Transform
+    private bool isMouseOverObject = false;  // ï¿½ï¿½ï¿½ì½ºï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½Ò´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    private bool isPuzzleCompleted = false;  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    public DropSlot[] dropSlots;  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ DropSlot
 
     void Start()
     {
-        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;  // ÇÃ·¹ÀÌ¾îÀÇ TransformÀ» °¡Á®¿È
+        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;  // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ Transformï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         KeyManager.Instance.keyDic[KeyAction.Play] += OpenPuzzlePanel;
     }
 
-    // ¸¶¿ì½º°¡ ¿ÀºêÁ§Æ®¿¡ ´ê¾ÒÀ» ¶§ È£Ãâ
+    // ï¿½ï¿½ï¿½ì½ºï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ È£ï¿½ï¿½
     private void OnMouseEnter()
     {
-        isMouseOverObject = true;  // ¸¶¿ì½º°¡ ¿ÀºêÁ§Æ®¿¡ ´êÀ½
-        HighlightObject(true);  // ¿ÀºêÁ§Æ® ÇÏÀÌ¶óÀÌÆ® È°¼ºÈ­ (¼±ÅÃÀû)
+        isMouseOverObject = true;  // ï¿½ï¿½ï¿½ì½ºï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        HighlightObject(true);  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½Ì¶ï¿½ï¿½ï¿½Æ® È°ï¿½ï¿½È­ (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
     }
 
-    // ¸¶¿ì½º°¡ ¿ÀºêÁ§Æ®¿¡¼­ ¹þ¾î³µÀ» ¶§ È£Ãâ
+    // ï¿½ï¿½ï¿½ì½ºï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½î³µï¿½ï¿½ ï¿½ï¿½ È£ï¿½ï¿½
     private void OnMouseExit()
     {
-        isMouseOverObject = false;  // ¸¶¿ì½º°¡ ¿ÀºêÁ§Æ®¿¡¼­ ¹þ¾î³²
-        interactText.gameObject.SetActive(false);  // ¸¶¿ì½º°¡ ¹þ¾î³ª¸é »óÈ£ÀÛ¿ë ÅØ½ºÆ® ºñÈ°¼ºÈ­
-        HighlightObject(false);  // ¿ÀºêÁ§Æ® ÇÏÀÌ¶óÀÌÆ® ºñÈ°¼ºÈ­ (¼±ÅÃÀû)
+        isMouseOverObject = false;  // ï¿½ï¿½ï¿½ì½ºï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½î³²
+        interactText.gameObject.SetActive(false);  // ï¿½ï¿½ï¿½ì½ºï¿½ï¿½ ï¿½ï¿½ï¿½î³ªï¿½ï¿½ ï¿½ï¿½È£ï¿½Û¿ï¿½ ï¿½Ø½ï¿½Æ® ï¿½ï¿½È°ï¿½ï¿½È­
+        HighlightObject(false);  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½Ì¶ï¿½ï¿½ï¿½Æ® ï¿½ï¿½È°ï¿½ï¿½È­ (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
     }
 
     void Update()
@@ -42,8 +42,8 @@ public class PuzzleTrigger : MonoBehaviour
             {
                 if (!isPuzzleCompleted)
                 {
-                    interactText.gameObject.SetActive(true);  // »óÈ£ÀÛ¿ë ÅØ½ºÆ® È°¼ºÈ­
-                    interactText.text = "EÅ°¸¦ ´­·¯ ÆÛÁñ ÆÐ³ÎÀ» ¿©¼¼¿ä";  // ÅØ½ºÆ® ¼³Á¤
+                    interactText.gameObject.SetActive(true);  // ï¿½ï¿½È£ï¿½Û¿ï¿½ ï¿½Ø½ï¿½Æ® È°ï¿½ï¿½È­
+                    interactText.text = "EÅ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ð³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½";  // ï¿½Ø½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
 
                     if (Input.GetKeyDown(KeyCode.E))
                     {
@@ -52,61 +52,61 @@ public class PuzzleTrigger : MonoBehaviour
                 }
                 else
                 {
-                    // ÀÌ¹Ì ÆÛÁñÀ» Ç®¾úÀ» °æ¿ì
-                    interactText.gameObject.SetActive(true);  // ÅØ½ºÆ® È°¼ºÈ­
-                    interactText.text = "ÀÌ¹Ì ÇØ°áÇÑ ÄûÁîÀÔ´Ï´Ù.";  // ÀÌ¹Ì ÇØ°áµÈ ÆÛÁñ ¸Þ½ÃÁö
+                    // ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ç®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+                    interactText.gameObject.SetActive(true);  // ï¿½Ø½ï¿½Æ® È°ï¿½ï¿½È­
+                    interactText.text = "ï¿½Ì¹ï¿½ ï¿½Ø°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ô´Ï´ï¿½.";  // ï¿½Ì¹ï¿½ ï¿½Ø°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Þ½ï¿½ï¿½ï¿½
                 }
             }
             else
             {
-                interactText.gameObject.SetActive(false);  // ÇÃ·¹ÀÌ¾î°¡ ¸Ö¾îÁö¸é ÅØ½ºÆ® ºñÈ°¼ºÈ­
+                interactText.gameObject.SetActive(false);  // ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½Ö¾ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ø½ï¿½Æ® ï¿½ï¿½È°ï¿½ï¿½È­
             }
         }
     }
 
-    // ÆÛÁñ ÆÐ³ÎÀ» ¿©´Â ÇÔ¼ö
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½Ð³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½
     void OpenPuzzlePanel()
     {
-        if (!isPuzzleCompleted)  // ÆÛÁñÀÌ ÀÌ¹Ì ¿Ï·áµÇÁö ¾Ê¾ÒÀ» °æ¿ì¿¡¸¸ ½ÇÇà
+        if (!isPuzzleCompleted)  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¹ï¿½ ï¿½Ï·ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾ï¿½ï¿½ï¿½ ï¿½ï¿½ì¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         {
-            puzzlePanel.SetActive(true);  // ÆÛÁñ ÆÐ³Î È°¼ºÈ­
-            Time.timeScale = 0f;  // °ÔÀÓ ÀÏ½ÃÁ¤Áö
-            interactText.gameObject.SetActive(false);  // »óÈ£ÀÛ¿ë ÅØ½ºÆ® ºñÈ°¼ºÈ­
+            puzzlePanel.SetActive(true);  // ï¿½ï¿½ï¿½ï¿½ ï¿½Ð³ï¿½ È°ï¿½ï¿½È­
+            Time.timeScale = 0f;  // ï¿½ï¿½ï¿½ï¿½ ï¿½Ï½ï¿½ï¿½ï¿½ï¿½ï¿½
+            interactText.gameObject.SetActive(false);  // ï¿½ï¿½È£ï¿½Û¿ï¿½ ï¿½Ø½ï¿½Æ® ï¿½ï¿½È°ï¿½ï¿½È­
         }
     }
 
-    // ÆÛÁñ ¿Ï·á ½Ã È£ÃâÇÒ ÇÔ¼ö
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½ ï¿½ï¿½ È£ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½
     public void CompletePuzzle()
     {
-        isPuzzleCompleted = true;  // ÆÛÁñÀÌ ¿Ï·áµÊ
-        puzzlePanel.SetActive(false);  // ÆÛÁñ ÆÐ³Î ºñÈ°¼ºÈ­
-        Time.timeScale = 1f;  // °ÔÀÓ Àç°³
-        Debug.Log("ÆÛÁñ ¿Ï·á!");
+        isPuzzleCompleted = true;  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½ï¿½
+        puzzlePanel.SetActive(false);  // ï¿½ï¿½ï¿½ï¿½ ï¿½Ð³ï¿½ ï¿½ï¿½È°ï¿½ï¿½È­
+        Time.timeScale = 1f;  // ï¿½ï¿½ï¿½ï¿½ ï¿½ç°³
+        Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½!");
     }
 
-    // ¸ðµç DropSlotÀÌ ¿Ã¹Ù¸£°Ô ¹èÄ¡µÇ¾ú´ÂÁö È®ÀÎÇÏ´Â ÇÔ¼ö
+    // ï¿½ï¿½ï¿½ DropSlotï¿½ï¿½ ï¿½Ã¹Ù¸ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½Ô¼ï¿½
     public void CheckAllSlots()
     {
         foreach (DropSlot slot in dropSlots)
         {
             if (!slot.IsCorrectPiecePlaced())
             {
-                return;  // ÇÏ³ª¶óµµ ¿Ã¹Ù¸£°Ô ¹èÄ¡µÇÁö ¾Ê¾Ò´Ù¸é ÇÔ¼ö Á¾·á
+                return;  // ï¿½Ï³ï¿½ï¿½ï¿½ ï¿½Ã¹Ù¸ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾Ò´Ù¸ï¿½ ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½
             }
         }
-        // ¸ðµç Á¶°¢ÀÌ ¿Ã¹Ù¸£°Ô ¹èÄ¡µÈ °æ¿ì ÆÛÁñ ¿Ï·á
+        // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã¹Ù¸ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½
         CompletePuzzle();
 
         ItemController.Instance.AddItem("2");
     }
 
-    // ¿ÀºêÁ§Æ® ÇÏÀÌ¶óÀÌÆ® ÇÔ¼ö (¼±ÅÃ »çÇ×)
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½Ì¶ï¿½ï¿½ï¿½Æ® ï¿½Ô¼ï¿½ (ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
     void HighlightObject(bool highlight)
     {
         var outline = GetComponent<Outline>();
         if (outline != null)
         {
-            outline.enabled = highlight;  // ¿ÀºêÁ§Æ® ÇÏÀÌ¶óÀÌÆ® È°¼ºÈ­/ºñÈ°¼ºÈ­
+            outline.enabled = highlight;  // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½Ì¶ï¿½ï¿½ï¿½Æ® È°ï¿½ï¿½È­/ï¿½ï¿½È°ï¿½ï¿½È­
         }
     }
 }

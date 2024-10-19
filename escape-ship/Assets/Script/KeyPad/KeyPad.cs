@@ -3,94 +3,96 @@ using UnityEngine;
 
 public class KeyPad : MonoBehaviour
 {
-    private bool isMouseOverItem = false;  // ¸¶¿ì½º°¡ ¿ÀºêÁ§Æ® À§¿¡ ÀÖ´ÂÁö È®ÀÎ
-    [SerializeField] TextMeshProUGUI pickUpText;
-    [SerializeField] GameObject keyPadPanel;
-    [SerializeField] Transform player;
-    [SerializeField] float interactDistance = 3f;  // »óÈ£ÀÛ¿ë °¡´ÉÇÑ °Å¸®
-    [SerializeField] Canvas keyPadCanvas;
-    [SerializeField] string correctPassword;  // ¿Ã¹Ù¸¥ ºñ¹Ğ¹øÈ£
-    [SerializeField] ZDoorMotion doorMotion;  // ¹® µ¿ÀÛ ½ºÅ©¸³Æ®
-    [SerializeField] AudioSource doorSound;  // ¹® ¿­¸² »ç¿îµå
-    [SerializeField] KeypadController keyPadController;  // KeyPadController ÂüÁ¶
+    private bool isMouseOverItem = false;  // ë§ˆìš°ìŠ¤ê°€ ì˜¤ë¸Œì íŠ¸ ìœ„ì— ìˆëŠ”ì§€ ì—¬ë¶€ë¥¼ ì €ì¥
+    [SerializeField] TextMeshProUGUI pickUpText;  // ìƒí˜¸ì‘ìš© ì•ˆë‚´ í…ìŠ¤íŠ¸
+    [SerializeField] GameObject keyPadPanel;  // í‚¤íŒ¨ë“œ UI íŒ¨ë„
+    [SerializeField] Transform player;  // í”Œë ˆì´ì–´ì˜ Transform
+    [SerializeField] float interactDistance = 3f;  // ìƒí˜¸ì‘ìš© ê°€ëŠ¥ ê±°ë¦¬
+    [SerializeField] Canvas keyPadCanvas;  // í‚¤íŒ¨ë“œ UIê°€ ìˆëŠ” ìº”ë²„ìŠ¤
+    [SerializeField] string correctPassword;  // ì˜¬ë°”ë¥¸ ë¹„ë°€ë²ˆí˜¸
+    [SerializeField] ZDoorMotion doorMotion;  // ë¬¸ì„ ì œì–´í•˜ëŠ” ìŠ¤í¬ë¦½íŠ¸
+    [SerializeField] AudioSource doorSound;  // ë¬¸ì´ ì—´ë¦´ ë•Œ ì¬ìƒí•  ì†Œë¦¬
+    [SerializeField] KeypadController keyPadController;  // í‚¤íŒ¨ë“œ ì»¨íŠ¸ë¡¤ëŸ¬
 
-    private int originalSortingOrder;
+    private int originalSortingOrder;  // ìº”ë²„ìŠ¤ì˜ ì›ë˜ ì •ë ¬ ìˆœì„œ
 
     private void Start()
     {
-        pickUpText.gameObject.SetActive(false);
-        keyPadPanel.SetActive(false);
-        originalSortingOrder = keyPadCanvas.sortingOrder;
-        KeyManager.Instance.keyDic[KeyAction.Play] += OnPlay;
+        pickUpText.gameObject.SetActive(false);  // ì²˜ìŒì— ìƒí˜¸ì‘ìš© ì•ˆë‚´ í…ìŠ¤íŠ¸ ë¹„í™œì„±í™”
+        keyPadPanel.SetActive(false);  // í‚¤íŒ¨ë“œ íŒ¨ë„ ë¹„í™œì„±í™”
+        originalSortingOrder = keyPadCanvas.sortingOrder;  // ìº”ë²„ìŠ¤ì˜ ì›ë˜ ì •ë ¬ ìˆœì„œë¥¼ ì €ì¥
+        KeyManager.Instance.keyDic[KeyAction.Play] += OnPlay;  // KeyManagerì—ì„œ Play í‚¤ ì´ë²¤íŠ¸ ë“±ë¡
 
         if (doorSound == null)
         {
-            Debug.LogWarning("AudioSource°¡ ÇÒ´çµÇÁö ¾Ê¾Ò½À´Ï´Ù. »ç¿îµå°¡ Àç»ıµÇÁö ¾Ê½À´Ï´Ù.");
+            Debug.LogWarning("AudioSourceê°€ í• ë‹¹ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤. ì†Œë¦¬ê°€ ì¬ìƒë˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
         }
     }
 
     private void Update()
     {
-        // ÇÃ·¹ÀÌ¾î¿Í Å°ÆĞµå ¿ÀºêÁ§Æ® »çÀÌÀÇ °Å¸® °è»ê
+        // í”Œë ˆì´ì–´ì™€ í‚¤íŒ¨ë“œ ì˜¤ë¸Œì íŠ¸ ì‚¬ì´ì˜ ê±°ë¦¬ë¥¼ ê³„ì‚°
         float distanceToPlayer = Vector3.Distance(player.position, transform.position);
 
-        // ¸¶¿ì½º°¡ ¿ÀºêÁ§Æ® À§¿¡ ÀÖ°í, »óÈ£ÀÛ¿ë °¡´ÉÇÑ °Å¸® ÀÌ³»ÀÎÁö È®ÀÎ
+        // ë§ˆìš°ìŠ¤ê°€ ì˜¤ë¸Œì íŠ¸ ìœ„ì— ìˆê³  ìƒí˜¸ì‘ìš© ê°€ëŠ¥í•œ ê±°ë¦¬ ë‚´ì— ìˆìœ¼ë©´ ìƒí˜¸ì‘ìš© ì•ˆë‚´ í…ìŠ¤íŠ¸ í‘œì‹œ
         if (isMouseOverItem && distanceToPlayer <= interactDistance)
         {
-            ShowPickUpText();  // ÅØ½ºÆ® È°¼ºÈ­ ¹× ¸Ş½ÃÁö Ç¥½Ã
+            ShowPickUpText();  // ìƒí˜¸ì‘ìš© ì•ˆë‚´ í…ìŠ¤íŠ¸ í™œì„±í™”
         }
         else
         {
-            HidePickUpText();  // ÅØ½ºÆ® ºñÈ°¼ºÈ­
+            HidePickUpText();  // ìƒí˜¸ì‘ìš© ì•ˆë‚´ í…ìŠ¤íŠ¸ ë¹„í™œì„±í™”
         }
     }
 
-    // ÅØ½ºÆ® È°¼ºÈ­
+    // ìƒí˜¸ì‘ìš© ì•ˆë‚´ í…ìŠ¤íŠ¸ë¥¼ í™œì„±í™”í•˜ëŠ” ë©”ì„œë“œ
     private void ShowPickUpText()
     {
-        pickUpText.gameObject.SetActive(true);
-        pickUpText.text = "EÅ°¸¦ ´­·¯ ºñ¹Ğ¹øÈ£ ÆĞµå¸¦ ¿©¼¼¿ä";
+        pickUpText.gameObject.SetActive(true);  // í…ìŠ¤íŠ¸ í™œì„±í™”
+        pickUpText.text = "Eí‚¤ë¥¼ ëˆŒëŸ¬ ë¹„ë°€ë²ˆí˜¸ ì…ë ¥ì°½ì„ ì—¬ì„¸ìš”";  // ì•ˆë‚´ ë©”ì‹œì§€ ì„¤ì •
     }
 
-    // ÅØ½ºÆ® ºñÈ°¼ºÈ­
+    // ìƒí˜¸ì‘ìš© ì•ˆë‚´ í…ìŠ¤íŠ¸ë¥¼ ë¹„í™œì„±í™”í•˜ëŠ” ë©”ì„œë“œ
     private void HidePickUpText()
     {
-        pickUpText.gameObject.SetActive(false);
+        pickUpText.gameObject.SetActive(false);  // í…ìŠ¤íŠ¸ ë¹„í™œì„±í™”
     }
 
+    // ë§ˆìš°ìŠ¤ê°€ ì˜¤ë¸Œì íŠ¸ ìœ„ì— ìˆì„ ë•Œ í˜¸ì¶œë˜ëŠ” ë©”ì„œë“œ
     private void OnMouseEnter()
     {
-        isMouseOverItem = true;  // ¸¶¿ì½º°¡ ¿ÀºêÁ§Æ® À§¿¡ ÀÖÀ» ¶§
+        isMouseOverItem = true;  // ë§ˆìš°ìŠ¤ê°€ ì˜¤ë¸Œì íŠ¸ ìœ„ì— ìˆìŒ
     }
 
+    // ë§ˆìš°ìŠ¤ê°€ ì˜¤ë¸Œì íŠ¸ì—ì„œ ë²—ì–´ë‚  ë•Œ í˜¸ì¶œë˜ëŠ” ë©”ì„œë“œ
     private void OnMouseExit()
     {
-        isMouseOverItem = false;  // ¸¶¿ì½º°¡ ¿ÀºêÁ§Æ® À§¿¡¼­ ¹ş¾î³¯ ¶§
+        isMouseOverItem = false;  // ë§ˆìš°ìŠ¤ê°€ ì˜¤ë¸Œì íŠ¸ ìœ„ì— ì—†ìŒ
     }
 
-    // ÇÃ·¹ÀÌ¾î°¡ EÅ°¸¦ ´­·¶À» ¶§ È£ÃâµÇ´Â ÇÔ¼ö
+    // í”Œë ˆì´ì–´ê°€ Eí‚¤ë¥¼ ëˆŒë €ì„ ë•Œ í˜¸ì¶œë˜ëŠ” ë©”ì„œë“œ
     public void OnPlay()
     {
         float distanceToPlayer = Vector3.Distance(player.position, transform.position);
 
-        // ¸¶¿ì½º°¡ ¿ÀºêÁ§Æ® À§¿¡ ÀÖ°í, »óÈ£ÀÛ¿ë °¡´ÉÇÑ °Å¸® ÀÌ³»ÀÏ ¶§¸¸ ÆĞ³Î ¿­±â
+        // ë§ˆìš°ìŠ¤ê°€ ì˜¤ë¸Œì íŠ¸ ìœ„ì— ìˆê³  ìƒí˜¸ì‘ìš© ê°€ëŠ¥í•œ ê±°ë¦¬ ë‚´ì— ìˆìœ¼ë©´ í‚¤íŒ¨ë“œ íŒ¨ë„ ì—´ê¸°
         if (isMouseOverItem && distanceToPlayer <= interactDistance)
         {
             OpenKeyPadPanel();
         }
     }
 
-    // Å°ÆĞµå ÆĞ³ÎÀ» ¿©´Â ÇÔ¼ö
+    // í‚¤íŒ¨ë“œ íŒ¨ë„ì„ ì—¬ëŠ” ë©”ì„œë“œ
     private void OpenKeyPadPanel()
     {
-        keyPadPanel.SetActive(true);
-        keyPadCanvas.sortingOrder = 999;  // ÆĞ³ÎÀÌ ÃÖ»óÀ§·Î º¸ÀÌµµ·Ï ¼³Á¤
-        Time.timeScale = 0;  // °ÔÀÓ ÀÏ½ÃÁ¤Áö
+        keyPadPanel.SetActive(true);  // í‚¤íŒ¨ë“œ UI íŒ¨ë„ í™œì„±í™”
+        keyPadCanvas.sortingOrder = 999;  // ìº”ë²„ìŠ¤ì˜ ì •ë ¬ ìˆœì„œë¥¼ ìµœìƒìœ„ë¡œ ì„¤ì •
+        Time.timeScale = 0;  // ì‹œê°„ ì •ì§€ (ê²Œì„ ì¼ì‹œì •ì§€)
 
-        // KeyPadController¿¡ ÇöÀç Å°ÆĞµå ¼³Á¤
+        // KeyPadControllerì— í˜„ì¬ í‚¤íŒ¨ë“œë¥¼ ì„¤ì •
         keyPadController.SetActiveKeyPad(this);
 
-        // Ä¿¼­ Àá±İ ÇØÁ¦
+        // ë§ˆìš°ìŠ¤ ì»¤ì„œ ì ê¸ˆ í•´ì œ
         MouseCam mouseCam = FindObjectOfType<MouseCam>();
         if (mouseCam != null)
         {
@@ -98,34 +100,35 @@ public class KeyPad : MonoBehaviour
         }
     }
 
-    // ÀÔ·ÂÇÑ ºñ¹Ğ¹øÈ£ È®ÀÎ
+    // ì…ë ¥ëœ ë¹„ë°€ë²ˆí˜¸ë¥¼ í™•ì¸í•˜ëŠ” ë©”ì„œë“œ
     public void CheckPassword(string inputPassword)
     {
         if (inputPassword == correctPassword)
         {
-            Debug.Log("ºñ¹Ğ¹øÈ£°¡ ¸Â½À´Ï´Ù. ¹®À» ¿±´Ï´Ù.");
-
+            Debug.Log("ë¹„ë°€ë²ˆí˜¸ê°€ ë§ìŠµë‹ˆë‹¤. ë¬¸ì´ ì—´ë¦½ë‹ˆë‹¤.");
+            
             if (doorSound != null)
             {
-                doorSound.Play();
+                doorSound.Play();  // ë¬¸ ì—´ë¦¼ ì†Œë¦¬ ì¬ìƒ
             }
 
-            doorMotion.OpenDoor();  // ¹® ¿­±â
-            CloseKeyPad();  // Å°ÆĞµå ´İ±â
+            doorMotion.OpenDoor();  // ë¬¸ ì—´ê¸°
+            CloseKeyPad();  // í‚¤íŒ¨ë“œ íŒ¨ë„ ë‹«ê¸°
         }
         else
         {
-            Debug.Log("ºñ¹Ğ¹øÈ£°¡ Æ²·È½À´Ï´Ù.");
+            Debug.Log("ë¹„ë°€ë²ˆí˜¸ê°€ í‹€ë ¸ìŠµë‹ˆë‹¤.");
         }
     }
 
-    // Å°ÆĞµå ÆĞ³ÎÀ» ´İ´Â ÇÔ¼ö
+    // í‚¤íŒ¨ë“œ íŒ¨ë„ì„ ë‹«ëŠ” ë©”ì„œë“œ
     public void CloseKeyPad()
     {
-        keyPadPanel.SetActive(false);
-        keyPadCanvas.sortingOrder = originalSortingOrder;
-        Time.timeScale = 1;  // °ÔÀÓ Àç°³
+        keyPadPanel.SetActive(false);  // í‚¤íŒ¨ë“œ íŒ¨ë„ ë¹„í™œì„±í™”
+        keyPadCanvas.sortingOrder = originalSortingOrder;  // ìº”ë²„ìŠ¤ ì •ë ¬ ìˆœì„œë¥¼ ì›ë˜ëŒ€ë¡œ ë³µì›
+        Time.timeScale = 1;  // ì‹œê°„ ì¬ê°œ (ê²Œì„ ì¼ì‹œì •ì§€ í•´ì œ)
 
+        // ë§ˆìš°ìŠ¤ ì»¤ì„œ ì ê¸ˆ
         MouseCam mouseCam = FindObjectOfType<MouseCam>();
         if (mouseCam != null)
         {
