@@ -1,136 +1,138 @@
 using UnityEngine;
-using TMPro;  // TextMeshPro ³×ÀÓ½ºÆäÀÌ½º Ãß°¡
-using DG.Tweening;
+using TMPro;  // TextMeshPro ë¼ì´ë¸ŒëŸ¬ë¦¬ ì¶”ê°€
+using DG.Tweening;  // DoTween ë¼ì´ë¸ŒëŸ¬ë¦¬ ì¶”ê°€
 
 public class DoorController : MonoBehaviour
 {
-    public Transform doorLeft;
-    public Transform doorRight;
-    public Transform player;  // ÇÃ·¹ÀÌ¾îÀÇ TransformÀ» Ãß°¡ÇÏ¿© °Å¸® °è»ê
+    public Transform doorLeft;  // ì™¼ìª½ ë¬¸ Transform
+    public Transform doorRight;  // ì˜¤ë¥¸ìª½ ë¬¸ Transform
+    public Transform player;  // í”Œë ˆì´ì–´ì˜ Transform, ê±°ë¦¬ ê³„ì‚°ìš©
 
-    public float leftStartPosZ;
-    public float rightStartPosZ;
-    public float endPosZ = 3f;  // ¹®ÀÌ ¿­¸± ¶§ ÀÌµ¿ÇÒ °Å¸®
-    public float duration = 1f;  // ¹®ÀÌ ¿­¸®´Â µ¥ °É¸®´Â ½Ã°£
-    public float interactionDistance = 5f;  // ÇÃ·¹ÀÌ¾î¿Í ¹® »çÀÌÀÇ »óÈ£ÀÛ¿ë °Å¸®
-    public Ease motionEase = Ease.OutQuad;
+    public float leftStartPosZ;  // ì™¼ìª½ ë¬¸ì˜ ì‹œì‘ Z ì¢Œí‘œ
+    public float rightStartPosZ;  // ì˜¤ë¥¸ìª½ ë¬¸ì˜ ì‹œì‘ Z ì¢Œí‘œ
+    public float endPosZ = 3f;  // ë¬¸ì´ ì—´ë ¸ì„ ë•Œì˜ ì´ë™ ê±°ë¦¬
+    public float duration = 1f;  // ë¬¸ì´ ì—´ë¦¬ê³  ë‹«íˆëŠ” ì• ë‹ˆë©”ì´ì…˜ ì§€ì† ì‹œê°„
+    public float interactionDistance = 5f;  // í”Œë ˆì´ì–´ê°€ ë¬¸ê³¼ ìƒí˜¸ì‘ìš©í•  ìˆ˜ ìˆëŠ” ê±°ë¦¬
+    public Ease motionEase = Ease.OutQuad;  // DoTweenì˜ ì• ë‹ˆë©”ì´ì…˜ ì´ì§• ì„¤ì •
 
-    public TextMeshProUGUI statusText;  // »óÅÂ¸¦ Ç¥½ÃÇÒ TMP ÅØ½ºÆ®
-    private bool isDoorOpen = false;  // ¹®ÀÌ ¿­·Á ÀÖ´ÂÁö ¿©ºÎ¸¦ ÀúÀåÇÏ´Â º¯¼ö
-    private bool isAnimating = false;  // ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ½ÇÇà ÁßÀÎÁö È®ÀÎÇÏ´Â ÇÃ·¡±×
-    private bool isMouseOverDoor = false;  // ¸¶¿ì½º°¡ ¹® À§¿¡ ÀÖ´ÂÁö ¿©ºÎ
+    public TextMeshProUGUI statusText;  // ë¬¸ ìƒíƒœë¥¼ í‘œì‹œí•  TextMeshPro í…ìŠ¤íŠ¸
+    private bool isDoorOpen = false;  // ë¬¸ì´ ì—´ë ¤ ìˆëŠ”ì§€ ì—¬ë¶€ë¥¼ ì €ì¥
+    private bool isAnimating = false;  // í˜„ì¬ ì• ë‹ˆë©”ì´ì…˜ì´ ì§„í–‰ ì¤‘ì¸ì§€ ì—¬ë¶€ë¥¼ ì €ì¥
+    private bool isMouseOverDoor = false;  // ë§ˆìš°ìŠ¤ê°€ ë¬¸ ìœ„ì— ìˆëŠ”ì§€ ì—¬ë¶€ë¥¼ ì €ì¥
 
     void Start()
     {
-        // ½ÃÀÛ À§Ä¡ ÀúÀå
+        // ì‹œì‘ ì‹œ ë¬¸ë“¤ì˜ Z ì¢Œí‘œë¥¼ ì €ì¥
         leftStartPosZ = doorLeft.localPosition.z;
         rightStartPosZ = doorRight.localPosition.z;
 
-        // ½ÃÀÛ ½Ã ÅØ½ºÆ® ¼û±â±â
-        statusText.gameObject.SetActive(false);  // TMP ÅØ½ºÆ® ¼û±è
+        // ìƒíƒœ í…ìŠ¤íŠ¸ ë¹„í™œì„±í™”
+        statusText.gameObject.SetActive(false);  
 
-        // KeyManager¿¡¼­ Play ¾×¼ÇÀ» µî·Ï
+        // KeyManagerì—ì„œ Play í‚¤ì— ëŒ€í•œ ì´ë²¤íŠ¸ ì¶”ê°€
         KeyManager.Instance.keyDic[KeyAction.Play] += OnPlay;
     }
 
     void Update()
     {
-        // ÇÃ·¹ÀÌ¾î¿Í ¹®ÀÇ °Å¸®°¡ »óÈ£ÀÛ¿ë °Å¸® ³»¿¡ ÀÖ´ÂÁö °è»ê
+        // í”Œë ˆì´ì–´ì™€ ë¬¸ ì‚¬ì´ì˜ ê±°ë¦¬ë¥¼ ê³„ì‚°
         float distanceToPlayer = Vector3.Distance(player.position, transform.position);
 
-        // ÇÃ·¹ÀÌ¾î°¡ »óÈ£ÀÛ¿ë °Å¸® ¾È¿¡ ÀÖ°í, ¸¶¿ì½º°¡ ¹® À§¿¡ ÀÖÀ» ¶§¸¸ »óÅÂ ¹®±¸¸¦ Ç¥½Ã
+        // í”Œë ˆì´ì–´ê°€ ë¬¸ê³¼ ìƒí˜¸ì‘ìš©í•  ìˆ˜ ìˆëŠ” ê±°ë¦¬ ì•ˆì— ìˆê³ , ë§ˆìš°ìŠ¤ê°€ ë¬¸ ìœ„ì— ìˆì„ ë•Œ í…ìŠ¤íŠ¸ í‘œì‹œ
         if (distanceToPlayer <= interactionDistance && isMouseOverDoor)
         {
-            UpdateStatusText();
+            UpdateStatusText();  // ìƒíƒœ í…ìŠ¤íŠ¸ ì—…ë°ì´íŠ¸
         }
         else
         {
-            statusText.gameObject.SetActive(false);  // ¹®±¸ ¼û±â±â
+            statusText.gameObject.SetActive(false);  // í…ìŠ¤íŠ¸ ìˆ¨ê¸°ê¸°
         }
     }
 
-    // KeyManager¿¡¼­ Play ¾×¼ÇÀÌ È£ÃâµÉ ¶§ »óÀÚ ¿­±â/´İ±â Ã³¸®
+    // Play í‚¤ë¥¼ ëˆŒë €ì„ ë•Œ ë¬¸ì„ ì—´ê±°ë‚˜ ë‹«ëŠ” ë™ì‘ì„ ì²˜ë¦¬í•˜ëŠ” ë©”ì„œë“œ
     public void OnPlay()
     {
+        // í”Œë ˆì´ì–´ì™€ ë¬¸ì˜ ê±°ë¦¬ë¥¼ ê³„ì‚°
         float distanceToPlayer = Vector3.Distance(player.position, transform.position);
 
+        // ìƒí˜¸ì‘ìš©í•  ìˆ˜ ìˆëŠ” ê±°ë¦¬ì— ìˆê³ , ë¬¸ì— ë§ˆìš°ìŠ¤ê°€ ì˜¬ë ¤ì ¸ ìˆìœ¼ë©° ì• ë‹ˆë©”ì´ì…˜ì´ ì§„í–‰ ì¤‘ì´ ì•„ë‹ ë•Œë§Œ ë™ì‘
         if (distanceToPlayer <= interactionDistance && isMouseOverDoor && !isAnimating)
         {
-            // ³ë¶û Ä«µåÅ°(ID = 2)¸¦ µé°í ÀÖ¾î¾ß¸¸ ¹®À» ¿­ ¼ö ÀÖÀ½
+            // ì¸ë²¤í† ë¦¬ì—ì„œ ì„ íƒëœ ì•„ì´í…œì„ í™•ì¸ (ID 2ì˜ ì•„ì´í…œ í•„ìš”)
             var selectedItem = InventoryUIExmaple.Instance.GetSelectedItem();
             if (selectedItem != null && (selectedItem.id == "5" || selectedItem.id == "6" || selectedItem.id == "7" || selectedItem.id == "8"))
             {
                 if (isDoorOpen)
                 {
-                    CloseDoor();  // ¹®ÀÌ ¿­·Á ÀÖÀ¸¸é ´İÀ½
+                    CloseDoor();  // ë¬¸ì´ ì—´ë ¤ ìˆìœ¼ë©´ ë‹«ê¸°
                 }
                 else
                 {
-                    OpenDoor();  // ¹®ÀÌ ´İÇô ÀÖÀ¸¸é ¿°
+                    OpenDoor();  // ë¬¸ì´ ë‹«í˜€ ìˆìœ¼ë©´ ì—´ê¸°
                 }
-                statusText.text = "EÅ°¸¦ ´­·¯ ¹®À» ¿©´İ¾ÆÁÖ¼¼¿ä.";  // ¹® »óÅÂ¿¡ µû¸¥ ÅØ½ºÆ® °»½Å
+                statusText.text = "Eí‚¤ë¥¼ ëˆŒëŸ¬ ë¬¸ì„ ë‹«ì•„ì£¼ì„¸ìš”.";  // ìƒíƒœ í…ìŠ¤íŠ¸ ì—…ë°ì´íŠ¸
             }
             else
             {
-                statusText.text = "º¸¾È Ä«µå°¡ ÇÊ¿äÇÕ´Ï´Ù.";
+                statusText.text = "ì—´ì‡ ê°€ í•„ìš”í•©ë‹ˆë‹¤.";  // ì—´ì‡ ê°€ ì—†ì„ ë•Œì˜ í…ìŠ¤íŠ¸
             }
         }
     }
 
-    // »óÅÂ ÅØ½ºÆ®¸¦ ¾÷µ¥ÀÌÆ®ÇÏ´Â ÇÔ¼ö
+    // ë¬¸ ìƒíƒœì— ë”°ë¼ í…ìŠ¤íŠ¸ë¥¼ ì—…ë°ì´íŠ¸í•˜ëŠ” ë©”ì„œë“œ
     private void UpdateStatusText()
     {
         var selectedItem = InventoryUIExmaple.Instance.GetSelectedItem();
         if (selectedItem == null || (selectedItem.id != "5" && selectedItem.id != "6" && selectedItem.id != "7" && selectedItem.id != "8"))
         {
-            statusText.text = "ÃÖ¼Ò 3±Ş º¸¾È Ä«µå°¡ ÇÊ¿äÇÕ´Ï´Ù.";  // º¸¾È Ä«µå°¡ ¾øÀ» ¶§
+            statusText.text = "íŠ¹ì • ì—´ì‡ ê°€ í•„ìš”í•©ë‹ˆë‹¤.";  // ì—´ì‡ ê°€ ì—†ì„ ê²½ìš°
         }
         else
         {
-            statusText.text = "EÅ°¸¦ ´­·¯ ¹®À» ¿©´İ¾ÆÁÖ¼¼¿ä.";  // º¸¾È Ä«µå°¡ ÀÖÀ» ¶§
+            statusText.text = "Eí‚¤ë¥¼ ëˆŒëŸ¬ ë¬¸ì„ ì—¬ì„¸ìš”.";  // ì—´ì‡ ê°€ ìˆì„ ê²½ìš°
         }
-        statusText.gameObject.SetActive(true);  // ÅØ½ºÆ® Ç¥½Ã
+        statusText.gameObject.SetActive(true);  // ìƒíƒœ í…ìŠ¤íŠ¸ í‘œì‹œ
     }
 
-    // ¸¶¿ì½º°¡ ¹® À§¿¡ ÀÖÀ» ¶§ È£Ãâ
+    // ë§ˆìš°ìŠ¤ê°€ ë¬¸ì— ë“¤ì–´ì™”ì„ ë•Œ í˜¸ì¶œë˜ëŠ” ë©”ì„œë“œ
     private void OnMouseEnter()
     {
-        isMouseOverDoor = true;
+        isMouseOverDoor = true;  // ë§ˆìš°ìŠ¤ê°€ ë¬¸ ìœ„ì— ìˆìŒ
     }
 
-    // ¸¶¿ì½º°¡ ¹®¿¡¼­ ¹ş¾î³µÀ» ¶§ È£Ãâ
+    // ë§ˆìš°ìŠ¤ê°€ ë¬¸ì—ì„œ ë‚˜ê°”ì„ ë•Œ í˜¸ì¶œë˜ëŠ” ë©”ì„œë“œ
     private void OnMouseExit()
     {
-        isMouseOverDoor = false;
+        isMouseOverDoor = false;  // ë§ˆìš°ìŠ¤ê°€ ë¬¸ ìœ„ì— ì—†ìŒ
     }
 
-    // ¹®À» ¿©´Â ÇÔ¼ö
+    // ë¬¸ì„ ì—¬ëŠ” ë©”ì„œë“œ
     void OpenDoor()
     {
-        isAnimating = true;  // ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ½ÇÇà ÁßÀÓÀ» ±â·Ï
+        isAnimating = true;  // ì• ë‹ˆë©”ì´ì…˜ì´ ì§„í–‰ ì¤‘ì„ì„ í‘œì‹œ
         DOTween.Sequence()
-            .Append(doorLeft.DOLocalMoveZ(leftStartPosZ + endPosZ, duration))
-            .Join(doorRight.DOLocalMoveZ(rightStartPosZ - endPosZ, duration))
-            .SetEase(motionEase)
+            .Append(doorLeft.DOLocalMoveZ(leftStartPosZ + endPosZ, duration))  // ì™¼ìª½ ë¬¸ì„ ì—´ê¸°
+            .Join(doorRight.DOLocalMoveZ(rightStartPosZ - endPosZ, duration))  // ì˜¤ë¥¸ìª½ ë¬¸ì„ ì—´ê¸°
+            .SetEase(motionEase)  // ì´ì§• ì„¤ì •
             .OnComplete(() =>
             {
-                isAnimating = false;  // ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ³¡³µÀ½À» ±â·Ï
-                isDoorOpen = true;  // ¹®ÀÌ ¿­¸° »óÅÂ·Î ±â·Ï
+                isAnimating = false;  // ì• ë‹ˆë©”ì´ì…˜ ì™„ë£Œ
+                isDoorOpen = true;  // ë¬¸ì´ ì—´ë ¸ìŒ
             });
     }
 
-    // ¹®À» ´İ´Â ÇÔ¼ö
+    // ë¬¸ì„ ë‹«ëŠ” ë©”ì„œë“œ
     void CloseDoor()
     {
-        isAnimating = true;  // ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ½ÇÇà ÁßÀÓÀ» ±â·Ï
+        isAnimating = true;  // ì• ë‹ˆë©”ì´ì…˜ì´ ì§„í–‰ ì¤‘ì„ì„ í‘œì‹œ
         DOTween.Sequence()
-            .Append(doorLeft.DOLocalMoveZ(leftStartPosZ, duration))
-            .Join(doorRight.DOLocalMoveZ(rightStartPosZ, duration))
-            .SetEase(motionEase)
+            .Append(doorLeft.DOLocalMoveZ(leftStartPosZ, duration))  // ì™¼ìª½ ë¬¸ì„ ë‹«ê¸°
+            .Join(doorRight.DOLocalMoveZ(rightStartPosZ, duration))  // ì˜¤ë¥¸ìª½ ë¬¸ì„ ë‹«ê¸°
+            .SetEase(motionEase)  // ì´ì§• ì„¤ì •
             .OnComplete(() =>
             {
-                isAnimating = false;  // ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ³¡³µÀ½À» ±â·Ï
-                isDoorOpen = false;  // ¹®ÀÌ ´İÈù »óÅÂ·Î ±â·Ï
+                isAnimating = false;  // ì• ë‹ˆë©”ì´ì…˜ ì™„ë£Œ
+                isDoorOpen = false;  // ë¬¸ì´ ë‹«í˜”ìŒ
             });
     }
 }

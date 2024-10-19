@@ -2,76 +2,76 @@ using UnityEngine;
 
 public class ItemBasedTogglePanel : MonoBehaviour
 {
-    [SerializeField] private GameObject panel;  // ÆĞ³Î ¿ÀºêÁ§Æ®
-    [SerializeField] private string requiredItemId = "specialItem";  // ÀÌ ¿ÀºêÁ§Æ®¿¡ ÇÊ¿äÇÑ ¾ÆÀÌÅÛ ID
-    [SerializeField] private Canvas ToggleCanvas;  // ÆĞ³ÎÀÇ Canvas
-    private bool isPanelActive = false;  // ÆĞ³ÎÀÌ ¿­·Á ÀÖ´Â »óÅÂÀÎÁö ±â·Ï
-    private int originalSortingOrder;  // CanvasÀÇ ¿ø·¡ sortingOrder ÀúÀå
-    [SerializeField] int sortingCanvas;
+    [SerializeField] private GameObject panel;  // í† ê¸€í•  íŒ¨ë„ ì˜¤ë¸Œì íŠ¸
+    [SerializeField] private string requiredItemId = "specialItem";  // íŒ¨ë„ì„ ì—´ê¸° ìœ„í•´ í•„ìš”í•œ ì•„ì´í…œì˜ ID
+    [SerializeField] private Canvas ToggleCanvas;  // íŒ¨ë„ì´ ì†í•œ Canvas
+    private bool isPanelActive = false;  // íŒ¨ë„ì´ í˜„ì¬ í™œì„±í™”ë˜ì–´ ìˆëŠ”ì§€ ì—¬ë¶€ë¥¼ ì €ì¥í•˜ëŠ” ë³€ìˆ˜
+    private int originalSortingOrder;  // Canvasì˜ ì›ë˜ sortingOrder ê°’ì„ ì €ì¥
+    [SerializeField] int sortingCanvas;  // íŒ¨ë„ì´ í™œì„±í™”ë  ë•Œ ì‚¬ìš©í•  sortingOrder ê°’
 
     private void Start()
     {
-        // CanvasÀÇ ¿ø·¡ sortingOrder ÀúÀå
+        // Canvasì˜ ì›ë˜ sortingOrder ê°’ì„ ì €ì¥
         originalSortingOrder = ToggleCanvas.sortingOrder;
 
-        // Å° ÀÌº¥Æ®¿¡ ÆĞ³Î Åä±Û ¿¬°á
+        // í‚¤ ì´ë²¤íŠ¸ì— íŒ¨ë„ í† ê¸€ ë©”ì„œë“œë¥¼ ì—°ê²°
         KeyManager.Instance.keyDic[KeyAction.Panel] += TryTogglePanel;
 
-        // ½ÃÀÛ ½Ã ÆĞ³ÎÀ» ºñÈ°¼ºÈ­
+        // ì‹œì‘í•  ë•Œ íŒ¨ë„ì„ ë¹„í™œì„±í™”
         if (panel != null)
         {
             panel.SetActive(false);
-            Debug.Log("ÆĞ³Î ÃÊ±â »óÅÂ: ºñÈ°¼ºÈ­");
+            Debug.Log("íŒ¨ë„ ì´ˆê¸° ìƒíƒœ: ë¹„í™œì„±í™”");
         }
         else
         {
-            Debug.LogWarning("ÆĞ³ÎÀÌ ÇÒ´çµÇÁö ¾Ê¾Ò½À´Ï´Ù.");
+            Debug.LogWarning("íŒ¨ë„ì´ í• ë‹¹ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.");
         }
     }
 
-    // ¼±ÅÃµÈ ¾ÆÀÌÅÛÀÌ ÇØ´ç ¿ÀºêÁ§Æ®ÀÇ ÆĞ³ÎÀ» ¿­ ¼ö ÀÖ´ÂÁö È®ÀÎÇÏ´Â ÇÔ¼ö
+    // ì„ íƒëœ ì•„ì´í…œì´ íŒ¨ë„ì„ ì—´ ìˆ˜ ìˆëŠ”ì§€ í™•ì¸í•˜ëŠ” ë©”ì„œë“œ
     private void TryTogglePanel()
     {
-        // ÀÎº¥Åä¸®¿¡¼­ ¼±ÅÃµÈ ¾ÆÀÌÅÛ °¡Á®¿À±â
+        // ì¸ë²¤í† ë¦¬ì—ì„œ ì„ íƒëœ ì•„ì´í…œ ê°€ì ¸ì˜¤ê¸°
         var selectedItem = InventoryUIExmaple.Instance.GetSelectedItem();
 
-        // ¼±ÅÃµÈ ¾ÆÀÌÅÛÀÌ Á¸ÀçÇÏ°í, ÇØ´ç ¿ÀºêÁ§Æ®°¡ ¿ä±¸ÇÏ´Â ¾ÆÀÌÅÛÀÎÁö È®ÀÎ
+        // ì„ íƒëœ ì•„ì´í…œì´ ìˆìœ¼ë©°, ê·¸ ì•„ì´í…œì´ íŒ¨ë„ì„ ì—´ ìˆ˜ ìˆëŠ” ì•„ì´í…œì¸ì§€ í™•ì¸
         if (selectedItem != null && selectedItem.id == requiredItemId)
         {
-            TogglePanel();  // ÆĞ³Î Åä±Û
+            TogglePanel();  // íŒ¨ë„ì„ í† ê¸€
         }
         else
         {
-            Debug.Log($"ÇÊ¿äÇÑ ¾ÆÀÌÅÛÀÌ ¼±ÅÃµÇÁö ¾Ê¾Ò½À´Ï´Ù. ÇÊ¿äÇÑ ¾ÆÀÌÅÛ ID: {requiredItemId}");
+            Debug.Log($"í•„ìš”í•œ ì•„ì´í…œì´ ì„ íƒë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤. í•„ìš”í•œ ì•„ì´í…œ ID: {requiredItemId}");
         }
     }
 
-    // ÆĞ³ÎÀ» Åä±ÛÇÏ´Â ÇÔ¼ö
+    // íŒ¨ë„ì„ í™œì„±í™” ë˜ëŠ” ë¹„í™œì„±í™”í•˜ëŠ” ë©”ì„œë“œ
     private void TogglePanel()
     {
         if (panel != null)
         {
-            isPanelActive = !isPanelActive;  // ÆĞ³Î »óÅÂ¸¦ ¹İÀü
+            isPanelActive = !isPanelActive;  // íŒ¨ë„ ìƒíƒœë¥¼ ë°˜ì „
 
             if (isPanelActive)
             {
-                ToggleCanvas.sortingOrder = sortingCanvas;  // ÃÖ»óÀ§ ¿ì¼±¼øÀ§·Î ¼³Á¤
+                ToggleCanvas.sortingOrder = sortingCanvas;  // í™œì„±í™” ì‹œ ìº”ë²„ìŠ¤ì˜ ì •ë ¬ ìˆœì„œ ë³€ê²½
                 Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.None;
+                Cursor.lockState = CursorLockMode.None;  // ë§ˆìš°ìŠ¤ ì»¤ì„œ ë³´ì´ê²Œ í•˜ê³  ì ê¸ˆ í•´ì œ
             }
             else
             {
-                ToggleCanvas.sortingOrder = originalSortingOrder;  // ¿ø·¡ ¿ì¼±¼øÀ§·Î º¹¿ø
+                ToggleCanvas.sortingOrder = originalSortingOrder;  // ë¹„í™œì„±í™” ì‹œ ì›ë˜ ì •ë ¬ ìˆœì„œ ë³µêµ¬
                 Cursor.visible = false;
-                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.lockState = CursorLockMode.Locked;  // ë§ˆìš°ìŠ¤ ì»¤ì„œ ìˆ¨ê¸°ê³  ì ê¸ˆ
             }
 
-            panel.SetActive(isPanelActive);  // ÆĞ³ÎÀ» È°¼ºÈ­/ºñÈ°¼ºÈ­
-            Debug.Log($"ÆĞ³Î »óÅÂ°¡ º¯°æµÇ¾ú½À´Ï´Ù. ÇöÀç »óÅÂ: {(isPanelActive ? "È°¼ºÈ­" : "ºñÈ°¼ºÈ­")}");
+            panel.SetActive(isPanelActive);  // íŒ¨ë„ì„ í™œì„±í™” ë˜ëŠ” ë¹„í™œì„±í™”
+            Debug.Log($"íŒ¨ë„ ìƒíƒœê°€ ë³€ê²½ë˜ì—ˆìŠµë‹ˆë‹¤. í˜„ì¬ ìƒíƒœ: {(isPanelActive ? "í™œì„±í™”" : "ë¹„í™œì„±í™”")}");
         }
         else
         {
-            Debug.LogWarning("ÆĞ³ÎÀÌ ÇÒ´çµÇÁö ¾Ê¾Ò½À´Ï´Ù.");
+            Debug.LogWarning("íŒ¨ë„ì´ í• ë‹¹ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.");
         }
     }
 }

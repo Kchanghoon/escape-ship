@@ -5,147 +5,147 @@ using System.Collections;
 
 public class CheckChestOpen : MonoBehaviour
 {
-    [SerializeField] private Transform lid;  // »óÀÚÀÇ ¶Ñ²± (¿òÁ÷ÀÏ ºÎºĞ)
-    [SerializeField] private Vector3 closedPosition = Vector3.zero;  // ´İÇôÀÖÀ» ¶§ÀÇ ·ÎÄÃ À§Ä¡°ª
-    [SerializeField] private float openPositionX = 1f;  // ¿­·ÈÀ» ¶§ÀÇ XÃà À§Ä¡°ª
-    [SerializeField] private float duration = 1f;  // ¿­¸®´Â ¼Óµµ
-    [SerializeField] private Ease motionEase = Ease.InOutQuad;  // ¾Ö´Ï¸ŞÀÌ¼Ç Ease
-    [SerializeField] private float autoCloseDelay = 5f;  // ÀÏÁ¤ ½Ã°£ ÈÄ ÀÚµ¿À¸·Î ´İÈ÷´Â ½Ã°£
+    [SerializeField] private Transform lid;  // ìƒìì˜ ëšœê»‘ (ìƒì ë¶€ë¶„)
+    [SerializeField] private Vector3 closedPosition = Vector3.zero;  // ìƒìê°€ ë‹«í˜€ ìˆì„ ë•Œì˜ ìœ„ì¹˜
+    [SerializeField] private float openPositionX = 1f;  // ìƒìê°€ ì—´ë ¸ì„ ë•Œ Xì¶•ìœ¼ë¡œ ì´ë™í•  ìœ„ì¹˜
+    [SerializeField] private float duration = 1f;  // ìƒìê°€ ì—´ë¦¬ê±°ë‚˜ ë‹«íˆëŠ” ì†ë„
+    [SerializeField] private Ease motionEase = Ease.InOutQuad;  // ì• ë‹ˆë©”ì´ì…˜ì˜ Ease ì„¤ì •
+    [SerializeField] private float autoCloseDelay = 5f;  // ìƒìê°€ ìë™ìœ¼ë¡œ ë‹«íˆê¸° ì „ ëŒ€ê¸° ì‹œê°„
 
-    [SerializeField] private TextMeshProUGUI statusText;  // »óÅÂ ¸Ş½ÃÁö¸¦ Ãâ·ÂÇÒ TextMeshPro º¯¼ö
-    [SerializeField] private float interactionDistance = 3f;  // »óÈ£ÀÛ¿ë °¡´É °Å¸®
+    [SerializeField] private TextMeshProUGUI statusText;  // ìƒì ìƒíƒœë¥¼ í‘œì‹œí•˜ëŠ” TextMeshPro í…ìŠ¤íŠ¸
+    [SerializeField] private float interactionDistance = 3f;  // í”Œë ˆì´ì–´ê°€ ìƒìì™€ ìƒí˜¸ì‘ìš©í•  ìˆ˜ ìˆëŠ” ê±°ë¦¬
 
-    private bool isOpen = false;  // »óÀÚ°¡ ¿­·È´ÂÁö ¿©ºÎ¸¦ ±â·Ï
-    private bool isMouseOverChest = false;  // ¸¶¿ì½º°¡ »óÀÚ À§¿¡ ÀÖ´ÂÁö ¿©ºÎ
-    private bool hasUsedBattery = false;  // ¹èÅÍ¸®¸¦ »ç¿ëÇÏ¿© »óÀÚ¸¦ Ã³À½ ¿­¾ú´ÂÁö È®ÀÎÇÏ´Â ÇÃ·¡±×
-    private Transform playerTransform;  // ÇÃ·¹ÀÌ¾îÀÇ TransformÀ» ÀúÀå
-    private Coroutine autoCloseCoroutine;  // ÀÚµ¿À¸·Î ´İÈ÷´Â ÄÚ·çÆ¾À» ÀúÀå
+    private bool isOpen = false;  // ìƒìê°€ ì—´ë ¸ëŠ”ì§€ ì—¬ë¶€ë¥¼ ë‚˜íƒ€ë‚´ëŠ” ë³€ìˆ˜
+    private bool isMouseOverChest = false;  // ë§ˆìš°ìŠ¤ê°€ ìƒì ìœ„ì— ìˆëŠ”ì§€ ì—¬ë¶€
+    private bool hasUsedBattery = false;  // ë°°í„°ë¦¬ë¥¼ ì‚¬ìš©í–ˆëŠ”ì§€ ì—¬ë¶€
+    private Transform playerTransform;  // í”Œë ˆì´ì–´ì˜ Transform
+    private Coroutine autoCloseCoroutine;  // ìë™ìœ¼ë¡œ ìƒìë¥¼ ë‹«ëŠ” ì½”ë£¨í‹´
 
     void Start()
     {
-        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;  // ÇÃ·¹ÀÌ¾îÀÇ Transform °¡Á®¿À±â
-        lid.localPosition = closedPosition;  // Ã³À½¿£ ´İÈù »óÅÂ·Î ½ÃÀÛ
-        KeyManager.Instance.keyDic[KeyAction.Play] += OnPlay;
+        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;  // í”Œë ˆì´ì–´ì˜ Transformì„ ê°€ì ¸ì˜´
+        lid.localPosition = closedPosition;  // ì‹œì‘ ì‹œ ìƒìë¥¼ ë‹«íŒ ìƒíƒœë¡œ ì„¤ì •
+        KeyManager.Instance.keyDic[KeyAction.Play] += OnPlay;  // í‚¤ ì…ë ¥ ì´ë²¤íŠ¸ ì—°ê²°
 
         if (statusText != null)
         {
-            statusText.gameObject.SetActive(false);  // Ã³À½¿¡´Â »óÅÂ ¸Ş½ÃÁö ºñÈ°¼ºÈ­
+            statusText.gameObject.SetActive(false);  // ìƒíƒœ í…ìŠ¤íŠ¸ ë¹„í™œì„±í™”
         }
     }
 
     private void Update()
     {
-        // ÇÃ·¹ÀÌ¾î¿Í »óÀÚ »çÀÌÀÇ °Å¸® °è»ê
+        // í”Œë ˆì´ì–´ì™€ ìƒìì˜ ê±°ë¦¬ë¥¼ ê³„ì‚°
         float distanceToPlayer = Vector3.Distance(playerTransform.position, transform.position);
 
-        // ÇÃ·¹ÀÌ¾î°¡ »óÈ£ÀÛ¿ë °¡´ÉÇÑ °Å¸® ¾È¿¡ ÀÖÀ» ¶§¸¸ ¸¶¿ì½º¸¦ ¿Ã¸®¸é »óÈ£ÀÛ¿ë °¡´É
+        // í”Œë ˆì´ì–´ê°€ ìƒìì™€ ìƒí˜¸ì‘ìš© ê°€ëŠ¥í•œ ê±°ë¦¬ ë‚´ì— ìˆê³  ë§ˆìš°ìŠ¤ê°€ ìƒì ìœ„ì— ìˆìœ¼ë©´ ìƒíƒœ í…ìŠ¤íŠ¸ í‘œì‹œ
         if (distanceToPlayer <= interactionDistance && isMouseOverChest)
         {
-            statusText.gameObject.SetActive(true);  // »óÅÂ ¸Ş½ÃÁö È°¼ºÈ­
-            UpdateStatusText();  // »óÅÂ ÅØ½ºÆ® Ç¥½Ã
+            statusText.gameObject.SetActive(true);  // ìƒíƒœ í…ìŠ¤íŠ¸ í™œì„±í™”
+            UpdateStatusText();  // ìƒíƒœ í…ìŠ¤íŠ¸ ì—…ë°ì´íŠ¸
         }
         else
         {
-            statusText.gameObject.SetActive(false);  // »óÅÂ ¸Ş½ÃÁö ºñÈ°¼ºÈ­
+            statusText.gameObject.SetActive(false);  // ìƒíƒœ í…ìŠ¤íŠ¸ ë¹„í™œì„±í™”
         }
     }
 
-    // ¸¶¿ì½º°¡ »óÀÚ À§¿¡ ÀÖÀ» ¶§ È£ÃâµÇ´Â ÇÔ¼ö
+    // ë§ˆìš°ìŠ¤ê°€ ìƒì ìœ„ì— ì˜¬ë¼ê°ˆ ë•Œ í˜¸ì¶œë˜ëŠ” ë©”ì„œë“œ
     private void OnMouseEnter()
     {
-        isMouseOverChest = true;  // ¸¶¿ì½º°¡ »óÀÚ À§¿¡ ÀÖÀ½
+        isMouseOverChest = true;  // ë§ˆìš°ìŠ¤ê°€ ìƒì ìœ„ì— ìˆìŒ
     }
 
-    // ¸¶¿ì½º°¡ »óÀÚ¿¡¼­ ¹ş¾î³µÀ» ¶§ È£ÃâµÇ´Â ÇÔ¼ö
+    // ë§ˆìš°ìŠ¤ê°€ ìƒìì—ì„œ ë²—ì–´ë‚  ë•Œ í˜¸ì¶œë˜ëŠ” ë©”ì„œë“œ
     private void OnMouseExit()
     {
-        isMouseOverChest = false;  // ¸¶¿ì½º°¡ »óÀÚ¿¡¼­ ¹ş¾î³²
-        statusText.gameObject.SetActive(false);  // »óÅÂ ¸Ş½ÃÁö ºñÈ°¼ºÈ­
+        isMouseOverChest = false;  // ë§ˆìš°ìŠ¤ê°€ ìƒìì—ì„œ ë²—ì–´ë‚¨
+        statusText.gameObject.SetActive(false);  // ìƒíƒœ í…ìŠ¤íŠ¸ ë¹„í™œì„±í™”
     }
 
-    // KeyManager¿¡¼­ Play ¾×¼ÇÀÌ È£ÃâµÉ ¶§ »óÀÚ ¿­±â/´İ±â Ã³¸®
+    // í‚¤ ì…ë ¥ì´ ë°œìƒí–ˆì„ ë•Œ í˜¸ì¶œë˜ëŠ” ë©”ì„œë“œ, ìƒìë¥¼ ì—´ê±°ë‚˜ ë‹«ìŒ
     public void OnPlay()
     {
-        // ÇÃ·¹ÀÌ¾î°¡ »óÈ£ÀÛ¿ë °¡´ÉÇÑ °Å¸® ³»¿¡ ÀÖ°í, ¸¶¿ì½º°¡ »óÀÚ À§¿¡ ÀÖÀ» ¶§ »óÀÚ¸¦ ¿­ ¼ö ÀÖÀ½
+        // í”Œë ˆì´ì–´ê°€ ìƒìì™€ ìƒí˜¸ì‘ìš©í•  ìˆ˜ ìˆëŠ” ê±°ë¦¬ì— ìˆê³  ë§ˆìš°ìŠ¤ê°€ ìƒì ìœ„ì— ìˆì„ ë•Œë§Œ ì‘ë™
         float distanceToPlayer = Vector3.Distance(playerTransform.position, transform.position);
         if (distanceToPlayer <= interactionDistance && isMouseOverChest)
         {
-            // ¸ÕÀú "7"¹ø Ä«µå°¡ ÀÖ´ÂÁö È®ÀÎ
+            // ì•„ì´í…œ IDê°€ "7"ì¸ ê²½ìš° ìƒìë¥¼ ì—´ê±°ë‚˜ ë‹«ì„ ìˆ˜ ìˆìŒ
             var selectedItem = InventoryUIExmaple.Instance.GetSelectedItem();
             if (selectedItem != null && selectedItem.id == "7")
             {
-                UpdateStatusText();
-                ToggleChest();
+                UpdateStatusText();  // ìƒíƒœ í…ìŠ¤íŠ¸ ì—…ë°ì´íŠ¸
+                ToggleChest();  // ìƒì ì—´ê¸° ë˜ëŠ” ë‹«ê¸°
             }
             else
             {
-                // "7"¹ø Ä«µå°¡ ¾ø´Â °æ¿ì
-                Debug.Log("Ä«µå°¡ ÇÊ¿äÇÕ´Ï´Ù.");
-                statusText.text = "Ä«µå°¡ ÇÊ¿äÇÕ´Ï´Ù. (ID = 7)";
+                // "7"ë²ˆ ì•„ì´í…œì´ ì—†ì„ ê²½ìš°
+                Debug.Log("ì•„ì´í…œì´ í•„ìš”í•©ë‹ˆë‹¤.");
+                statusText.text = "ì•„ì´í…œì´ í•„ìš”í•©ë‹ˆë‹¤. (ID = 7)";
             }
         }
     }
 
-    // »óÅÂ ¸Ş½ÃÁö¸¦ ¾÷µ¥ÀÌÆ®ÇÏ´Â ÇÔ¼ö
+    // ìƒíƒœ í…ìŠ¤íŠ¸ë¥¼ ì—…ë°ì´íŠ¸í•˜ëŠ” ë©”ì„œë“œ
     private void UpdateStatusText()
     {
         var selectedItem = InventoryUIExmaple.Instance.GetSelectedItem();
 
-        if (selectedItem != null) // selectedItemÀÌ nullÀÎÁö ¸ÕÀú È®ÀÎ
+        if (selectedItem != null) // ì„ íƒëœ ì•„ì´í…œì´ nullì´ ì•„ë‹Œ ê²½ìš°
         {
             if (selectedItem.id == "7")
             {
-                statusText.text = "»óÀÚ¸¦ ¿­¾îÁÖ¼¼¿ä.";
+                statusText.text = "ìƒìë¥¼ ì—´ì–´ì£¼ì„¸ìš”.";
             }
             else
             {
-                statusText.text = "3±Ş º¸¾ÈÄ«µåÅ°°¡ ÇÊ¿äÇÕ´Ï´Ù.";
+                statusText.text = "3ë²ˆ ì•„ì´í…œ í‚¤ê°€ í•„ìš”í•©ë‹ˆë‹¤.";
             }
         }
         else
         {
-            // selectedItemÀÌ nullÀÏ ¶§ Ã³¸®
-            statusText.text = "3±Ş º¸¾ÈÄ«µåÅ°°¡ ÇÊ¿äÇÕ´Ï´Ù.";
+            // ì„ íƒëœ ì•„ì´í…œì´ ì—†ì„ ê²½ìš°
+            statusText.text = "3ë²ˆ ì•„ì´í…œ í‚¤ê°€ í•„ìš”í•©ë‹ˆë‹¤.";
         }
     }
 
-    // »óÀÚ¸¦ ¿­°Å³ª ´İ´Â ÇÔ¼ö
+    // ìƒìë¥¼ ì—´ê±°ë‚˜ ë‹«ëŠ” ë©”ì„œë“œ
     private void ToggleChest()
     {
         if (isOpen)
         {
-            // »óÀÚ°¡ ¿­·ÁÀÖÀ¸¸é ´İ±â (·ÎÄÃ À§Ä¡ »ç¿ë)
+            // ìƒìê°€ ì—´ë ¤ ìˆìœ¼ë©´ ë‹«ê¸° (ë‹«íŒ ìœ„ì¹˜ë¡œ ì´ë™)
             lid.DOLocalMoveX(closedPosition.x, duration).SetEase(motionEase);
-            statusText.gameObject.SetActive(true);  // »óÀÚ°¡ ´İÈ÷¸é ÅØ½ºÆ® È°¼ºÈ­
+            statusText.gameObject.SetActive(true);  // ìƒìê°€ ë‹«í˜”ìŒì„ ì•Œë¦¬ëŠ” ìƒíƒœ í…ìŠ¤íŠ¸ í™œì„±í™”
             if (autoCloseCoroutine != null)
             {
-                StopCoroutine(autoCloseCoroutine);  // ÀÚµ¿ ´İÈû ÄÚ·çÆ¾ Ãë¼Ò
+                StopCoroutine(autoCloseCoroutine);  // ìë™ ë‹«ê¸° ì½”ë£¨í‹´ ì¢…ë£Œ
             }
         }
         else
         {
-            // »óÀÚ°¡ ´İÇôÀÖÀ¸¸é ¿­±â (XÃàÀ¸·Î ÀÌµ¿)
+            // ìƒìê°€ ë‹«í˜€ ìˆìœ¼ë©´ ì—´ê¸° (Xì¶•ìœ¼ë¡œ ì´ë™)
             lid.DOLocalMoveX(openPositionX, duration).SetEase(motionEase);
-            statusText.gameObject.SetActive(false);  // »óÀÚ°¡ ¿­¸®¸é ÅØ½ºÆ® ºñÈ°¼ºÈ­
+            statusText.gameObject.SetActive(false);  // ìƒìê°€ ì—´ë ¸ìœ¼ë¯€ë¡œ ìƒíƒœ í…ìŠ¤íŠ¸ ë¹„í™œì„±í™”
 
-            // ÀÏÁ¤ ½Ã°£ÀÌ Áö³ª¸é »óÀÚ¸¦ ÀÚµ¿À¸·Î ´İÀ½
+            // ì¼ì • ì‹œê°„ì´ ì§€ë‚˜ë©´ ìë™ìœ¼ë¡œ ìƒìë¥¼ ë‹«ê¸° ìœ„í•œ ì½”ë£¨í‹´ ì‹œì‘
             if (autoCloseCoroutine != null)
             {
-                StopCoroutine(autoCloseCoroutine);  // ÀÌÀü ÄÚ·çÆ¾ Ãë¼Ò
+                StopCoroutine(autoCloseCoroutine);  // ê¸°ì¡´ ì½”ë£¨í‹´ ì¢…ë£Œ
             }
-            autoCloseCoroutine = StartCoroutine(AutoCloseChest());  // »õ·Î¿î ÄÚ·çÆ¾ ½ÃÀÛ
+            autoCloseCoroutine = StartCoroutine(AutoCloseChest());  // ìƒˆë¡œìš´ ìë™ ë‹«ê¸° ì½”ë£¨í‹´ ì‹œì‘
         }
 
-        isOpen = !isOpen;  // »óÅÂ¸¦ ¹İÀü½ÃÅ´
+        isOpen = !isOpen;  // ìƒì ìƒíƒœë¥¼ í† ê¸€
     }
 
-    // ÀÏÁ¤ ½Ã°£ÀÌ Áö³ª¸é »óÀÚ¸¦ ´İ´Â ÄÚ·çÆ¾
+    // ì¼ì • ì‹œê°„ì´ ì§€ë‚˜ë©´ ìë™ìœ¼ë¡œ ìƒìë¥¼ ë‹«ëŠ” ì½”ë£¨í‹´
     private IEnumerator AutoCloseChest()
     {
-        yield return new WaitForSeconds(autoCloseDelay);  // ÁöÁ¤µÈ ½Ã°£¸¸Å­ ´ë±â
-        if (isOpen)  // »óÀÚ°¡ ¿­·Á ÀÖÀ» ¶§¸¸ ´İÀ½
+        yield return new WaitForSeconds(autoCloseDelay);  // ì„¤ì •ëœ ëŒ€ê¸° ì‹œê°„ ë™ì•ˆ ëŒ€ê¸°
+        if (isOpen)  // ìƒìê°€ ì—¬ì „íˆ ì—´ë ¤ ìˆëŠ” ê²½ìš°
         {
-            ToggleChest();  // »óÀÚ¸¦ ´İÀ½
+            ToggleChest();  // ìƒì ë‹«ê¸°
         }
     }
 }
