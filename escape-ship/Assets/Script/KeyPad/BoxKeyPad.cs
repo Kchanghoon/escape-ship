@@ -72,14 +72,22 @@ public class BoxKeyPad : MonoBehaviour
         if (isUnlocked) return;
 
         float distanceToPlayer = Vector3.Distance(player.position, transform.position);
-        
-            var selectedItem = InventoryUIExmaple.Instance.GetSelectedItem();
-        // 마우스가 오브젝트 위에 있고 상호작용 가능한 거리 내에 있으면 키패드 패널 열기
-        if (isMouseOverItem && distanceToPlayer <= interactDistance && selectedItem.id == "7" || selectedItem.id == "6" || selectedItem.id == "5")
+
+        // 인벤토리에서 선택된 아이템을 가져옴
+        var selectedItem = InventoryUIExmaple.Instance.GetSelectedItem();
+
+        // 마우스가 오브젝트 위에 있고, 상호작용 가능한 거리 내에 있으며, 선택된 아이템이 null이 아닌지 확인
+        if (isMouseOverItem && distanceToPlayer <= interactDistance && selectedItem != null &&
+            (selectedItem.id == "7" || selectedItem.id == "6" || selectedItem.id == "5"))
         {
             OpenKeyPadPanel();
         }
+        else
+        {
+            Debug.Log("조건을 만족하지 않거나 선택된 아이템이 없습니다.");
+        }
     }
+
 
     // 키패드 패널을 여는 메서드
     private void OpenKeyPadPanel()
