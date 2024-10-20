@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MouseCam : MonoBehaviour
+public class MouseCam : Singleton<MouseCam>
 {
     public float sensitivity = 500f;
     public float rotationX;

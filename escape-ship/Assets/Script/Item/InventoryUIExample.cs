@@ -30,6 +30,7 @@ public class InventoryUIExmaple : Singleton<InventoryUIExmaple>
         ItemController.Instance.OnRemoveItem += OnRemoveItem;
         KeyManager.Instance.keyDic[KeyAction.Inventory] += OpenInventory;
 
+        //KeyManager.Instance.keyDic[KeyAction.Panel] += TryTogglePanel;
         ResetInventory(); // 테스트용
 
     }
@@ -51,7 +52,7 @@ public class InventoryUIExmaple : Singleton<InventoryUIExmaple>
         }
     }
 
-    public void selectItem(int index)
+    public void SelectItem(int index)
     {
         if (index < 0 || index >= itemSlots.Length)
         {
@@ -262,7 +263,31 @@ public class InventoryUIExmaple : Singleton<InventoryUIExmaple>
         else ChangeItemSlot(dragItemSlotUI, targetItemSlotUI);
     }
 
+    //private void TryTogglePanel()
+    //{
+    //    // 인벤토리에서 선택된 아이템 가져오기
+    //    var selectedItem = InventoryUIExmaple.Instance.GetSelectedItem();
 
+    //    // 선택된 아이템이 있으며, 그 아이템이 패널을 열 수 있는 아이템인지 확인
+    //    if (selectedItem != null && selectedItem.id == "9")
+    //    {
+    //        ToggleTutorialPanel();  // 패널을 토글
+    //    }
+    //    else if (selectedItem != null && selectedItem.id == "10")
+    //    {
+    //        ToggleNotePanel();
+    //    }
+    //}
+
+    //private void ToggleTutorialPane()
+    //{
+
+    //}
+
+    //private void ToggleNotePanel()
+    //{
+
+    //}
 
 
 }

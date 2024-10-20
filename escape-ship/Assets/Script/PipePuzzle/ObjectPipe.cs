@@ -63,13 +63,15 @@ public class ObjectPipe : MonoBehaviour
             }
             else
             {
+                statusText.gameObject.SetActive(true);
                 statusText.text = "벨브가 필요합니다.";  // 노랑 카드가 없을 때
             }
         }
         else
         {
             Debug.Log("플레이어가 너무 멀거나 마우스가 오브젝트 위에 있지 않습니다.");
-            
+
+            statusText.gameObject.SetActive(false);
         }
     }
 
@@ -97,7 +99,9 @@ public class ObjectPipe : MonoBehaviour
         {
             isPanelActive = !isPanelActive;  // 패널의 활성화 상태를 반전
             panel.SetActive(isPanelActive);  // 패널을 활성화 또는 비활성화
-            
+            PipeManager.Instance.RandomPipe();
+
+
             if (isPanelActive)
             {
                 // 패널이 활성화될 때 Canvas의 우선순위를 높임

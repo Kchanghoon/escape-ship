@@ -19,7 +19,7 @@ public class ItemController : Singleton<ItemController>
     private void Start()
     {
         // PickUp 및 Drop 키 이벤트 연결
-        KeyManager.Instance.keyDic[KeyAction.PickUp] += OnPickUp;
+        //KeyManager.Instance.keyDic[KeyAction.PickUp] += OnPickUp;
         KeyManager.Instance.keyDic[KeyAction.Drop] += OnDrop;
     }
 
@@ -60,19 +60,19 @@ public class ItemController : Singleton<ItemController>
     }
 
     // 아이템을 획득하는 메서드
-    public void OnPickUp()
-    {
-        if (canPickUp && nearbyItem != null)  // 획득 가능한 상태인지 확인
-        {
-            Debug.Log($"아이템 {nearbyItem.id}을(를) 획득했습니다 OnPickUP.");
-            AddItem(nearbyItem.id);  // 인벤토리에 아이템 추가
-            nearbyItem = null;  // 가까운 아이템 정보 초기화
-            canPickUp = false;  // 아이템 획득 가능 상태 초기화
+    //public void OnPickUp()
+    //{
+    //    if (canPickUp && nearbyItem != null)  // 획득 가능한 상태인지 확인
+    //    {
+    //        Debug.Log($"아이템 {nearbyItem.id}을(를) 획득했습니다 OnPickUP.");
+    //        AddItem(nearbyItem.id);  // 인벤토리에 아이템 추가
+    //        nearbyItem = null;  // 가까운 아이템 정보 초기화
+    //        canPickUp = false;  // 아이템 획득 가능 상태 초기화
 
-            // UI 업데이트 호출
-            InventoryUIExmaple.Instance.UpdateInventoryUI();
-        }
-    }
+    //        // UI 업데이트 호출
+    //        InventoryUIExmaple.Instance.UpdateInventoryUI();
+    //    }
+    //}
 
     // 아이템을 버리는 메서드
     public void OnDrop()
@@ -92,16 +92,17 @@ public class ItemController : Singleton<ItemController>
     // 아이템을 드랍하는 메서드
     public void DropItem(string id)
     {
+        if (string.IsNullOrEmpty(id)) return;
         // 플레이어의 위치에서 아이템 드랍
         Transform playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         Vector3 dropPosition = playerTransform.position;  // 플레이어의 현재 위치에서 드랍
 
         // 드랍할 아이템의 프리팹을 가져옴
-        GameObject itemPrefab = GetItemPrefab(id);
-        if (itemPrefab != null)
+        var item = ResourceDB.Instance.GetItemResource(id).itemObject;
+        if (item != null)
         {
-            GameObject droppedItem = Instantiate(itemPrefab, dropPosition, Quaternion.identity);  // 아이템 생성
-            droppedItem.GetComponent<Item>().itemData = curItemDatas.Find(x => x.id == id);  // 드랍된 아이템에 데이터 할당
+            Item droppedItem = Instantiate(item.gameObject, dropPosition, Quaternion.identity).GetComponent<Item>();  // 아이템 생성
+            droppedItem.itemData = curItemDatas.Find(x => x.id == id);  // 드랍된 아이템에 데이터 할당
             Debug.Log($"아이템 {id}을(를) 드랍했습니다.");
 
             RemoveItemById(id);  // 인벤토리에서 아이템 제거
@@ -114,16 +115,16 @@ public class ItemController : Singleton<ItemController>
     }
 
     // 아이템 프리팹을 찾는 메서드
-    private GameObject GetItemPrefab(string id)
-    {
-        // ResourceDB에서 아이템의 리소스를 가져옴
-        var itemResource = ResourceDB.Instance.GetItemResource(id);
-        if (itemResource != null)
-        {
-            return itemResource.object3D;  // 3D 오브젝트 반환
-        }
-        return null;
-    }
+    //private GameObject GetItemPrefab(string id)
+    //{
+    //    // ResourceDB에서 아이템의 리소스를 가져옴
+    //    var itemResource = ResourceDB.Instance.GetItemResource(id);
+    //    if (itemResource != null)
+    //    {
+    //        return itemResource.object3D;  // 3D 오브젝트 반환
+    //    }
+    //    return null;
+    //}
 
     // 플레이어가 아이템과 가까워졌을 때 호출되는 메서드
     public void SetCanPickUp(ItemDataExample itemData)

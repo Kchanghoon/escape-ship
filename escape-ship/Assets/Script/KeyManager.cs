@@ -92,18 +92,16 @@ public class KeyManager : Singleton<KeyManager>
         keyDic.Add(KeyAction.Panel, OnPanel);
 
 
-        keyDic[KeyAction.SelectItem1] = () => InventoryUIExmaple.Instance.selectItem(0);
-        keyDic[KeyAction.SelectItem2] = () => InventoryUIExmaple.Instance.selectItem(1);
-        keyDic[KeyAction.SelectItem3] = () => InventoryUIExmaple.Instance.selectItem(2);
-        keyDic[KeyAction.SelectItem4] = () => InventoryUIExmaple.Instance.selectItem(3);
-        keyDic[KeyAction.SelectItem5] = () => InventoryUIExmaple.Instance.selectItem(4);
-        keyDic[KeyAction.SelectItem6] = () => InventoryUIExmaple.Instance.selectItem(5);
-        keyDic[KeyAction.SelectItem7] = () => InventoryUIExmaple.Instance.selectItem(6);
-        keyDic[KeyAction.SelectItem8] = () => InventoryUIExmaple.Instance.selectItem(7);
-        keyDic[KeyAction.SelectItem9] = () => InventoryUIExmaple.Instance.selectItem(8);
-        keyDic[KeyAction.SelectItem10] = () => InventoryUIExmaple.Instance.selectItem(9);
-
-
+        keyDic[KeyAction.SelectItem1] = () => InventoryUIExmaple.Instance.SelectItem(0);
+        keyDic[KeyAction.SelectItem2] = () => InventoryUIExmaple.Instance.SelectItem(1);
+        keyDic[KeyAction.SelectItem3] = () => InventoryUIExmaple.Instance.SelectItem(2);
+        keyDic[KeyAction.SelectItem4] = () => InventoryUIExmaple.Instance.SelectItem(3);
+        keyDic[KeyAction.SelectItem5] = () => InventoryUIExmaple.Instance.SelectItem(4);
+        keyDic[KeyAction.SelectItem6] = () => InventoryUIExmaple.Instance.SelectItem(5);
+        keyDic[KeyAction.SelectItem7] = () => InventoryUIExmaple.Instance.SelectItem(6);
+        keyDic[KeyAction.SelectItem8] = () => InventoryUIExmaple.Instance.SelectItem(7);
+        keyDic[KeyAction.SelectItem9] = () => InventoryUIExmaple.Instance.SelectItem(8);
+        keyDic[KeyAction.SelectItem10] = () => InventoryUIExmaple.Instance.SelectItem(9);
     }
 
     // Update is called once per frame

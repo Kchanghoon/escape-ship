@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -10,11 +11,11 @@ public class PipeManager : Singleton<PipeManager>
     public GameObject panel;     // 퍼즐 완료 시 비활성화할 패널
     public GameObject recoveryZone; // 퍼즐 완료 시 활성화할 회복존
     public Canvas panelCanvas;  // 패널의 Canvas 컴포넌트
+    [SerializeField] float tiem;
 
 
     private bool reachedEndPipe = false;  // End 파이프에 도달했는지 여부 확인용 변수
 
-    [ContextMenu("Test")]
     private void StartPipe()
     {
         // 게임이 시작될 때 startPipe를 체크 상태로 설정
@@ -28,6 +29,7 @@ public class PipeManager : Singleton<PipeManager>
             Debug.LogError("startPipe가 설정되지 않았습니다!");
         }
         CheckAllConnectedPipes();
+        
     }
 
     private List<Pipe> CheckAdjacencyPipesPipes(Pipe centerPipe)
@@ -63,44 +65,45 @@ public class PipeManager : Singleton<PipeManager>
         if (endPipe.isChecked) OnPuzzleComplete();
     }
 
-    void UncheckDisconnectedPipes(Pipe currentPipe)
-    {
-        if (!currentPipe.isChecked) return;  // 이미 체크 해제된 경우 무시
+    //void UncheckDisconnectedPipes(Pipe currentPipe)
+    //{
+    //    if (!currentPipe.isChecked) return;  // 이미 체크 해제된 경우 무시
 
-        currentPipe.isChecked = false;
-        Debug.Log($"{currentPipe.name}이(가) 체크 해제되었습니다.");
+    //    currentPipe.isChecked = false;
+    //    Debug.Log($"{currentPipe.name}이(가) 체크 해제되었습니다.");
 
-        foreach (Pipe otherPipe in allPipes)
-        {
-            // 연결된 파이프들 중 체크 상태였던 파이프들을 해제
-            if (otherPipe.isChecked && currentPipe.IsConnected(otherPipe))
-            {
-                UncheckDisconnectedPipes(otherPipe);  // 재귀적으로 해제
-            }
-        }
-    }
+    //    foreach (Pipe otherPipe in allPipes)
+    //    {
+    //        // 연결된 파이프들 중 체크 상태였던 파이프들을 해제
+    //        if (otherPipe.isChecked && currentPipe.IsConnected(otherPipe))
+    //        {
+    //            UncheckDisconnectedPipes(otherPipe);  // 재귀적으로 해제
+    //        }
+    //    }
+    //}
 
     // 퍼즐이 완료되었을 때 처리 (예: 문을 열거나, 다음 단계로 진행하는 로직)
-    void OnPuzzleComplete()
+    async void OnPuzzleComplete()
     {
-        Debug.Log("문이 열렸습니다!");
-        // 회복존 활성화
-        if (recoveryZone != null)
-        {
-            recoveryZone.SetActive(true);
-            Debug.Log("회복존이 활성화되었습니다.");
-        }
-        else
-        {
-            Debug.LogWarning("회복존이 할당되지 않았습니다.");
-        }
         // 패널 비활성화
         if (panel != null)
         {
             CloseBtn();
         }
 
-      
+        // 회복존 활성화
+        if (recoveryZone != null)
+        {
+            recoveryZone.SetActive(true);
+            Debug.Log("회복존이 활성화되었습니다.");
+            await UniTask.Delay((int)(tiem * 1000));
+            recoveryZone.SetActive(false);
+            Debug.Log("회복존이 비활성화");
+        }
+        else
+        {
+            Debug.LogWarning("회복존이 할당되지 않았습니다.");
+        }
     }
 
 
@@ -118,11 +121,7 @@ public class PipeManager : Singleton<PipeManager>
             {
                 panelCanvas.sortingOrder = 999;  
             }
-            MouseCam mouseCam = FindObjectOfType<MouseCam>();
-            if (mouseCam != null)
-            {
-                mouseCam.UnlockCursor();
-            }
+            MouseCam.Instance.UnlockCursor();
         }
     }
     
@@ -131,10 +130,22 @@ public class PipeManager : Singleton<PipeManager>
         panelCanvas.sortingOrder = 0; // 원래 순서로 복원
         Time.timeScale = 1;  // 게임 재개
         panel.SetActive(false);
-        MouseCam mouseCam = FindObjectOfType<MouseCam>();
-        if (mouseCam != null)
+        MouseCam.Instance.LockCursor();
+    }
+
+    public void RandomPipe()
+    {
+        foreach (Pipe otherPipe in allPipes)
         {
-            mouseCam.LockCursor();
+            //float randomX = Random.Range(-5f, 5f);
+            //float randomZ = Random.Range(-5f, 5f);
+            
+            //otherPipe.transform.position = new Vector3(randomX, otherPipe.transform.position.y ,randomZ);
+
+            float randomRotaionZ = Random.Range(0, 4) * 90f;
+            otherPipe.transform.localRotation = Quaternion.Euler(0, 0, randomRotaionZ);
         }
+
+        CheckAllConnectedPipes();
     }
 }

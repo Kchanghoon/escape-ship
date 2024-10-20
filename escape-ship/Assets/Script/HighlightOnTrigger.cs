@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class HighlightOnHover : MonoBehaviour
 {
-    public GameObject targetObject;  // 아웃라인 효과를 적용할 대상 오브젝트
-    public Transform player;  // 플레이어의 Transform
-    public float interactionDistance = 3f;  // 상호작용 가능한 거리
+    [SerializeField] GameObject targetObject;  // 아웃라인 효과를 적용할 대상 오브젝트
+    [SerializeField] float interactionDistance = 3f;  // 상호작용 가능한 거리
     private Outline outline;  // 아웃라인 컴포넌트
     private bool isMouseOver = false;  // 마우스가 오브젝트 위에 있는지 여부
+    Transform player { get => PlayerController.Instance.transform; }  // 플레이어의 Transform
 
     void Start()
     {

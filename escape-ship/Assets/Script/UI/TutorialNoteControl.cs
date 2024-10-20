@@ -23,8 +23,6 @@ public class TutorialNoteControl : MonoBehaviour
         nextButton.onClick.AddListener(OnNextButtonClicked);
         undoButton.onClick.AddListener(OnUndoButtonClicked);
         deleteButton.onClick.AddListener(OnDeleteButtonClicked);
-
-
     }
 
     // Next 버튼을 클릭했을 때 호출되는 함수
@@ -61,6 +59,4 @@ public class TutorialNoteControl : MonoBehaviour
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
     }
-
-
 }

@@ -107,7 +107,7 @@ public class PlayerState : MonoBehaviour
         if (oxygen > 0)
         {
             // 산소가 남아있으면 자연 감소
-            oxygen -= Time.deltaTime * 1f;  // 1f는 감소 속도
+            oxygen -= Time.deltaTime * 0.5f;  // 1f는 감소 속도
             isOxygenDepleted = false;
         }
         else
