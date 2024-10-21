@@ -35,9 +35,9 @@ public class DialogueTriggerUI : MonoBehaviour
     }
 
     // 플레이어가 특정 구역에 들어갈 때 트리거 발생
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag(playerTag) && !isDialogueActive && !hasTriggered)  // 대화가 한 번도 발생하지 않았을 때만 실행
+        if (other.CompareTag(playerTag) && !isDialogueActive && !hasTriggered)
         {
             float distanceToPlayer = Vector3.Distance(playerTransform.position, transform.position);
 
@@ -48,6 +48,7 @@ public class DialogueTriggerUI : MonoBehaviour
             }
         }
     }
+
 
     // 대화창을 표시하는 메서드
     void ShowDialogue()
