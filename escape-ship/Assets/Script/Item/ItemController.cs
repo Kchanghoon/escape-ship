@@ -105,7 +105,7 @@ public class ItemController : Singleton<ItemController>
             droppedItem.itemData = curItemDatas.Find(x => x.id == id);  // 드랍된 아이템에 데이터 할당
             Debug.Log($"아이템 {id}을(를) 드랍했습니다.");
 
-            RemoveItemById(id);  // 인벤토리에서 아이템 제거
+            DecreaseItemQuantity(id);  // 인벤토리에서 아이템 제거
             InventoryUIExmaple.Instance.UpdateInventoryUI();  // 인벤토리 UI 업데이트
         }
         else
@@ -205,7 +205,7 @@ public class ItemController : Singleton<ItemController>
         var item = curItemDatas.Find(x => x.id == id);  // 아이템 찾기
 
         // ID가 "1", "2", "3"일 때만 감소 처리
-        if (id != "5" && id != "6" && id != "7")
+        if (id != "5" && id != "6" && id != "7" && id != "12")
         {
             Debug.Log($"아이템 {id}은(는) 수량 감소 대상이 아닙니다.");
             return;
