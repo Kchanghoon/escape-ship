@@ -119,14 +119,14 @@ public class BoxKeyPad : MonoBehaviour
             {
                 if (selectedItem.id == "7")
                 {
-                    ItemController.Instance.AddItem("6");
                     ItemController.Instance.DeleteItemQuantity("7");
+                    ItemController.Instance.AddItem("6");
                 }
                 else if (selectedItem.id == "6")
                 {
+                    ItemController.Instance.DeleteItemQuantity("6");
                     ItemController.Instance.AddItem("5");
 
-                    ItemController.Instance.DeleteItemQuantity("6");
                 }
                 else if (selectedItem.id == "5")
                 {

@@ -105,10 +105,10 @@ public class UpgradeItem : MonoBehaviour
             if (item11 != null && item5 != null)
             {
                 // 11번과 5번 아이템이 있으면 8번 아이템을 추가하고 기존 아이템 제거
-                itemController.AddItem("8");  // 8번 아이템 추가
                 itemController.RemoveItemById("11");  // 11번 아이템 제거
                 itemController.RemoveItemById("5");  // 5번 아이템 제거
-
+                itemController.AddItem("8");  // 8번 아이템 추가
+                statusText.text = "함장 카드 발급완료.";
                 ShowTextWithAnimation();
                 Debug.Log("아이템 업그레이드 성공! 8번 아이템이 추가되었습니다.");
             }

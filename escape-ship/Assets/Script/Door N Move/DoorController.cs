@@ -60,7 +60,7 @@ public class DoorController : MonoBehaviour
         {
             // 인벤토리에서 선택된 아이템을 확인 (ID 2의 아이템 필요)
             var selectedItem = InventoryUIExmaple.Instance.GetSelectedItem();
-            if (selectedItem != null && (selectedItem.id == "5" || selectedItem.id == "6" || selectedItem.id == "7" || selectedItem.id == "8"))
+            if (selectedItem != null && selectedItem.id == "8")
             {
                 if (isDoorOpen)
                 {
@@ -83,9 +83,9 @@ public class DoorController : MonoBehaviour
     private void UpdateStatusText()
     {
         var selectedItem = InventoryUIExmaple.Instance.GetSelectedItem();
-        if (selectedItem == null || (selectedItem.id != "5" && selectedItem.id != "6" && selectedItem.id != "7" && selectedItem.id != "8"))
+        if (selectedItem == null || (selectedItem.id != "8"))
         {
-            statusText.text = "특정 열쇠가 필요합니다.";  // 열쇠가 없을 경우
+            statusText.text = "마스터 키가 필요합니다.";  // 열쇠가 없을 경우
         }
         else
         {
