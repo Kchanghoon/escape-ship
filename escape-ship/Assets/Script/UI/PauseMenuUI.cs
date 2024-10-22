@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using TMPro; // TextMeshPro를 사용하기 위해 추가
 
 public class PauseMenuUI : MonoBehaviour
 {
@@ -13,14 +14,17 @@ public class PauseMenuUI : MonoBehaviour
     [SerializeField] GameObject confirmExitPanel;//게임 종료 확인창 UI
     [SerializeField] GameObject confirmSaveSlotPanel;
     [SerializeField] GameObject confirmLoadSlotPanel;
-    //[SerializeField] AudioSource[] allAudioSources;
     [SerializeField] GameObject MainMenuUI;
     [SerializeField] private AudioMixer audioMixer; // AudioMixer 연결
     [SerializeField] private Slider bgmSlider;
     [SerializeField] private Slider effectSlider;
     [SerializeField] private Slider masterSlider;  // Master Volume 슬라이더
-    private bool isPaused = false;  // 게임이 일시정지 상태인지 확인하는 변수
 
+    [SerializeField] private TMP_InputField bgmVolumeText; // BGM 볼륨 텍스트 필드
+    [SerializeField] private TMP_InputField effectVolumeText; // 효과음 볼륨 텍스트 필드
+    [SerializeField] private TMP_InputField masterVolumeText; // Master Volume 텍스트 필드
+
+    private bool isPaused = false;  // 게임이 일시정지 상태인지 확인하는 변수
     [SerializeField] private GameObject[] uiElements; // 확인할 UI 요소들을 배열로 지정
 
     private void Start()
@@ -32,47 +36,92 @@ public class PauseMenuUI : MonoBehaviour
         effectSlider.onValueChanged.AddListener(SetEffectVolume);
         masterSlider.onValueChanged.AddListener(SetMasterVolume);
 
-        // 시작 시 슬라이더 값을 초기화 (저장된 설정값 불러오기 또는 기본값 설정)
+        // 텍스트 필드 값이 변경될 때마다 호출될 메서드 추가
+        bgmVolumeText.onEndEdit.AddListener(delegate { OnBGMTextChange(bgmVolumeText.text); });
+        effectVolumeText.onEndEdit.AddListener(delegate { OnEffectTextChange(effectVolumeText.text); });
+        masterVolumeText.onEndEdit.AddListener(delegate { OnMasterTextChange(masterVolumeText.text); });
+
+        // 시작 시 슬라이더 값 초기화 (저장된 설정값 불러오기 또는 기본값 설정)
         bgmSlider.value = PlayerPrefs.GetFloat("BGMVolume", 0.75f); // 기본값 0.75
         effectSlider.value = PlayerPrefs.GetFloat("EffectVolume", 0.75f); // 기본값 0.75
         masterSlider.value = PlayerPrefs.GetFloat("MasterVolume", 0.75f);
 
+        // 텍스트 필드도 초기화
+        UpdateTextFields();
+    }
+
+    // 슬라이더 변경 시 텍스트 필드 업데이트
+    private void UpdateTextFields()
+    {
+        bgmVolumeText.text = Mathf.Round(bgmSlider.value * 100).ToString(); // 슬라이더 값 퍼센트로 변환
+        effectVolumeText.text = Mathf.Round(effectSlider.value * 100).ToString();
+        masterVolumeText.text = Mathf.Round(masterSlider.value * 100).ToString();
     }
 
     // BGM 볼륨을 조절하는 함수
     public void SetBGMVolume(float value)
     {
-        // AudioMixer는 볼륨을 데시벨(dB)로 처리하므로, 0~1 값을 -80dB에서 0dB로 변환
-        float volume = Mathf.Log10(value) * 20;
+        float volume = (value > 0.0001f) ? Mathf.Log10(value) * 20 : -80f; // 0이면 -80dB로 설정
         audioMixer.SetFloat("BGMVolume", volume);
-
-        // 설정값 저장
         PlayerPrefs.SetFloat("BGMVolume", value);
+        UpdateTextFields(); // 슬라이더 변경 시 텍스트 필드도 업데이트
     }
 
     // 효과음 볼륨을 조절하는 함수
     public void SetEffectVolume(float value)
     {
-        float volume = Mathf.Log10(value) * 20;
+        float volume = (value > 0.0001f) ? Mathf.Log10(value) * 20 : -80f; // 0이면 -80dB로 설정
         audioMixer.SetFloat("EffectVolume", volume);
-
-        // 설정값 저장
         PlayerPrefs.SetFloat("EffectVolume", value);
+        UpdateTextFields(); // 슬라이더 변경 시 텍스트 필드도 업데이트
     }
 
-    // 효과음 볼륨을 조절하는 함수
+    // Master 볼륨을 조절하는 함수
     public void SetMasterVolume(float value)
     {
-        float volume = Mathf.Log10(value) * 20;
+        float volume = (value > 0.0001f) ? Mathf.Log10(value) * 20 : -80f; // 0이면 -80dB로 설정
         audioMixer.SetFloat("MasterVolume", volume);
-
-        // 설정값 저장
         PlayerPrefs.SetFloat("MasterVolume", value);
+        UpdateTextFields(); // 슬라이더 변경 시 텍스트 필드도 업데이트
+    }
+
+
+    // 텍스트 입력으로 BGM 볼륨 변경
+    private void OnBGMTextChange(string newValue)
+    {
+        if (float.TryParse(newValue, out float result))
+        {
+            result = Mathf.Clamp(result / 100f, 0.0001f, 1f); // 0 ~ 100 범위를 0 ~ 1로 변환
+            bgmSlider.value = result;  // 슬라이더 변경
+            SetBGMVolume(result);  // 오디오 볼륨 변경
+        }
+    }
+
+    // 텍스트 입력으로 효과음 볼륨 변경
+    private void OnEffectTextChange(string newValue)
+    {
+        if (float.TryParse(newValue, out float result))
+        {
+            result = Mathf.Clamp(result / 100f, 0.0001f, 1f); // 0 ~ 100 범위를 0 ~ 1로 변환
+            effectSlider.value = result;
+            SetEffectVolume(result);
+        }
+    }
+
+    // 텍스트 입력으로 Master 볼륨 변경
+    private void OnMasterTextChange(string newValue)
+    {
+        if (float.TryParse(newValue, out float result))
+        {
+            result = Mathf.Clamp(result / 100f, 0.0001f, 1f); // 0 ~ 100 범위를 0 ~ 1로 변환
+            masterSlider.value = result;
+            SetMasterVolume(result);
+        }
     }
 
     private void OnSetting()
     {
-        if (AreAllUIElementsInactive()) Pause(!isPaused); 
+        if (AreAllUIElementsInactive()) Pause(!isPaused);
     }
 
     private bool AreAllUIElementsInactive()
@@ -88,36 +137,14 @@ public class PauseMenuUI : MonoBehaviour
         return true; // 모든 UI가 비활성화되어 있으면 true 반환
     }
 
-
-    void Pause(bool isPuase)
+    void Pause(bool isPause)
     {
-        BasepauseMenuUI.SetActive(isPuase);  // UI 표시
-        Time.timeScale = isPuase? 0f : 1;  // 게임 시간 정지
-        isPaused = isPuase;  // 일시정지 상태로 설정
-        Cursor.visible = isPuase ? Cursor.visible = true : Cursor.visible = false;
-        Cursor.lockState = isPuase? CursorLockMode.None : CursorLockMode.Locked;
-          
-        /*
-        pauseMenuUI.SetActive(isPuase);  // UI 표시
-            Time.timeScale = isPuase ? 0f : 1f;  // 게임 시간 정지 또는 재개
-            isPaused = isPuase;  // 일시정지 상태로 설정
-
-            // 커서 제어
-            if (isPuase)
-            {
-                Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.None;  // 커서가 자유롭게 움직이게 설정
-            }
-            else
-            {
-            EventSystem.current.SetSelectedGameObject(null);
-
-            Cursor.visible = false;
-                Cursor.lockState = CursorLockMode.Locked;  // 커서를 화면 중앙에 고정
-            }
-       */
+        BasepauseMenuUI.SetActive(isPause);  // UI 표시
+        Time.timeScale = isPause ? 0f : 1;  // 게임 시간 정지
+        isPaused = isPause;  // 일시정지 상태로 설정
+        Cursor.visible = isPause;
+        Cursor.lockState = isPause ? CursorLockMode.None : CursorLockMode.Locked;
     }
-
 
     public void showConfirmMenuPanel()
     {
@@ -134,46 +161,44 @@ public class PauseMenuUI : MonoBehaviour
         confirmSaveSlotPanel.SetActive(true);
     }
 
-    public void showLoadSlotPanel() {
+    public void showLoadSlotPanel()
+    {
         confirmLoadSlotPanel.SetActive(true);
-        }
+    }
 
     public void Menu()
     {
-        BasepauseMenuUI.SetActive(false);  // UI 숨기기
-        confirmMenuPanel.SetActive(false); //메뉴 확인창 숨기기
-        confirmExitPanel.SetActive(false); //나가기 확인창 숨기기
-        confirmSaveSlotPanel.SetActive(false); //세이브창 숨기기
-        confirmLoadSlotPanel.SetActive(false); // 로드창 숨기기
+        BasepauseMenuUI.SetActive(false);
+        confirmMenuPanel.SetActive(false);
+        confirmExitPanel.SetActive(false);
+        confirmSaveSlotPanel.SetActive(false);
+        confirmLoadSlotPanel.SetActive(false);
         MainMenuUI.SetActive(true);
-
     }
 
     public void CancelExit()
     {
-        confirmMenuPanel.SetActive(false);  // 확인 창 숨기기
-        confirmExitPanel.SetActive(false); // 나가기 창 숨기기
+        confirmMenuPanel.SetActive(false);
+        confirmExitPanel.SetActive(false);
         confirmLoadSlotPanel.SetActive(false);
         confirmSaveSlotPanel.SetActive(false);
     }
+
     public void QuitGame()
     {
-        // 게임 종료 기능
         Application.Quit();
-        // 에디터 모드에서 테스트 중인 경우
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #endif
     }
 
-
     public void ClickSaveButton(int saveIndex)
     {
-
+        // 세이브 로직 추가
     }
 
     public void ClickLoadButton(int loadIndex)
     {
-
+        // 로드 로직 추가
     }
 }
