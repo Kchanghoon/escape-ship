@@ -4,7 +4,7 @@ using DG.Tweening;
 
 public class StartMenu : MonoBehaviour
 {
-    [SerializeField] private GameObject StartMenuUI;
+    [SerializeField] private GameObject StartMainUI;
     [SerializeField] private GameObject PauseMenuUI;
     [SerializeField] private GameObject confirmExitPanel; // 종료 확인창 UI
     [SerializeField] private GameObject confirmOptionSlotPanel; // 옵션창 UI
@@ -13,6 +13,10 @@ public class StartMenu : MonoBehaviour
     private bool isPaused = false;
     public GameObject panel;
 
+    private void Start()
+    {
+        MouseCam.Instance.SetCursorState(false); // 게임 시작 시 마우스 잠금
+    }
     // 스테이지 선택 후 StageManager에 연결하여 활성화
     public void SelectStage(int stageIndex)
     {
@@ -24,7 +28,7 @@ public class StartMenu : MonoBehaviour
 
     public void Update()
     {
-        if (StartMenuUI.activeSelf || PauseMenuUI.activeSelf)
+        if (StartMainUI.activeSelf || PauseMenuUI.activeSelf)
         {
             // 메뉴 BGM 등을 처리하는 코드
         }
@@ -37,15 +41,16 @@ public class StartMenu : MonoBehaviour
 
     public void Resume()
     {
-        StartMenuUI.SetActive(false);
+        StartMainUI.SetActive(false);
+        PauseMenuUI.SetActive(false);
         confirmExitPanel.SetActive(false);
         confirmOptionSlotPanel.SetActive(false);
         confirmLoadSlotPanel.SetActive(false);
         confirmSelectSlotPanel.SetActive(false);
+
         Time.timeScale = 1f;
         isPaused = false;
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        MouseCam.Instance.SetCursorState(true);  // 마우스 커서 잠금
     }
 
     public void showConfirmExitPanel() { confirmExitPanel.SetActive(true); }

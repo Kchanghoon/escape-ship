@@ -13,7 +13,6 @@ public class PipeManager : Singleton<PipeManager>
     public Canvas panelCanvas;  // 패널의 Canvas 컴포넌트
     [SerializeField] float tiem;
 
-
     private bool reachedEndPipe = false;  // End 파이프에 도달했는지 여부 확인용 변수
 
     private void StartPipe()
@@ -29,7 +28,6 @@ public class PipeManager : Singleton<PipeManager>
             Debug.LogError("startPipe가 설정되지 않았습니다!");
         }
         CheckAllConnectedPipes();
-        
     }
 
     private List<Pipe> CheckAdjacencyPipesPipes(Pipe centerPipe)
@@ -65,24 +63,6 @@ public class PipeManager : Singleton<PipeManager>
         if (endPipe.isChecked) OnPuzzleComplete();
     }
 
-    //void UncheckDisconnectedPipes(Pipe currentPipe)
-    //{
-    //    if (!currentPipe.isChecked) return;  // 이미 체크 해제된 경우 무시
-
-    //    currentPipe.isChecked = false;
-    //    Debug.Log($"{currentPipe.name}이(가) 체크 해제되었습니다.");
-
-    //    foreach (Pipe otherPipe in allPipes)
-    //    {
-    //        // 연결된 파이프들 중 체크 상태였던 파이프들을 해제
-    //        if (otherPipe.isChecked && currentPipe.IsConnected(otherPipe))
-    //        {
-    //            UncheckDisconnectedPipes(otherPipe);  // 재귀적으로 해제
-    //        }
-    //    }
-    //}
-
-    // 퍼즐이 완료되었을 때 처리 (예: 문을 열거나, 다음 단계로 진행하는 로직)
     async void OnPuzzleComplete()
     {
         // 패널 비활성화
@@ -106,7 +86,6 @@ public class PipeManager : Singleton<PipeManager>
         }
     }
 
-
     // 패널을 열 때 호출되는 함수 (필요한 경우 구현)
     public void OpenPanel()
     {
@@ -119,29 +98,26 @@ public class PipeManager : Singleton<PipeManager>
             // Canvas 우선순위를 가장 높게 설정
             if (panelCanvas != null)
             {
-                panelCanvas.sortingOrder = 999;  
+                panelCanvas.sortingOrder = 999;
             }
-            MouseCam.Instance.UnlockCursor();
+            // 커서 잠금 해제
+            MouseCam.Instance.SetCursorState(false);
         }
     }
-    
+
     public void CloseBtn()
     {
         panelCanvas.sortingOrder = 0; // 원래 순서로 복원
         Time.timeScale = 1;  // 게임 재개
         panel.SetActive(false);
-        MouseCam.Instance.LockCursor();
+        // 커서 잠금
+        MouseCam.Instance.SetCursorState(true);
     }
 
     public void RandomPipe()
     {
         foreach (Pipe otherPipe in allPipes)
         {
-            //float randomX = Random.Range(-5f, 5f);
-            //float randomZ = Random.Range(-5f, 5f);
-            
-            //otherPipe.transform.position = new Vector3(randomX, otherPipe.transform.position.y ,randomZ);
-
             float randomRotaionZ = Random.Range(0, 4) * 90f;
             otherPipe.transform.localRotation = Quaternion.Euler(0, 0, randomRotaionZ);
         }

@@ -101,7 +101,6 @@ public class ObjectPipe : MonoBehaviour
             panel.SetActive(isPanelActive);  // 패널을 활성화 또는 비활성화
             PipeManager.Instance.RandomPipe();
 
-
             if (isPanelActive)
             {
                 // 패널이 활성화될 때 Canvas의 우선순위를 높임
@@ -111,7 +110,7 @@ public class ObjectPipe : MonoBehaviour
                     MouseCam mouseCam = FindObjectOfType<MouseCam>();
                     if (mouseCam != null)
                     {
-                        mouseCam.UnlockCursor();
+                        mouseCam.SetCursorState(false);  // 커서 잠금 해제
                     }
                 }
             }
@@ -124,7 +123,7 @@ public class ObjectPipe : MonoBehaviour
                     MouseCam mouseCam = FindObjectOfType<MouseCam>();
                     if (mouseCam != null)
                     {
-                        mouseCam.LockCursor();
+                        mouseCam.SetCursorState(true);  // 커서 잠금
                     }
                 }
             }

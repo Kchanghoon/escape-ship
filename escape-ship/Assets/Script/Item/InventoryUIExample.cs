@@ -64,14 +64,23 @@ public class InventoryUIExmaple : Singleton<InventoryUIExmaple>
         if (selectedItemSlot != null)
         {
             selectedItemSlot.Deselect();
+            TooltipUI.Instance.HideTooltip(); // 이전에 선택된 아이템의 툴팁 숨기기
         }
 
         // 새로운 아이템 슬롯 선택
         selectedItemSlot = itemSlots[index];
         selectedItemSlot.Select();
 
+        // 선택한 아이템의 툴팁을 표시
+        if (selectedItemSlot.ItemData != null)
+        {
+            TooltipUI.Instance.ShowTooltip(selectedItemSlot.ItemData.descriptions);
+            TooltipUI.Instance.SetTooltipPosition(Input.mousePosition); // 툴팁 위치 설정
+        }
+
         Debug.Log($"아이템 슬롯 {index + 1}이(가) 선택되었습니다.");
     }
+
 
     /// <summary>
     /// 인벤토리 열기
@@ -262,32 +271,6 @@ public class InventoryUIExmaple : Singleton<InventoryUIExmaple>
         if (targetItemSlotUI == null) dragItemSlotUI.ItemIconFade(1);
         else ChangeItemSlot(dragItemSlotUI, targetItemSlotUI);
     }
-
-    //private void TryTogglePanel()
-    //{
-    //    // 인벤토리에서 선택된 아이템 가져오기
-    //    var selectedItem = InventoryUIExmaple.Instance.GetSelectedItem();
-
-    //    // 선택된 아이템이 있으며, 그 아이템이 패널을 열 수 있는 아이템인지 확인
-    //    if (selectedItem != null && selectedItem.id == "9")
-    //    {
-    //        ToggleTutorialPanel();  // 패널을 토글
-    //    }
-    //    else if (selectedItem != null && selectedItem.id == "10")
-    //    {
-    //        ToggleNotePanel();
-    //    }
-    //}
-
-    //private void ToggleTutorialPane()
-    //{
-
-    //}
-
-    //private void ToggleNotePanel()
-    //{
-
-    //}
 
 
 }

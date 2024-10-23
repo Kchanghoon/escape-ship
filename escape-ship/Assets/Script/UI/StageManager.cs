@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class StageManager : Singleton<StageManager>
 {
@@ -25,35 +24,36 @@ public class StageManager : Singleton<StageManager>
         {
             stages[stageIndex].SetActive(true);
 
-            // 모든 스테이지 비활성화
-            foreach (GameObject stage in stages)
+            // 플레이어를 해당 스테이지의 시작 위치로 이동
+            if (player != null)
             {
-                stage.SetActive(false);
-            }
+                CharacterController characterController = player.GetComponent<CharacterController>();
 
-            if (stageIndex >= 0 && stageIndex < stages.Length)
-            {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-                stages[stageIndex].SetActive(true);
-
-                // 플레이어를 해당 스테이지의 시작 위치로 이동
-                if (player != null)
+                if (characterController != null)
                 {
-                    // 플레이어 위치와 회전을 스테이지 시작 위치로 설정
+                    // CharacterController가 있는 경우, Transform을 통해 위치 이동
+                    characterController.enabled = false;  // 이동하기 전에 CharacterController를 비활성화
                     player.transform.position = playerStartPoints[stageIndex].position;
                     player.transform.rotation = playerStartPoints[stageIndex].rotation;
-
-                    Debug.Log($"플레이어가 {stageIndex} 스테이지의 시작 위치로 이동했습니다. 현재 위치: {player.transform.position}");
+                    characterController.enabled = true;  // 위치 설정 후 다시 CharacterController 활성화
                 }
                 else
                 {
-                    Debug.LogWarning("Player 오브젝트가 존재하지 않습니다.");
+                    // CharacterController가 없을 때는 Transform을 통해 이동
+                    player.transform.position = playerStartPoints[stageIndex].position;
+                    player.transform.rotation = playerStartPoints[stageIndex].rotation;
                 }
+
+                Debug.Log($"플레이어가 {stageIndex} 스테이지의 시작 위치로 이동했습니다. 현재 위치: {player.transform.position}");
             }
             else
             {
-                Debug.LogError("잘못된 스테이지 인덱스입니다.");
+                Debug.LogWarning("Player 오브젝트가 존재하지 않습니다.");
             }
+        }
+        else
+        {
+            Debug.LogError("잘못된 스테이지 인덱스입니다.");
         }
     }
 }

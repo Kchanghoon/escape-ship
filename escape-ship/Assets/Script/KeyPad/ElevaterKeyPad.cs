@@ -23,6 +23,8 @@ public class ElevaterKeyPad : MonoBehaviour
     {
         keyPadPanel.SetActive(false);
         originalSortingOrder = keyPadCanvas.sortingOrder;
+
+        // KeyAction.Play 이벤트에 OnPlay 메서드 연결
         KeyManager.Instance.keyDic[KeyAction.Play] += OnPlay;
 
         if (doorSound == null)
@@ -56,6 +58,7 @@ public class ElevaterKeyPad : MonoBehaviour
         isMouseOverItem = false;
     }
 
+    // 플레이어가 Play 키를 눌렀을 때 호출될 메서드
     public void OnPlay()
     {
         float distanceToPlayer = Vector3.Distance(player.position, transform.position);
@@ -70,14 +73,13 @@ public class ElevaterKeyPad : MonoBehaviour
     {
         keyPadPanel.SetActive(true);
         keyPadCanvas.sortingOrder = 999;
-        Time.timeScale = 0;
 
         keyPadController.SetActiveElevaterKeyPad(this); // ElevaterKeyPad를 설정
 
         MouseCam mouseCam = FindObjectOfType<MouseCam>();
         if (mouseCam != null)
         {
-            mouseCam.UnlockCursor();
+            mouseCam.SetCursorState(false);  // 커서를 잠금 해제
         }
     }
 
@@ -129,12 +131,17 @@ public class ElevaterKeyPad : MonoBehaviour
     {
         keyPadPanel.SetActive(false);
         keyPadCanvas.sortingOrder = originalSortingOrder;
-        Time.timeScale = 1;
 
         MouseCam mouseCam = FindObjectOfType<MouseCam>();
         if (mouseCam != null)
         {
-            mouseCam.LockCursor();
+            mouseCam.SetCursorState(true);  // 커서를 잠금
         }
+    }
+
+    private void OnDestroy()
+    {
+        // OnDestroy에서 이벤트를 해제하여 메모리 누수 방지
+        KeyManager.Instance.keyDic[KeyAction.Play] -= OnPlay;
     }
 }

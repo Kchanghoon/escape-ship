@@ -103,7 +103,7 @@ public class BoxKeyPad : MonoBehaviour
         MouseCam mouseCam = FindObjectOfType<MouseCam>();
         if (mouseCam != null)
         {
-            mouseCam.UnlockCursor();
+            mouseCam.SetCursorState(false);  // 커서 잠금 해제
         }
     }
 
@@ -154,7 +154,7 @@ public class BoxKeyPad : MonoBehaviour
         MouseCam mouseCam = FindObjectOfType<MouseCam>();
         if (mouseCam != null)
         {
-            mouseCam.LockCursor();
+            mouseCam.SetCursorState(true);  // 커서 잠금
         }
     }
 }
