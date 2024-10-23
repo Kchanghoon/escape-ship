@@ -15,6 +15,8 @@ public class NpcDialogue : MonoBehaviour
     private Canvas dialogueCanvas;  // 대화 패널의 Canvas
     public TextMeshProUGUI TalktoText;  // 화면에 출력할 텍스트 (TextMeshPro 사용 시)
 
+    private bool itemadd = false;  // 아이템을 한 번만 주기 위한 플래그
+
     void Start()
     {
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;  // 플레이어의 Transform 가져오기
@@ -24,9 +26,15 @@ public class NpcDialogue : MonoBehaviour
 
         // 키 입력 이벤트를 KeyManager의 keyDic에 등록 (PlayAction에 연결)
         KeyManager.Instance.keyDic[KeyAction.Play] += TryToggleDialoguePanel;
+    }
 
-        // KeyAction.NextDialogue로 대화를 넘길 수 있게 연결
-        KeyManager.Instance.keyDic[KeyAction.PickUp] += ShowNextDialogue;
+    void Update()
+    {
+        // 대화 중일 때 F키 입력을 감지하여 다음 대화 페이지로 넘김
+        if (isDialogueActive && Input.GetKeyDown(KeyCode.F))
+        {
+            ShowNextDialogue();
+        }
     }
 
     // 마우스가 NPC 위에 있을 때 호출
@@ -102,6 +110,14 @@ public class NpcDialogue : MonoBehaviour
             else
             {
                 ToggleDialoguePanel();  // 대화가 끝나면 패널 닫기
+
+                // 아이템을 아직 받지 않았다면 지급
+                if (!itemadd)
+                {
+                    var itemController = ItemController.Instance;
+                    itemController.AddItem("10");  // 아이템 지급
+                    itemadd = true;  // 아이템 지급 플래그를 설정
+                }
             }
         }
     }

@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 public class NoteUI : MonoBehaviour
@@ -42,9 +41,8 @@ public class NoteUI : MonoBehaviour
     private void TogglePanel(GameObject panel)
     {
         if (panel == null) return;
-        bool isActive = !panel.gameObject.activeInHierarchy;
-        Cursor.visible = isActive;
-        Cursor.lockState = isActive ? CursorLockMode.None : CursorLockMode.Locked;
+        bool isActive = !panel.gameObject.activeInHierarchy;  // 패널의 활성화 상태를 토글
+        MouseCam.Instance.SetCursorState(!isActive);  // MouseCam 스크립트를 통해 커서 상태 변경
         panel.SetActive(isActive);  // 패널을 활성화 또는 비활성화
     }
 }
