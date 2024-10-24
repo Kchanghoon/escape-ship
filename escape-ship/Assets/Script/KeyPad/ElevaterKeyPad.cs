@@ -13,14 +13,17 @@ public class ElevaterKeyPad : MonoBehaviour
     [SerializeField] AudioSource doorSound;
     [SerializeField] AudioSource elevatorMoveSound;
     [SerializeField] KeypadController keyPadController;
-    [SerializeField] CanvasGroup blackoutCanvasGroup;
-    [SerializeField] float fadeDuration = 2f;
     [SerializeField] float elevatorMoveDuration = 3f;
+    [SerializeField] StageManager stageManager;  // StageManager 인스턴스 참조
 
+    [SerializeField] BlackOutChange blackOutChange;  // BlackOutChange 스크립트 참조
     private int originalSortingOrder;
 
     private void Start()
     {
+        // StageManager 인스턴스 가져오기
+        stageManager = StageManager.Instance;
+
         keyPadPanel.SetActive(false);
         originalSortingOrder = keyPadCanvas.sortingOrder;
 
@@ -35,11 +38,6 @@ public class ElevaterKeyPad : MonoBehaviour
         if (elevatorMoveSound == null)
         {
             Debug.LogWarning("엘리베이터 이동 소리가 할당되지 않았습니다.");
-        }
-
-        if (blackoutCanvasGroup != null)
-        {
-            blackoutCanvasGroup.alpha = 0;
         }
     }
 
@@ -74,6 +72,7 @@ public class ElevaterKeyPad : MonoBehaviour
         keyPadPanel.SetActive(true);
         keyPadCanvas.sortingOrder = 999;
 
+        Time.timeScale = 0;  // 시간 정지 (게임 일시정지)
         keyPadController.SetActiveElevaterKeyPad(this); // ElevaterKeyPad를 설정
 
         MouseCam mouseCam = FindObjectOfType<MouseCam>();
@@ -94,10 +93,10 @@ public class ElevaterKeyPad : MonoBehaviour
                 doorSound.Play();
             }
 
+            // 키패드를 먼저 닫고 블랙아웃 및 엘리베이터 이동 처리
+            CloseKeyPad();
+            StartCoroutine(HandleElevatorTransition());
             doorMotion.CloseDoor();
-            StartCoroutine(MoveElevator());
-            CloseKeyPad();  // 키패드 닫기
-            doorMotion.OpenDoor();
         }
         else
         {
@@ -105,33 +104,37 @@ public class ElevaterKeyPad : MonoBehaviour
         }
     }
 
-    private IEnumerator MoveElevator()
-    {
+    // 블랙아웃과 엘리베이터 이동 처리
+    private IEnumerator HandleElevatorTransition()
+    {        // 엘리베이터 이동 소리 재생
         if (elevatorMoveSound != null)
         {
             elevatorMoveSound.Play();
         }
-
-        if (blackoutCanvasGroup != null)
+        // 블랙아웃 시작
+        if (blackOutChange != null)
         {
-            float elapsedTime = 0f;
-            while (elapsedTime < fadeDuration)
-            {
-                blackoutCanvasGroup.alpha = Mathf.Lerp(0, 1, elapsedTime / fadeDuration);
-                elapsedTime += Time.deltaTime;
-                yield return null;
-            }
-            blackoutCanvasGroup.alpha = 1;
+            yield return StartCoroutine(blackOutChange.StartBlackOut());
         }
 
-        yield return new WaitForSeconds(elevatorMoveDuration);
+        doorMotion.CloseDoor();
+
+        // 블랙아웃 종료
+        if (blackOutChange != null)
+        {
+            yield return StartCoroutine(blackOutChange.EndBlackOut());
+        }
+        stageManager.ActivateStage(2);
+
     }
 
     public void CloseKeyPad()
     {
+        // 키패드를 코루틴 실행 전에 먼저 닫음
         keyPadPanel.SetActive(false);
         keyPadCanvas.sortingOrder = originalSortingOrder;
 
+        Time.timeScale = 1;  // 시간 재개 (게임 일시정지 해제)
         MouseCam mouseCam = FindObjectOfType<MouseCam>();
         if (mouseCam != null)
         {
