@@ -1,7 +1,7 @@
-using UnityEditor.UI;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections;
 
 public class EndKeypadController : MonoBehaviour
 {
@@ -11,7 +11,17 @@ public class EndKeypadController : MonoBehaviour
 
     [SerializeField] GameObject keyPadPanel;  // 비밀번호 입력 패널
     private string currentInput = "";  // 현재 입력된 비밀번호
+    private StageManager stageManager;  // StageManager 인스턴스 참조
+    private BlackOutChange blackOutChange;  // BlackOutChange 스크립트 참조
 
+    private void Start()
+    {
+        // StageManager 인스턴스 가져오기
+        stageManager = StageManager.Instance;
+
+        // BlackOutChange 스크립트 참조
+        blackOutChange = FindObjectOfType<BlackOutChange>();
+    }
 
     // 숫자 버튼 클릭 시 호출
     public void OnNumberButtonClick(string number)
@@ -20,6 +30,7 @@ public class EndKeypadController : MonoBehaviour
         inputField.text = currentInput;
         Debug.Log("현재 입력된 값: " + currentInput);  // 디버그 로그로 확인
     }
+
     // 지우기 버튼 클릭 시 호출
     public void OnDeleteButtonClick()
     {
@@ -35,14 +46,8 @@ public class EndKeypadController : MonoBehaviour
     {
         if (currentInput == correctPassword)
         {
-            Debug.Log("비밀번호가 일치합니다.");
-            // 비밀번호가 맞을 경우 수행할 로직 추가
-            // 게임 종료 기능
-            Application.Quit();
-            // 에디터 모드에서 테스트 중인 경우
-#if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-#endif
+            // 비밀번호가 맞을 경우 Stage1으로 이동
+            StartCoroutine(HandleStageTransition());  // 블랙아웃과 함께 스테이지 전환
         }
         else
         {
@@ -53,6 +58,28 @@ public class EndKeypadController : MonoBehaviour
         // 입력 초기화
         currentInput = "";
         inputField.text = "";
+    }
+
+    // 블랙아웃과 함께 스테이지 전환 처리
+    private IEnumerator HandleStageTransition()
+    {
+        // 키패드 닫기
+        OnBackButtonClick();
+
+        // 블랙아웃 시작
+        if (blackOutChange != null)
+        {
+            yield return StartCoroutine(blackOutChange.StartBlackOut());
+        }
+
+        // 스테이지 1로 이동
+        stageManager.ActivateStage(1);
+
+        // 일정 시간 대기 후 블랙아웃 끝
+        if (blackOutChange != null)
+        {
+            yield return StartCoroutine(blackOutChange.EndBlackOut());
+        }
     }
 
     public void OnBackButtonClick()

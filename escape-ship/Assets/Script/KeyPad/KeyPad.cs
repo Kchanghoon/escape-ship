@@ -49,7 +49,7 @@ public class KeyPad : MonoBehaviour
     private void ShowPickUpText()
     {
         pickUpText.gameObject.SetActive(true);  // 텍스트 활성화
-        pickUpText.text = "E키를 눌러 비밀번호 입력창을 여세요";  // 안내 메시지 설정
+        pickUpText.text = "E키를 눌러 키패드 활성화 가능";  // 안내 메시지 설정
     }
 
     // 상호작용 안내 텍스트를 비활성화하는 메서드
