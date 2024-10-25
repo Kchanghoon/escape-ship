@@ -17,7 +17,7 @@ public class MouseCam : Singleton<MouseCam>
     void Start()
     {
         SetCursorState(true);  // 게임 시작 시 커서 잠금
-        KeyManager.Instance.keyDic[KeyAction.Inventory] += OnInventory;
+        //KeyManager.Instance.keyDic[KeyAction.Inventory] += OnInventory;
         KeyManager.Instance.keyDic[KeyAction.Setting] += OnOption;
     }
 
@@ -45,17 +45,17 @@ public class MouseCam : Singleton<MouseCam>
     }
 
     // 인벤토리 UI를 열고 닫을 때 호출되는 함수
-    void OnInventory()
-    {
-        if (pauseMenuUI.activeSelf)
-        {
-            Debug.Log("Pause 메뉴가 활성화된 상태에서는 인벤토리 입력이 불가합니다.");
-            return;
-        }
+    //void OnInventory()
+    //{
+    //    if (pauseMenuUI.activeSelf)
+    //    {
+    //        Debug.Log("Pause 메뉴가 활성화된 상태에서는 인벤토리 입력이 불가합니다.");
+    //        return;
+    //    }
 
-        isPaused = !isPaused;
-        SetCursorState(!isPaused);  // 커서 잠금을 토글
-    }
+    //    isPaused = !isPaused;
+    //    SetCursorState(!isPaused);  // 커서 잠금을 토글
+    //}
 
     // 옵션 메뉴를 열고 닫을 때 호출되는 함수
     void OnOption()

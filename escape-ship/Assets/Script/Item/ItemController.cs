@@ -19,7 +19,6 @@ public class ItemController : Singleton<ItemController>
     private void Start()
     {
         // PickUp 및 Drop 키 이벤트 연결
-        //KeyManager.Instance.keyDic[KeyAction.PickUp] += OnPickUp;
         KeyManager.Instance.keyDic[KeyAction.Drop] += OnDrop;
     }
 
@@ -59,20 +58,7 @@ public class ItemController : Singleton<ItemController>
         return new ItemDataExample(foundItem);  // 아이템 데이터를 복사하여 반환
     }
 
-    // 아이템을 획득하는 메서드
-    //public void OnPickUp()
-    //{
-    //    if (canPickUp && nearbyItem != null)  // 획득 가능한 상태인지 확인
-    //    {
-    //        Debug.Log($"아이템 {nearbyItem.id}을(를) 획득했습니다 OnPickUP.");
-    //        AddItem(nearbyItem.id);  // 인벤토리에 아이템 추가
-    //        nearbyItem = null;  // 가까운 아이템 정보 초기화
-    //        canPickUp = false;  // 아이템 획득 가능 상태 초기화
 
-    //        // UI 업데이트 호출
-    //        InventoryUIExmaple.Instance.UpdateInventoryUI();
-    //    }
-    //}
 
     // 아이템을 버리는 메서드
     public void OnDrop()
@@ -114,17 +100,6 @@ public class ItemController : Singleton<ItemController>
         }
     }
 
-    // 아이템 프리팹을 찾는 메서드
-    //private GameObject GetItemPrefab(string id)
-    //{
-    //    // ResourceDB에서 아이템의 리소스를 가져옴
-    //    var itemResource = ResourceDB.Instance.GetItemResource(id);
-    //    if (itemResource != null)
-    //    {
-    //        return itemResource.object3D;  // 3D 오브젝트 반환
-    //    }
-    //    return null;
-    //}
 
     // 플레이어가 아이템과 가까워졌을 때 호출되는 메서드
     public void SetCanPickUp(ItemDataExample itemData)
