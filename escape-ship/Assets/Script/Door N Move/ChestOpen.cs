@@ -75,7 +75,7 @@ public class ChestOpen : MonoBehaviour
                 if (selectedItem != null && selectedItem.id == "1")
                 {
                     // 상자를 열거나 닫은 후 배터리 수량 감소
-                    ItemController.Instance.DecreaseItemQuantity("1");  // 배터리 수량 감소
+                    ItemController.Instance.DeleteItemQuantity("1");  // 배터리 수량 감소
                     hasUsedBattery = true;  // 배터리를 사용했음을 기록
                     UpdateStatusText();
 

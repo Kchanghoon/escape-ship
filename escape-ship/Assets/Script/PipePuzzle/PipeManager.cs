@@ -11,7 +11,9 @@ public class PipeManager : Singleton<PipeManager>
     public GameObject panel;     // 퍼즐 완료 시 비활성화할 패널
     public GameObject recoveryZone; // 퍼즐 완료 시 활성화할 회복존
     public Canvas panelCanvas;  // 패널의 Canvas 컴포넌트
-    [SerializeField] float tiem;
+   [SerializeField] public bool puzzleclear = false;  // 퍼즐 클리어 여부를 저장하는 변수
+
+    [SerializeField] float time;
 
     private bool reachedEndPipe = false;  // End 파이프에 도달했는지 여부 확인용 변수
 
@@ -63,23 +65,23 @@ public class PipeManager : Singleton<PipeManager>
         if (endPipe.isChecked) OnPuzzleComplete();
     }
 
-    async void OnPuzzleComplete()
+    async public void OnPuzzleComplete()
     {
-
+        ItemController.Instance.DeleteItemQuantity("3");  // 벨브 수량 감소
+        puzzleclear = true;
         // 패널 비활성화
         if (panel != null)
         {
             CloseBtn();
         }
-
         // 회복존 활성화
         if (recoveryZone != null)
         {
             recoveryZone.SetActive(true);
             Debug.Log("회복존이 활성화되었습니다.");
 
-            ItemController.Instance.DecreaseItemQuantity("3");  // 배터리 수량 감소
-            await UniTask.Delay((int)(tiem * 1000));
+         
+            await UniTask.Delay((int)(time * 1000));
             recoveryZone.SetActive(false);
             Debug.Log("회복존이 비활성화");
         }

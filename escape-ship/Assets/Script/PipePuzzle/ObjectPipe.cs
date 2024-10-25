@@ -1,5 +1,7 @@
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class ObjectPipe : MonoBehaviour
 {
@@ -7,12 +9,14 @@ public class ObjectPipe : MonoBehaviour
     [SerializeField] private Transform player;  // 플레이어의 Transform
     [SerializeField] private float interactionDistance = 3f;  // 플레이어와 오브젝트 간의 상호작용 거리
     [SerializeField] private Canvas panelCanvas;  // 패널의 Canvas (우선순위 변경을 위해 필요)
+    //[SerializeField] private bool puzzleclear = false;  // 퍼즐 클리어 여부를 저장하는 변수
+    //public GameObject recoveryZone; // 퍼즐 완료 시 활성화할 회복존
     private int originalSortingOrder;  // 원래 Canvas의 sortingOrder
     private bool isPanelActive = false;  // 패널이 현재 활성화되어 있는지 여부
     private bool isMouseOverObject = false;  // 마우스가 오브젝트 위에 있는지 여부
 
     public TextMeshProUGUI statusText;  // 상태를 표시할 TMP 텍스트
-
+     
     void Start()
     {
         // 시작 시 패널을 비활성화
@@ -66,18 +70,25 @@ public class ObjectPipe : MonoBehaviour
             var selectedItem = InventoryUIExmaple.Instance.GetSelectedItem();
             if (selectedItem != null && selectedItem.id == "3")
             {
-                TogglePanel();
+                if (PipeManager.Instance.puzzleclear == false)
+                {
+                    TogglePanel();
+                }
+                else
+                {
+                    // 퍼즐이 이미 클리어된 경우 바로 회복존 활성화
+                    PipeManager.Instance.OnPuzzleComplete();
+                }
             }
             else
             {
                 statusText.gameObject.SetActive(true);
-                statusText.text = "벨브를 선택 후 눌러주세요.";  
+                statusText.text = "벨브를 선택 후 눌러주세요.";
             }
         }
         else
         {
             Debug.Log("플레이어가 너무 멀거나 마우스가 오브젝트 위에 있지 않습니다.");
-
             statusText.gameObject.SetActive(false);
         }
     }
@@ -137,4 +148,5 @@ public class ObjectPipe : MonoBehaviour
         float distanceToPlayer = Vector3.Distance(player.position, transform.position);
         return distanceToPlayer <= interactionDistance;
     }
+
 }
