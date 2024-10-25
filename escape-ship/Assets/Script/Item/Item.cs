@@ -35,24 +35,6 @@ public class Item : MonoBehaviour
         //pickUpText.gameObject.SetActive(false);  // 에임이 벗어나면 텍스트 비활성화
     }
 
-    //void Update()
-    //{
-    //    if (isMouseOverItem)
-    //    {
-    //        float distance = Vector3.Distance(playerTransform.position, transform.position);
-
-    //        // 플레이어가 지정한 거리 안에 있는 경우
-    //        if (distance <= pickUpDistance)
-    //        {
-    //            pickUpText.gameObject.SetActive(true);  // 텍스트 활성화
-    //            pickUpText.text = "F키를 눌러 아이템을 집으세요";  // 문구 설정
-    //        }
-    //        else
-    //        {
-    //            pickUpText.gameObject.SetActive(false);  // 거리가 멀어지면 텍스트 비활성화
-    //        }
-    //    }
-    //}
 
     // 아이템을 획득 시도하는 함수 (조건 확인)
     private void TryPickUpItem()

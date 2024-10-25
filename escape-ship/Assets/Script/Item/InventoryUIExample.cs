@@ -9,6 +9,9 @@ using UnityEngine.UI;
 public class InventoryUIExmaple : Singleton<InventoryUIExmaple>
 {
     [SerializeField] ItemSlotUI[] itemSlots = new ItemSlotUI[10]; // 인벤토리 슬롯 10개 제한
+    private List<int> filledSlots = new List<int>(); // 아이템이 있는 슬롯들의 인덱스를 저장하는 리스트
+    private int currentIndexInFilledSlots = 0; // 현재 선택된 filledSlots 내의 인덱스
+
     ItemDataExample[] itemDatas // 저장할 아이템 데이터
     {
         get => Array.ConvertAll(itemSlots, x => x.ItemData);
@@ -28,15 +31,54 @@ public class InventoryUIExmaple : Singleton<InventoryUIExmaple>
     {
         ItemController.Instance.OnAddItem += OnAddItem;
         ItemController.Instance.OnRemoveItem += OnRemoveItem;
-        KeyManager.Instance.keyDic[KeyAction.Inventory] += OpenInventory;
-
-        //KeyManager.Instance.keyDic[KeyAction.Panel] += TryTogglePanel;
         ResetInventory(); // 테스트용
-
+        UpdateFilledSlots(); // 인벤토리 시작 시 아이템이 있는 슬롯들 초기화
     }
 
 
+    private void Update()
+    {
+        // 마우스 휠 입력 처리
+        float scroll = Input.GetAxis("Mouse ScrollWheel");
 
+        if (scroll != 0f && filledSlots.Count > 0) // 아이템이 있는 슬롯이 있는 경우에만 처리
+        {
+            if (scroll > 0f) // 마우스 휠 위로
+            {
+                currentIndexInFilledSlots = (currentIndexInFilledSlots + 1) % filledSlots.Count;
+            }
+            else if (scroll < 0f) // 마우스 휠 아래로
+            {
+                currentIndexInFilledSlots = (currentIndexInFilledSlots - 1 + filledSlots.Count) % filledSlots.Count;
+            }
+
+            SelectItem(filledSlots[currentIndexInFilledSlots]); // 선택한 슬롯으로 이동
+        }
+
+        // 기타 인벤토리 관련 업데이트 로직
+    }
+
+    /// <summary>
+    /// 아이템이 있는 슬롯들의 인덱스 리스트 업데이트
+    /// </summary>
+    private void UpdateFilledSlots()
+    {
+        filledSlots.Clear();
+        for (int i = 0; i < itemSlots.Length; i++)
+        {
+            if (itemSlots[i].ItemData != null && !string.IsNullOrEmpty(itemSlots[i].ItemData.id))
+            {
+                filledSlots.Add(i); // 아이템이 있는 슬롯 인덱스 추가
+            }
+        }
+
+        // 선택된 슬롯이 filledSlots에 없는 경우 가장 첫 번째 슬롯을 선택
+        if (filledSlots.Count > 0 && !filledSlots.Contains(currentIndexInFilledSlots))
+        {
+            currentIndexInFilledSlots = 0;
+            SelectItem(filledSlots[currentIndexInFilledSlots]);
+        }
+    }
     public ItemDataExample GetSelectedItem()
     {
         return selectedItemSlot?.ItemData;
@@ -69,6 +111,15 @@ public class InventoryUIExmaple : Singleton<InventoryUIExmaple>
 
         // 새로운 아이템 슬롯 선택
         selectedItemSlot = itemSlots[index];
+
+        // 선택된 슬롯이 비어있으면 툴팁을 표시하지 않음
+        if (selectedItemSlot.ItemData == null || string.IsNullOrEmpty(selectedItemSlot.ItemData.id))
+        {
+            selectedItemSlot = null;
+            Debug.Log("선택된 슬롯에 아이템이 없습니다.");
+            return;
+        }
+
         selectedItemSlot.Select();
 
         // 선택한 아이템의 툴팁을 표시
@@ -82,30 +133,31 @@ public class InventoryUIExmaple : Singleton<InventoryUIExmaple>
     }
 
 
-    /// <summary>
-    /// 인벤토리 열기
-    /// </summary>
-    public void OpenInventory()
-    {
-        isInventoryOpen = !isInventoryOpen;
 
-        //// 인벤토리 UI를 토글
-        //canvasGroup.alpha = isInventoryOpen ? 1 : 0;
-        canvasGroup.interactable = isInventoryOpen;
-        canvasGroup.blocksRaycasts = isInventoryOpen;
+    ///// <summary>
+    ///// 인벤토리 열기
+    ///// </summary>
+    //public void OpenInventory()
+    //{
+    //    isInventoryOpen = !isInventoryOpen;
 
-        // 커서 상태 변경
-        if (isInventoryOpen)
-        {
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
-        }
-        else
-        {
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
-        }
-    }
+    //    //// 인벤토리 UI를 토글
+    //    //canvasGroup.alpha = isInventoryOpen ? 1 : 0;
+    //    canvasGroup.interactable = isInventoryOpen;
+    //    canvasGroup.blocksRaycasts = isInventoryOpen;
+
+    //    // 커서 상태 변경
+    //    if (isInventoryOpen)
+    //    {
+    //        Cursor.visible = true;
+    //        Cursor.lockState = CursorLockMode.None;
+    //    }
+    //    else
+    //    {
+    //        Cursor.visible = false;
+    //        Cursor.lockState = CursorLockMode.Locked;
+    //    }
+    //}
 
     [ContextMenu("Reset")]
     public void ResetInventory()
@@ -124,6 +176,8 @@ public class InventoryUIExmaple : Singleton<InventoryUIExmaple>
         {
             itemSlots[i].Init(SetItemDatas[i]);
         }
+
+        UpdateFilledSlots(); // 인벤토리 데이터 설정 후 아이템이 있는 슬롯 갱신
     }
 
     /// <summary>
@@ -136,15 +190,10 @@ public class InventoryUIExmaple : Singleton<InventoryUIExmaple>
         if (itemSlot == null) return; // 빈 칸 없음
 
         itemSlot.Init(itemData); // 빈 칸에 아이템 추가
+        UpdateFilledSlots(); // 아이템이 추가된 후 아이템이 있는 슬롯 리스트 갱신
     }
 
-    /*public void OnRemoveItem(ItemDataExample itemData)
-    {
-        ItemSlotUI itemSlot = GetItemSlot(itemData.uniqueId);
-        if (itemSlot == null) return;
-        itemSlot.Init(new ItemDataExample());
-    }
-    */
+
     public void OnRemoveItem(ItemDataExample itemData)
     {
         if (itemData == null)
@@ -162,7 +211,19 @@ public class InventoryUIExmaple : Singleton<InventoryUIExmaple>
 
         itemSlot.Init(new ItemDataExample()); // 아이템 제거 시 빈 데이터를 초기화
         itemSlot.UpdateQuantityUI(); // UI 업데이트
+
+        // 만약 현재 선택된 슬롯이 삭제된 아이템 슬롯이라면 선택 해제
+        if (selectedItemSlot == itemSlot)
+        {
+            selectedItemSlot.Deselect();
+            selectedItemSlot = null;
+            TooltipUI.Instance.HideTooltip(); // 툴팁 숨기기
+            Debug.Log("선택된 아이템이 삭제되어 슬롯 선택이 해제되었습니다.");
+        }
+
+        UpdateFilledSlots(); // 아이템이 제거된 후 아이템이 있는 슬롯 리스트 갱신
     }
+
 
     /// <summary>
     /// 인벤토리 빈칸 찾기
