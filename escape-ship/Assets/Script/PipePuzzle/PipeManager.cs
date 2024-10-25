@@ -65,6 +65,7 @@ public class PipeManager : Singleton<PipeManager>
 
     async void OnPuzzleComplete()
     {
+
         // 패널 비활성화
         if (panel != null)
         {
@@ -76,6 +77,8 @@ public class PipeManager : Singleton<PipeManager>
         {
             recoveryZone.SetActive(true);
             Debug.Log("회복존이 활성화되었습니다.");
+
+            ItemController.Instance.DecreaseItemQuantity("3");  // 배터리 수량 감소
             await UniTask.Delay((int)(tiem * 1000));
             recoveryZone.SetActive(false);
             Debug.Log("회복존이 비활성화");

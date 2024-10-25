@@ -99,6 +99,7 @@ public class ChestOpen : MonoBehaviour
     {
         if (hasUsedBattery)
         {
+            statusText.text = "";
         }
         else
         {

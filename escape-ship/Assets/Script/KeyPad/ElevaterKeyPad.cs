@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using UnityEngine;
 
@@ -17,10 +18,22 @@ public class ElevaterKeyPad : MonoBehaviour
     [SerializeField] StageManager stageManager;  // StageManager 인스턴스 참조
 
     [SerializeField] BlackOutChange blackOutChange;  // BlackOutChange 스크립트 참조
+    public Transform door;  // 상하로 움직이는 문
+    public Transform elevator;
+    public float startPosY;  // 문 시작 위치 Y
+    public float endPosY = 3f;  // 문이 열릴 때 이동할 거리
+    public float duration = 1f;  // 문이 열리는 데 걸리는 시간
+    public float ElevaterstartPosY;  // 문 시작 위치 Y
+    public float ElevaterendPosY = 5f;  // 문이 열릴 때 이동할 거리
+    public float Elevaterduration = 2f;  // 문이 열리는 데 걸리는 시간
+    public Ease motionEase = Ease.OutQuad;  // 애니메이션 속도 조절
+
+    private bool isDoorOpen = false;  // 문이 열려 있는지 여부를 저장하는 변수
     private int originalSortingOrder;
 
     private void Start()
-    {
+    { // 시작 위치 저장
+        startPosY = door.localPosition.y;
         // StageManager 인스턴스 가져오기
         stageManager = StageManager.Instance;
 
@@ -106,18 +119,22 @@ public class ElevaterKeyPad : MonoBehaviour
 
     // 블랙아웃과 엘리베이터 이동 처리
     private IEnumerator HandleElevatorTransition()
-    {        // 엘리베이터 이동 소리 재생
+    {
+
+        CloseDoor();
+        // 엘리베이터 이동 소리 재생
         if (elevatorMoveSound != null)
         {
             elevatorMoveSound.Play();
         }
+        MoveElevater();
+
         // 블랙아웃 시작
         if (blackOutChange != null)
         {
             yield return StartCoroutine(blackOutChange.StartBlackOut());
         }
 
-        doorMotion.CloseDoor();
 
         // 블랙아웃 종료
         if (blackOutChange != null)
@@ -146,5 +163,21 @@ public class ElevaterKeyPad : MonoBehaviour
     {
         // OnDestroy에서 이벤트를 해제하여 메모리 누수 방지
         KeyManager.Instance.keyDic[KeyAction.Play] -= OnPlay;
+    }
+    public void CloseDoor()
+    {
+        door.DOLocalMoveY(startPosY - endPosY, duration)  // 문을 아래로 이동
+            .SetEase(motionEase).OnComplete(() =>
+            {
+                isDoorOpen = false;  // 문이 닫힌 상태로 기록
+            });
+    }
+
+    public void MoveElevater()
+    {
+        elevator.DOLocalMoveY(ElevaterstartPosY + ElevaterendPosY, Elevaterduration).SetEase(motionEase).OnComplete(() =>
+        {
+           
+        });  // 문을 아래로 이동
     }
 }

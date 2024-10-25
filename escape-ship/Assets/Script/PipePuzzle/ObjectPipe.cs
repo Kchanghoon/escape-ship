@@ -43,12 +43,19 @@ public class ObjectPipe : MonoBehaviour
     private void OnMouseEnter()
     {
         isMouseOverObject = true;
+        if (IsPlayerInRange() && isMouseOverObject)
+        {
+            Debug.Log("온마우스 엔터 안까지 작동 완료");
+            statusText.gameObject.SetActive(true);
+            statusText.text = "벨브가 필요합니다.";
+        }
     }
 
     // 마우스가 오브젝트에서 벗어났을 때 호출되는 함수
     private void OnMouseExit()
     {
         isMouseOverObject = false;
+        statusText.gameObject.SetActive(false);
     }
 
     // 패널을 토글할 수 있는지 확인하고 패널을 토글
@@ -64,7 +71,7 @@ public class ObjectPipe : MonoBehaviour
             else
             {
                 statusText.gameObject.SetActive(true);
-                statusText.text = "벨브가 필요합니다.";  // 노랑 카드가 없을 때
+                statusText.text = "벨브를 선택 후 눌러주세요.";  
             }
         }
         else
@@ -74,21 +81,6 @@ public class ObjectPipe : MonoBehaviour
             statusText.gameObject.SetActive(false);
         }
     }
-
-    //// 상태 텍스트를 업데이트하는 함수
-    //private void UpdateStatusText()
-    //{
-    //    var selectedItem = InventoryUIExmaple.Instance.GetSelectedItem();
-    //    if (selectedItem == null || selectedItem.id != "3")
-    //    {
-    //        statusText.text = "벨브가 필요합니다.";  // 노랑 카드가 없을 때
-    //    }
-    //    else
-    //    {
-    //        statusText.text = "활성화 준비 완료.";  // 노랑 카드가 있을 때
-    //    }
-    //    statusText.gameObject.SetActive(true);  // 텍스트 표시
-    //}
 
 
 
@@ -106,6 +98,7 @@ public class ObjectPipe : MonoBehaviour
                 // 패널이 활성화될 때 Canvas의 우선순위를 높임
                 if (panelCanvas != null)
                 {
+                    //Time.timeScale = 0;  // 시간 재개 (게임 일시정지 해제)
                     panelCanvas.sortingOrder = 999;  // 우선순위를 최상위로 설정
                     MouseCam mouseCam = FindObjectOfType<MouseCam>();
                     if (mouseCam != null)
@@ -119,6 +112,8 @@ public class ObjectPipe : MonoBehaviour
                 // 패널이 비활성화될 때 원래 우선순위로 복원
                 if (panelCanvas != null)
                 {
+
+                    //Time.timeScale = 1;  // 시간 재개 (게임 일시정지 해제)
                     panelCanvas.sortingOrder = originalSortingOrder;  // 원래 순서로 복원
                     MouseCam mouseCam = FindObjectOfType<MouseCam>();
                     if (mouseCam != null)
