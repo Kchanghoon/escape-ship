@@ -23,8 +23,8 @@ public class PauseMenuUI : MonoBehaviour
     [SerializeField] private TMP_InputField bgmVolumeText; // BGM 볼륨 텍스트 필드
     [SerializeField] private TMP_InputField effectVolumeText; // 효과음 볼륨 텍스트 필드
     [SerializeField] private TMP_InputField masterVolumeText; // Master Volume 텍스트 필드
-
-    private bool isPaused = false;  // 게임이 일시정지 상태인지 확인하는 변수
+    bool isPause { get => GameManager.Instance.isPause;
+        set => GameManager.Instance.isPause = value;}
     [SerializeField] private GameObject[] uiElements; // 확인할 UI 요소들을 배열로 지정
 
     private void Start()
@@ -119,9 +119,13 @@ public class PauseMenuUI : MonoBehaviour
         }
     }
 
+    
+
+
     private void OnSetting()
     {
-        if (AreAllUIElementsInactive()) Pause(!isPaused);
+        isPause = !isPause;
+        if (AreAllUIElementsInactive()) Pause(isPause);
     }
 
     private bool AreAllUIElementsInactive()
@@ -140,8 +144,8 @@ public class PauseMenuUI : MonoBehaviour
     void Pause(bool isPause)
     {
         BasepauseMenuUI.SetActive(isPause);  // UI 표시
+        GameManager.Instance.isSetting = isPause;
         Time.timeScale = isPause ? 0f : 1;  // 게임 시간 정지
-        isPaused = isPause;  // 일시정지 상태로 설정
         Cursor.visible = isPause;
         Cursor.lockState = isPause ? CursorLockMode.None : CursorLockMode.Locked;
     }

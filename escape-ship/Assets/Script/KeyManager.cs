@@ -104,6 +104,16 @@ public class KeyManager : Singleton<KeyManager>
         keyDic[KeyAction.SelectItem10] = () => InventoryUIExmaple.Instance.SelectItem(9);
     }
 
+   private void InputKey(KeyAction keyAction)
+    {
+        if(GameManager.Instance.isPause && GameManager.Instance.isSetting)
+        {
+            if (keyAction != KeyAction.Setting) return;
+        }
+
+        keyDic[keyAction]?.Invoke();
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -113,7 +123,8 @@ public class KeyManager : Singleton<KeyManager>
             {
                 if (Input.GetKeyDown(key.keyCode))
                 {
-                    keyDic[key.keyAction]?.Invoke();
+                    InputKey(key.keyAction);
+                    // keyDic[key.keyAction]?.Invoke();
                 }
             }
         }
@@ -123,7 +134,8 @@ public class KeyManager : Singleton<KeyManager>
         {
             if (Input.GetKeyUp(key.keyCode))
             {
-                keyDic[key.keyAction]?.Invoke();
+                InputKey(key.keyAction);
+                // keyDic[key.keyAction]?.Invoke();
             }
         }
     }
