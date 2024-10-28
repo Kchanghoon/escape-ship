@@ -5,27 +5,34 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using TMPro; // TextMeshPro를 사용하기 위해 추가
+using TMPro;
+using UnityEngine.SceneManagement; // TextMeshPro를 사용하기 위해 추가
 
 public class PauseMenuUI : MonoBehaviour
 {
-    [SerializeField] GameObject BasepauseMenuUI;  // PauseMenu의 Canvas를 드래그하여 연결할 변수
-    [SerializeField] GameObject confirmMenuPanel; //메뉴 확인창 UI 
-    [SerializeField] GameObject confirmExitPanel;//게임 종료 확인창 UI
-    [SerializeField] GameObject confirmSaveSlotPanel;
-    [SerializeField] GameObject confirmLoadSlotPanel;
-    [SerializeField] GameObject MainMenuUI;
-    [SerializeField] private AudioMixer audioMixer; // AudioMixer 연결
+// 기본 UI 패널들
+    [Header("UI Panels")]
+    [SerializeField] private GameObject BasepauseMenuUI;      // PauseMenu의 Canvas
+    [SerializeField] private GameObject confirmMenuPanel;     // 메뉴 확인창 UI
+    [SerializeField] private GameObject confirmExitPanel;     // 게임 종료 확인창 UI
+    [SerializeField] private GameObject confirmSaveSlotPanel; // 저장 슬롯 확인창 UI
+    [SerializeField] private GameObject confirmLoadSlotPanel; // 로드 슬롯 확인창 UI
+    [SerializeField] private GameObject MainMenuUI;           // 메인 메뉴 UI
+
+    // 오디오 설정 슬라이더와 입력 필드
+    [Header("Audio Settings")]
+    [SerializeField] private AudioMixer audioMixer;
     [SerializeField] private Slider bgmSlider;
     [SerializeField] private Slider effectSlider;
-    [SerializeField] private Slider masterSlider;  // Master Volume 슬라이더
+    [SerializeField] private Slider masterSlider;
+    [SerializeField] private TMP_InputField bgmVolumeText;
+    [SerializeField] private TMP_InputField effectVolumeText;
+    [SerializeField] private TMP_InputField masterVolumeText;
 
-    [SerializeField] private TMP_InputField bgmVolumeText; // BGM 볼륨 텍스트 필드
-    [SerializeField] private TMP_InputField effectVolumeText; // 효과음 볼륨 텍스트 필드
-    [SerializeField] private TMP_InputField masterVolumeText; // Master Volume 텍스트 필드
-
-    private bool isPaused = false;  // 게임이 일시정지 상태인지 확인하는 변수
-    [SerializeField] private GameObject[] uiElements; // 확인할 UI 요소들을 배열로 지정
+    // 기타 설정
+    [Header("Other Settings")]
+    [SerializeField] private GameObject[] uiElements; // 활성화 상태 확인용 UI 요소 배열
+    private bool isPaused = false;                    // 게임 일시정지 상태 확인
 
     private void Start()
     {
@@ -168,12 +175,22 @@ public class PauseMenuUI : MonoBehaviour
 
     public void Menu()
     {
+
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        // 게임 일시정지 해제
+        Pause(false);  // 일시정지를 해제하여 게임 상태 초기화
+
+        // UI 상태 업데이트
         BasepauseMenuUI.SetActive(false);
         confirmMenuPanel.SetActive(false);
         confirmExitPanel.SetActive(false);
         confirmSaveSlotPanel.SetActive(false);
         confirmLoadSlotPanel.SetActive(false);
         MainMenuUI.SetActive(true);
+
+        // 마우스 커서 표시 및 잠금 해제
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 
     public void CancelExit()
