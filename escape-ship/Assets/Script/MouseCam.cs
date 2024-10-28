@@ -1,10 +1,9 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MouseCam : Singleton<MouseCam>
 {
-    public float sensitivity = 500f;
+    public float sensitivity = 300f;
     public float rotationX;
     public float rotationY;
     public float smoothTime = 0.1f;  // 회전의 부드러움을 위한 변수
@@ -16,8 +15,6 @@ public class MouseCam : Singleton<MouseCam>
 
     void Start()
     {
-        SetCursorState(true);  // 게임 시작 시 커서 잠금
-        //KeyManager.Instance.keyDic[KeyAction.Inventory] += OnInventory;
         KeyManager.Instance.keyDic[KeyAction.Setting] += OnOption;
     }
 
@@ -44,45 +41,39 @@ public class MouseCam : Singleton<MouseCam>
         }
     }
 
-    // 인벤토리 UI를 열고 닫을 때 호출되는 함수
-    //void OnInventory()
-    //{
-    //    if (pauseMenuUI.activeSelf)
-    //    {
-    //        Debug.Log("Pause 메뉴가 활성화된 상태에서는 인벤토리 입력이 불가합니다.");
-    //        return;
-    //    }
-
-    //    isPaused = !isPaused;
-    //    SetCursorState(!isPaused);  // 커서 잠금을 토글
-    //}
-
     // 옵션 메뉴를 열고 닫을 때 호출되는 함수
     void OnOption()
     {
+        if (pauseMenuUI.activeSelf) return;  // PauseMenu가 활성화되어 있을 때는 옵션을 열 수 없음
+
+        TogglePause();  // 일시정지 상태 토글
+    }
+
+    // 게임 일시정지 상태를 설정하는 함수
+    public void TogglePause()
+    {
         isPaused = !isPaused;
-        SetCursorState(!isPaused);  // 옵션 메뉴 상태에 따라 커서 상태를 설정
+        SetCursorState(!isPaused);
+    }
+
+    // 게임 재개 시 호출될 함수
+    public void ResumeGame()
+    {
+        isPaused = false;
+        SetCursorState(true);  // 커서 잠금 및 회전 활성화
+    }
+
+    // 게임을 완전히 일시정지하는 메서드
+    public void PauseGame()
+    {
+        isPaused = true;
+        SetCursorState(false);  // 커서 표시 및 잠금 해제
     }
 
     // 커서 상태를 일관되게 설정하는 함수
     public void SetCursorState(bool isLocked)
     {
-        if (isLocked)
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
-        else
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
-    }
-
-    // 게임 재시작 시 호출될 함수 (게임 재개 시 커서 상태 초기화)
-    public void OnGameResume()
-    {
-        isPaused = false;
-        SetCursorState(true);  // 게임 재개 시 커서 잠금
+        Cursor.lockState = isLocked ? CursorLockMode.Locked : CursorLockMode.None;
+        Cursor.visible = !isLocked;
     }
 }
