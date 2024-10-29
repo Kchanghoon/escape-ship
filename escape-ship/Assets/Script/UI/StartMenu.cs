@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
-using UnityEngine.UI;  // Button 클래스 사용을 위해 필요
-using DG.Tweening;
+using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Audio;
 
@@ -30,26 +29,23 @@ public class StartMenu : MonoBehaviour
     [SerializeField] private TMP_InputField bgmVolumeText;
     [SerializeField] private TMP_InputField effectVolumeText;
     [SerializeField] private TMP_InputField masterVolumeText;
-
-    private bool isPaused = false;
     public GameObject panel;
 
     private void Start()
     {
-        MouseCam.Instance.SetCursorState(false);  // 초기에는 마우스 커서를 보이게 설정
-        CheckSavedGame();
+        //GameManager.Instance.SetPause(false);
 
-        // 슬라이더 값 변경 이벤트 연결
+        // 슬라이더 값 변경 이벤트
         bgmSlider.onValueChanged.AddListener(SetBGMVolume);
         effectSlider.onValueChanged.AddListener(SetEffectVolume);
         masterSlider.onValueChanged.AddListener(SetMasterVolume);
 
-        // 텍스트 필드 값 변경 이벤트 연결
+        // 텍스트 필드 변경 이벤트
         bgmVolumeText.onEndEdit.AddListener(delegate { OnBGMTextChange(bgmVolumeText.text); });
         effectVolumeText.onEndEdit.AddListener(delegate { OnEffectTextChange(effectVolumeText.text); });
         masterVolumeText.onEndEdit.AddListener(delegate { OnMasterTextChange(masterVolumeText.text); });
 
-        // 슬라이더 초기값 설정
+        // 슬라이더 초기 값 설정
         bgmSlider.value = PlayerPrefs.GetFloat("BGMVolume", 0.75f);
         effectSlider.value = PlayerPrefs.GetFloat("EffectVolume", 0.75f);
         masterSlider.value = PlayerPrefs.GetFloat("MasterVolume", 0.75f);
@@ -57,33 +53,16 @@ public class StartMenu : MonoBehaviour
         UpdateTextFields();
     }
 
-
     public void ShowMainUI()
     {
         StartMainUI.SetActive(true);
-        MouseCam.Instance.SetCursorState(false);  // 커서 보이기
+        GameManager.Instance.SetPause(true); // 게임 일시 정지 활성화 (커서 해제 포함)
     }
 
-    // StartMainUI 비활성화 시 커서를 숨기고 잠금
     public void HideMainUI()
     {
         StartMainUI.SetActive(false);
-        MouseCam.Instance.SetCursorState(true);  // 커서 잠금 및 숨기기
-    }
-
-
-    // 저장된 게임이 있는지 확인하는 메서드
-    private void CheckSavedGame()
-    {
-        // 예시로 PlayerPrefs 사용. 실제 게임에서는 세이브 파일이나 DB 확인 가능
-        if (PlayerPrefs.HasKey("SavedGame"))
-        {
-            resumeButton.interactable = true;  // 저장된 게임이 있으면 Resume 버튼 활성화
-        }
-        else
-        {
-            resumeButton.interactable = false;  // 저장된 게임이 없으면 Resume 버튼 비활성화
-        }
+        GameManager.Instance.SetPause(false); // 게임 일시 정지 해제 (커서 잠금 포함)
     }
 
     // 슬라이더 변경 시 텍스트 필드 업데이트
@@ -164,21 +143,16 @@ public class StartMenu : MonoBehaviour
         // 플레이어 상태 초기화
         if (playerState != null)
         {
-            playerState.IncreaseOxygen(playerState.MaxOxygen - playerState.Oxygen); // 산소를 100으로 설정
-            playerState.DecreaseStress(playerState.Stress); // 스트레스를 0으로 설정
+            playerState.IncreaseOxygen(playerState.MaxOxygen - playerState.Oxygen);
+            playerState.DecreaseStress(playerState.Stress);
         }
 
-        Time.timeScale = 1f;
-        isPaused = false;
-
-        // 게임 진입 시 커서 잠금과 화면 회전 활성화 설정
-        MouseCam.Instance.SetCursorState(true);  // 마우스 커서 잠금 및 화면 회전 활성화
+        GameManager.Instance.SetPause(false); // 스테이지 선택 시 게임을 재개 (커서 잠금 포함)
+        MouseCam.Instance.SetCursorState(true); // 마우스 커서 잠금 및 화면 회전 활성화
 
         // 스테이지 활성화
         StageManager.Instance.ActivateStage(stageIndex);
     }
-
-
 
     public void OnPanelClick()
     {
@@ -187,8 +161,7 @@ public class StartMenu : MonoBehaviour
 
     public void Resume()
     {
-        HideMainUI();  // StartMainUI를 비활성화하고 커서를 숨김
-
+        HideMainUI();
         PauseMenuUI.SetActive(false);
         confirmExitPanel.SetActive(false);
         confirmOptionSlotPanel.SetActive(false);
@@ -197,12 +170,11 @@ public class StartMenu : MonoBehaviour
 
         if (playerState != null)
         {
-            playerState.IncreaseOxygen(playerState.MaxOxygen - playerState.Oxygen);  // 산소 100 설정
-            playerState.DecreaseStress(playerState.Stress);  // 스트레스 0 설정
+            playerState.IncreaseOxygen(playerState.MaxOxygen - playerState.Oxygen);
+            playerState.DecreaseStress(playerState.Stress);
         }
 
-        Time.timeScale = 1f;
-        isPaused = false;
+        GameManager.Instance.SetPause(false); // 일시 정지 해제 (커서 잠금 포함)
     }
 
     public void showConfirmExitPanel() { confirmExitPanel.SetActive(true); }
@@ -216,7 +188,6 @@ public class StartMenu : MonoBehaviour
         // 게임 종료 기능
         Application.Quit();
 
-        // 에디터 모드에서 테스트 중인 경우
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #endif
