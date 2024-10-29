@@ -42,7 +42,15 @@ public class NoteUI : MonoBehaviour
     {
         if (panel == null) return;
         bool isActive = !panel.gameObject.activeInHierarchy;  // 패널의 활성화 상태를 토글
-        MouseCam.Instance.SetCursorState(!isActive);  // MouseCam 스크립트를 통해 커서 상태 변경
+        //MouseCam.Instance.SetCursorState(!isActive);  // MouseCam 스크립트를 통해 커서 상태 변경
+        if (isActive) 
+        {
+            GameManager.Instance.HideMouse();
+        }
+        else
+        {
+            GameManager.Instance.ShowMouse();
+        }
         panel.SetActive(isActive);  // 패널을 활성화 또는 비활성화
     }
 }

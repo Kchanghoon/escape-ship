@@ -7,29 +7,25 @@ public class GameManager : Singleton<GameManager>
     public bool isPause;
     public bool isSetting;
 
-    public void SetPause(bool isPause)
+
+    public void ShowMouse()
     {
-        this.isPause = isPause;
-        UpdateGameState();
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        Time.timeScale = 0;
+        isPause = true;
+    }
+
+    public void HideMouse()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        Time.timeScale = 1;
+        isPause = false;
     }
 
     public void SetSetting(bool isSetting)
     {
         this.isSetting = isSetting;
-    }
-
-    private void UpdateGameState()
-    {
-        // 일시정지 또는 설정 메뉴가 활성화되었을 때
-        if (isPause)
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
-        else
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
     }
 }

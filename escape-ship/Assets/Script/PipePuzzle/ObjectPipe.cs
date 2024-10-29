@@ -110,11 +110,8 @@ public class ObjectPipe : MonoBehaviour
                 {
                     //Time.timeScale = 0;  // 시간 재개 (게임 일시정지 해제)
                     panelCanvas.sortingOrder = 999;  // 우선순위를 최상위로 설정
-                    MouseCam mouseCam = FindObjectOfType<MouseCam>();
-                    if (mouseCam != null)
-                    {
-                        mouseCam.SetCursorState(false);  // 커서 잠금 해제
-                    }
+                    GameManager.Instance.ShowMouse();
+
                 }
             }
             else
@@ -125,11 +122,8 @@ public class ObjectPipe : MonoBehaviour
 
                     //Time.timeScale = 1;  // 시간 재개 (게임 일시정지 해제)
                     panelCanvas.sortingOrder = originalSortingOrder;  // 원래 순서로 복원
-                    MouseCam mouseCam = FindObjectOfType<MouseCam>();
-                    if (mouseCam != null)
-                    {
-                        mouseCam.SetCursorState(true);  // 커서 잠금
-                    }
+                    GameManager.Instance.HideMouse();
+
                 }
             }
 

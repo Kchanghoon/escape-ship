@@ -85,14 +85,15 @@ public class PuzzleTrigger : MonoBehaviour
         float distanceToPlayer = Vector3.Distance(playerTransform.position, transform.position);
         if (!isPuzzleCompleted && distanceToPlayer <= interactDistance)  // 퍼즐이 아직 완료되지 않았을 때만 실행
         {
-            MouseCam mouseCam = FindObjectOfType<MouseCam>();
-            if (mouseCam != null)
-            {
-                mouseCam.SetCursorState(false); 
-            }
+            //MouseCam mouseCam = FindObjectOfType<MouseCam>();
+            //if (mouseCam != null)
+            //{
+            //    mouseCam.SetCursorState(false); 
+            //}
             puzzlePanel.SetActive(true);  // 퍼즐 UI 패널 활성화
-            Time.timeScale = 0f;  // 게임 시간 멈춤 (퍼즐 푸는 동안 일시 정지)
+            //Time.timeScale = 0f;  // 게임 시간 멈춤 (퍼즐 푸는 동안 일시 정지)
             interactText.gameObject.SetActive(false);  // 상호작용 텍스트 비활성화
+            GameManager.Instance.ShowMouse();
         }
     }
 
@@ -105,12 +106,13 @@ public class PuzzleTrigger : MonoBehaviour
 
         var itemController = ItemController.Instance;
         itemController.AddItem("12");  // 아이템 추가
-        MouseCam mouseCam = FindObjectOfType<MouseCam>();
-        if (mouseCam != null)
-        {
-            mouseCam.SetCursorState(true);  // 커서를 잠금
-        }
-        Time.timeScale = 1f;  // 게임 시간 재개
+        //MouseCam mouseCam = FindObjectOfType<MouseCam>();
+        //if (mouseCam != null)
+        //{
+        //    mouseCam.SetCursorState(true);  // 커서를 잠금
+        //}
+        //Time.timeScale = 1f;  // 게임 시간 재개
+        GameManager.Instance.HideMouse();
         Debug.Log("퍼즐 완료!");  // 디버그 메시지 출력
     }
 

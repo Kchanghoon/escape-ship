@@ -5,6 +5,7 @@ using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine.UI;
+using System.Linq;
 
 public class PauseMenuUI : MonoBehaviour
 {
@@ -27,6 +28,8 @@ public class PauseMenuUI : MonoBehaviour
 
     [Header("Other Settings")]
     [SerializeField] private GameObject[] uiElements;
+
+    private bool isPause;
 
     private void Start()
     {
@@ -110,27 +113,39 @@ public class PauseMenuUI : MonoBehaviour
 
     private void OnSetting()
     {
-        bool newPauseState = !GameManager.Instance.isPause;
-        if (AreAllUIElementsInactive())
+        // uiElements 배열 내에서 활성화된 UI 요소가 있는지 확인
+        bool isAnyUIActive = uiElements.Any(x => x.activeInHierarchy);
+
+        if (isPause == false) // 게임이 일시정지 상태가 아니고, 다른 UI가 활성화되지 않은 경우에만 실행
         {
-            GameManager.Instance.SetPause(newPauseState); // GameManager의 일시정지 상태를 설정
-            GameManager.Instance.SetSetting(newPauseState); // 설정 메뉴 상태도 업데이트
-            BasepauseMenuUI.SetActive(newPauseState); // UI 표시
+            Show();
+            GameManager.Instance.isSetting = true;
+            BasepauseMenuUI.SetActive(true);
+            isPause = true;
+        }
+        else // 게임이 일시정지 상태이며, 다른 UI가 활성화된 경우에만 실행
+        {
+            if (!isAnyUIActive)
+            {
+               Hide();
+            }
+            GameManager.Instance.isSetting = false;
+            BasepauseMenuUI.SetActive(false);
+            isPause = false;
         }
     }
 
-    private bool AreAllUIElementsInactive()
+    private void Show()
     {
-        foreach (GameObject uiElement in uiElements)
-        {
-            if (uiElement.activeSelf)
-            {
-                Debug.Log(uiElement.name + " is active.");
-                return false;
-            }
-        }
-        return true;
+        GameManager.Instance.ShowMouse();
     }
+
+    private void Hide()
+    {
+        GameManager.Instance.HideMouse();
+    }
+
+
 
     public void showConfirmMenuPanel()
     {
@@ -155,7 +170,8 @@ public class PauseMenuUI : MonoBehaviour
     public void Menu()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        GameManager.Instance.SetPause(false);
+        GameManager.Instance.ShowMouse();
+        //GameManager.Instance.SetPause(false);
 
         BasepauseMenuUI.SetActive(false);
         confirmMenuPanel.SetActive(false);
@@ -164,8 +180,6 @@ public class PauseMenuUI : MonoBehaviour
         confirmLoadSlotPanel.SetActive(false);
         MainMenuUI.SetActive(true);
 
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
     }
 
     public void CancelExit()

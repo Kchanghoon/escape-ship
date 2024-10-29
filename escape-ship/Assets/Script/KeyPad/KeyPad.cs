@@ -87,17 +87,17 @@ public class KeyPad : MonoBehaviour
     {
         keyPadPanel.SetActive(true);  // 키패드 UI 패널 활성화
         keyPadCanvas.sortingOrder = 999;  // 캔버스의 정렬 순서를 최상위로 설정
-        Time.timeScale = 0;  // 시간 정지 (게임 일시정지)
-
+        //Time.timeScale = 0;  // 시간 정지 (게임 일시정지)
+        GameManager.Instance.ShowMouse();
         // KeyPadController에 현재 키패드를 설정
         keyPadController.SetActiveKeyPad(this);
 
-        // 마우스 커서 잠금 해제
-        MouseCam mouseCam = FindObjectOfType<MouseCam>();
-        if (mouseCam != null)
-        {
-            mouseCam.SetCursorState(false);  // 커서 잠금 해제
-        }
+        //// 마우스 커서 잠금 해제
+        //MouseCam mouseCam = FindObjectOfType<MouseCam>();
+        //if (mouseCam != null)
+        //{
+        //    mouseCam.SetCursorState(false);  // 커서 잠금 해제
+        //}
     }
 
     // 입력된 비밀번호를 확인하는 메서드
@@ -126,13 +126,13 @@ public class KeyPad : MonoBehaviour
     {
         keyPadPanel.SetActive(false);  // 키패드 패널 비활성화
         keyPadCanvas.sortingOrder = originalSortingOrder;  // 캔버스 정렬 순서를 원래대로 복원
-        Time.timeScale = 1;  // 시간 재개 (게임 일시정지 해제)
-
+        //Time.timeScale = 1;  // 시간 재개 (게임 일시정지 해제)
+        GameManager.Instance.HideMouse();
         // 마우스 커서 잠금
-        MouseCam mouseCam = FindObjectOfType<MouseCam>();
-        if (mouseCam != null)
-        {
-            mouseCam.SetCursorState(true);  // 커서 잠금
-        }
+        //MouseCam mouseCam = FindObjectOfType<MouseCam>();
+        //if (mouseCam != null)
+        //{
+        //    mouseCam.SetCursorState(true);  // 커서 잠금
+        //}
     }
 }

@@ -98,25 +98,21 @@ public class PipeManager : Singleton<PipeManager>
         {
             panel.SetActive(true);
             Debug.Log("패널이 활성화되었습니다.");
-
-            Time.timeScale = 0;  // 게임 일시정지
-            // Canvas 우선순위를 가장 높게 설정
+            GameManager.Instance.ShowMouse();
             if (panelCanvas != null)
             {
                 panelCanvas.sortingOrder = 999;
             }
-            // 커서 잠금 해제
-            MouseCam.Instance.SetCursorState(false);
         }
     }
 
     public void CloseBtn()
     {
         panelCanvas.sortingOrder = 0; // 원래 순서로 복원
-        Time.timeScale = 1;  // 게임 재개
+        //Time.timeScale = 1;  // 게임 재개
         panel.SetActive(false);
         // 커서 잠금
-        MouseCam.Instance.SetCursorState(true);
+        GameManager.Instance.HideMouse();
     }
 
     public void RandomPipe()
