@@ -134,30 +134,6 @@ public class InventoryUIExmaple : Singleton<InventoryUIExmaple>
 
 
 
-    ///// <summary>
-    ///// 인벤토리 열기
-    ///// </summary>
-    //public void OpenInventory()
-    //{
-    //    isInventoryOpen = !isInventoryOpen;
-
-    //    //// 인벤토리 UI를 토글
-    //    //canvasGroup.alpha = isInventoryOpen ? 1 : 0;
-    //    canvasGroup.interactable = isInventoryOpen;
-    //    canvasGroup.blocksRaycasts = isInventoryOpen;
-
-    //    // 커서 상태 변경
-    //    if (isInventoryOpen)
-    //    {
-    //        Cursor.visible = true;
-    //        Cursor.lockState = CursorLockMode.None;
-    //    }
-    //    else
-    //    {
-    //        Cursor.visible = false;
-    //        Cursor.lockState = CursorLockMode.Locked;
-    //    }
-    //}
 
     [ContextMenu("Reset")]
     public void ResetInventory()
