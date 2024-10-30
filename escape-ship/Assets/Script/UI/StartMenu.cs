@@ -33,7 +33,6 @@ public class StartMenu : MonoBehaviour
 
     private void Start()
     {
-        //GameManager.Instance.SetPause(false);
 
         // 슬라이더 값 변경 이벤트
         bgmSlider.onValueChanged.AddListener(SetBGMVolume);
@@ -56,15 +55,12 @@ public class StartMenu : MonoBehaviour
     public void ShowMainUI()
     {
         StartMainUI.SetActive(true);
-        //GameManager.Instance.SetPause(true); // 게임 일시 정지 활성화 (커서 해제 포함)
         GameManager.Instance.ShowMouse();
     }
 
     public void HideMainUI()
     {
         StartMainUI.SetActive(false);
-        //GameManager.Instance.SetPause(false); // 게임 일시 정지 해제 (커서 잠금 포함)
-
         GameManager.Instance.HideMouse();
     }
 
@@ -150,9 +146,7 @@ public class StartMenu : MonoBehaviour
             playerState.DecreaseStress(playerState.Stress);
         }
 
-        //GameManager.Instance.SetPause(false); // 스테이지 선택 시 게임을 재개 (커서 잠금 포함)
         GameManager.Instance.HideMouse();
-        //MouseCam.Instance.SetCursorState(true); // 마우스 커서 잠금 및 화면 회전 활성화
 
         // 스테이지 활성화
         StageManager.Instance.ActivateStage(stageIndex);

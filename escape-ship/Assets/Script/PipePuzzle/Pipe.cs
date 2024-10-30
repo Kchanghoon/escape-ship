@@ -58,6 +58,7 @@ public class Pipe : MonoBehaviour, IPointerClickHandler
         currentRotation = (currentRotation + 90) % 360;
         rectTransform.DORotate(new Vector3(0, 0, currentRotation), 0.5f)
             .SetEase(Ease.OutQuad)
+            .SetUpdate(true)
             .OnComplete(UpdateConnectionPoints);
     }
 

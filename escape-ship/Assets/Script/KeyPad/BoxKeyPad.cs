@@ -100,12 +100,6 @@ public class BoxKeyPad : MonoBehaviour
         keyPadController.SetActiveBoxKeyPad(this);
 
         GameManager.Instance.ShowMouse();
-        //// 마우스 커서 잠금 해제
-        //MouseCam mouseCam = FindObjectOfType<MouseCam>();
-        //if (mouseCam != null)
-        //{
-        //    mouseCam.SetCursorState(false);  // 커서 잠금 해제
-        //}
     }
 
     // 입력된 비밀번호를 확인하는 메서드
@@ -149,14 +143,6 @@ public class BoxKeyPad : MonoBehaviour
     {
         keyPadPanel.SetActive(false);  // 키패드 패널 비활성화
         keyPadCanvas.sortingOrder = originalSortingOrder;  // 캔버스 정렬 순서를 원래대로 복원
-        //Time.timeScale = 1;  // 시간 재개 (게임 일시정지 해제)
-
-        // 마우스 커서 잠금
-        //MouseCam mouseCam = FindObjectOfType<MouseCam>();
-        //if (mouseCam != null)
-        //{
-        //    mouseCam.SetCursorState(true);  // 커서 잠금
-        //}
 
         GameManager.Instance.HideMouse();
     }

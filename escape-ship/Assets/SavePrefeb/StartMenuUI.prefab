@@ -2778,11 +2778,11 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 999329811832067281}
+  - {fileID: 7240477335137006034}
   - {fileID: 6198133557342845805}
   - {fileID: 4299071998220383921}
   - {fileID: 8520362515341582955}
   - {fileID: 1867378158442991936}
-  - {fileID: 7240477335137006034}
   m_Father: {fileID: 8849629337025293574}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -5671,8 +5671,15 @@ MonoBehaviour:
   confirmOptionSlotPanel: {fileID: 4926785389053650787}
   confirmLoadSlotPanel: {fileID: 6385580539119134919}
   confirmSelectSlotPanel: {fileID: 5911568961650282166}
-  resumeButton: {fileID: 8807364988521999418}
   playerState: {fileID: 0}
+  resumeButton: {fileID: 8807364988521999418}
+  audioMixer: {fileID: 0}
+  bgmSlider: {fileID: 0}
+  effectSlider: {fileID: 0}
+  masterSlider: {fileID: 0}
+  bgmVolumeText: {fileID: 0}
+  effectVolumeText: {fileID: 0}
+  masterVolumeText: {fileID: 0}
   panel: {fileID: 4189737123635415400}
 --- !u!1 &8801827833801655023
 GameObject:

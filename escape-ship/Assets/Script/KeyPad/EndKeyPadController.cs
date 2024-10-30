@@ -86,11 +86,7 @@ public class EndKeypadController : MonoBehaviour
     {
         // KeyPad의 ClosePlay 기능 구현
         keyPadPanel.SetActive(false);  // 패널 비활성화
-        Time.timeScale = 1;  // 게임 다시 진행
-
-        // 커서 상태 변경
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        GameManager.Instance.HideMouse();
 
         // 추가적으로 초기화가 필요하다면 추가할 수 있음 (예: 입력 초기화 등)
         currentInput = "";  // 입력 초기화

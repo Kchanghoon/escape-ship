@@ -85,14 +85,8 @@ public class ElevaterKeyPad : MonoBehaviour
         keyPadPanel.SetActive(true);
         keyPadCanvas.sortingOrder = 999;
 
-        //Time.timeScale = 0;  // 시간 정지 (게임 일시정지)
         keyPadController.SetActiveElevaterKeyPad(this); // ElevaterKeyPad를 설정
         GameManager.Instance.ShowMouse();
-        //MouseCam mouseCam = FindObjectOfType<MouseCam>();
-        //if (mouseCam != null)
-        //{
-        //    mouseCam.SetCursorState(false);  // 커서를 잠금 해제
-        //}
     }
 
     public void CheckPassword(string inputPassword)
@@ -151,12 +145,6 @@ public class ElevaterKeyPad : MonoBehaviour
         keyPadPanel.SetActive(false);
         keyPadCanvas.sortingOrder = originalSortingOrder;
         GameManager.Instance.HideMouse();
-        //Time.timeScale = 1;  // 시간 재개 (게임 일시정지 해제)
-        //MouseCam mouseCam = FindObjectOfType<MouseCam>();
-        //if (mouseCam != null)
-        //{
-        //    mouseCam.SetCursorState(true);  // 커서를 잠금
-        //}
     }
 
     private void OnDestroy()

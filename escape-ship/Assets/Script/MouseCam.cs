@@ -41,39 +41,4 @@ public class MouseCam : Singleton<MouseCam>
         }
     }
 
-    //// 옵션 메뉴를 열고 닫을 때 호출되는 함수
-    //void OnOption()
-    //{
-    //    if (pauseMenuUI.activeSelf) return;  // PauseMenu가 활성화되어 있을 때는 옵션을 열 수 없음
-
-    //    TogglePause();  // 일시정지 상태 토글
-    //}
-
-    //// 게임 일시정지 상태를 설정하는 함수
-    //public void TogglePause()
-    //{
-    //    isPaused = !isPaused;
-    //    SetCursorState(!isPaused);
-    //}
-
-    //// 게임 재개 시 호출될 함수
-    //public void ResumeGame()
-    //{
-    //    isPaused = false;
-    //    SetCursorState(true);  // 커서 잠금 및 회전 활성화
-    //}
-
-    //// 게임을 완전히 일시정지하는 메서드
-    //public void PauseGame()
-    //{
-    //    isPaused = true;
-    //    SetCursorState(false);  // 커서 표시 및 잠금 해제
-    //}
-
-    //// 커서 상태를 일관되게 설정하는 함수
-    //public void SetCursorState(bool isLocked)
-    //{
-    //    Cursor.lockState = isLocked ? CursorLockMode.Locked : CursorLockMode.None;
-    //    Cursor.visible = !isLocked;
-    //}
 }

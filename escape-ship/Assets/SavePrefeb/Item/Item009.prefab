@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 1611565544086688372}
   - component: {fileID: 330780519108145628}
   - component: {fileID: 6510514076368447001}
-  - component: {fileID: 4602717429367547955}
   m_Layer: 0
   m_Name: Item009
   m_TagString: Untagged
@@ -140,19 +139,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetObject: {fileID: 4977454639434478995}
   interactionDistance: 3
---- !u!114 &4602717429367547955
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4977454639434478995}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64d1de048b595dd41acefe97b3c85adf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  panel: {fileID: 4977454639434478995}
-  requiredItemId: specialItem
-  ToggleCanvas: {fileID: 0}
-  sortingCanvas: 0

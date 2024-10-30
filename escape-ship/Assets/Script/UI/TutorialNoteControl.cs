@@ -7,7 +7,7 @@ public class TutorialNoteControl : MonoBehaviour
     [SerializeField] private GameObject panel2;  // 두 번째 패널
     [SerializeField] private Button nextButton;  // Next 버튼
     [SerializeField] private Button undoButton;  // Undo 버튼
-    [SerializeField] private Button deleteButton;  // Delete 버튼
+    //[SerializeField] private Button deleteButton;  // Delete 버튼
     [SerializeField] private GameObject tutorialPanel;  // 튜토리얼 패널
 
     private int currentPanelIndex = 1;  // 현재 활성화된 패널을 추적 (1 또는 2)
@@ -22,7 +22,7 @@ public class TutorialNoteControl : MonoBehaviour
         // 버튼 클릭 이벤트 리스너 연결
         nextButton.onClick.AddListener(OnNextButtonClicked);
         undoButton.onClick.AddListener(OnUndoButtonClicked);
-        deleteButton.onClick.AddListener(OnDeleteButtonClicked);
+        //deleteButton.onClick.AddListener(OnDeleteButtonClicked);
     }
 
     // Next 버튼을 클릭했을 때 호출되는 함수
@@ -53,10 +53,9 @@ public class TutorialNoteControl : MonoBehaviour
         }
     }
 
-    public void OnDeleteButtonClicked()
-    {
-        tutorialPanel.SetActive(false);
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
-    }
+    //public void OnDeleteButtonClicked()
+    //{
+    //    tutorialPanel.SetActive(false);
+    //    GameManager.Instance.HideMouse();
+    //}
 }
