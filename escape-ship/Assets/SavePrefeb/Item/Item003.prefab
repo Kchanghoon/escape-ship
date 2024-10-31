@@ -67,6 +67,7 @@ MonoBehaviour:
     quantity: 0
     descriptions: 
   pickUpDistance: 5
+  pickUpSound: {fileID: 8300000, guid: 5ccdbb4bd804cb348819892db7eb808e, type: 3}
 --- !u!65 &7255395611592448777
 BoxCollider:
   m_ObjectHideFlags: 0
