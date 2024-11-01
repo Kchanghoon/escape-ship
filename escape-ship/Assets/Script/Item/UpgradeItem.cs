@@ -11,12 +11,16 @@ public class UpgradeItem : MonoBehaviour
     private bool isMouseOverItem = false;  // 마우스가 오브젝트 위에 있는지 여부를 저장
     [SerializeField] private TextMeshProUGUI statusText;  // 상자 상태를 표시하는 TextMeshPro 텍스트
     [SerializeField] private float fadeDuration = 1f;  // 텍스트가 서서히 사라지는 시간
+    private AudioSource audioSource; // 효과음을 재생할 오디오 소스
+    [SerializeField] private AudioClip upgradeSound; // 잠금 해제 효과음 클립
+
 
     void Start()
     {
         // 상태 텍스트 비활성화
         statusText.gameObject.SetActive(false);
-
+        // AudioSource 컴포넌트 자동 할당
+        audioSource = GetComponent<AudioSource>();
         KeyManager.Instance.keyDic[KeyAction.Play] += TryUpgrade;  // KeyManager에서 Play 키 이벤트 등록
     }
 
@@ -86,31 +90,29 @@ public class UpgradeItem : MonoBehaviour
         ShowTextWithAnimation();
     }
 
-    // 기존 TryUpgrade 메서드 그대로 유지
     private void TryUpgrade()
     {
-        // 플레이어와 오브젝트 사이의 거리를 계산
+        // Calculate distance between player and object
         float distanceToPlayer = Vector3.Distance(player.position, transform.position);
 
-        // 선택된 아이템이 있으며, 일정 거리 내에 있고, 마우스가 아이템 위에 있는지 확인
+        // Check if the player is close enough and mouse is over the item
         if (distanceToPlayer <= interactDistance && isMouseOverItem)
         {
-            // ItemController에서 현재 보유 중인 아이템 확인
             var itemController = ItemController.Instance;
 
-            // 인벤토리에서 11번과 5번 아이템이 있는지 확인
+            // Find if items 11 and 5 are present in the inventory
             var item11 = itemController.curItemDatas.Find(x => x.id == "11");
             var item5 = itemController.curItemDatas.Find(x => x.id == "5");
 
             if (item11 != null && item5 != null)
             {
-                // 11번과 5번 아이템이 있으면 8번 아이템을 추가하고 기존 아이템 제거
-                itemController.RemoveItemById("11");  // 11번 아이템 제거
-                itemController.RemoveItemById("5");  // 5번 아이템 제거
-                itemController.AddItem("8");  // 8번 아이템 추가
-                statusText.text = "함장 카드 발급완료.";
-                ShowTextWithAnimation();
-                Debug.Log("아이템 업그레이드 성공! 8번 아이템이 추가되었습니다.");
+                itemController.RemoveItemById("11");
+                itemController.RemoveItemById("5");
+                // Play the sound effect before upgrading items
+                audioSource.PlayOneShot(upgradeSound);
+
+                // Start coroutine to wait for sound completion
+                StartCoroutine(UpgradeAfterSound(itemController));
             }
             else
             {
@@ -123,4 +125,22 @@ public class UpgradeItem : MonoBehaviour
             Debug.Log("업그레이드를 할 수 없습니다. 플레이어가 충분히 가까이 있지 않거나 마우스가 아이템에 없습니다.");
         }
     }
+
+    // Coroutine to handle item upgrade after sound completes
+    private IEnumerator UpgradeAfterSound(ItemController itemController)
+    {
+        // Wait until the sound finishes playing
+        while (audioSource.isPlaying)
+        {
+            yield return null;  // Continue waiting
+        }
+
+        // Remove items 11 and 5, then add item 8
+        itemController.AddItem("8");
+
+        statusText.text = "함장 카드 발급완료.";
+        ShowTextWithAnimation();
+        Debug.Log("아이템 업그레이드 성공! 8번 아이템이 추가되었습니다.");
+    }
+
 }

@@ -12,8 +12,11 @@ public class BoxKeyPad : MonoBehaviour
     [SerializeField] string correctPassword;  // 올바른 비밀번호
     [SerializeField] KeypadController keyPadController;  // 키패드 컨트롤러
 
+    private AudioSource audioSource; // 효과음을 재생할 오디오 소스
+    [SerializeField] private AudioClip unlockSound; // 잠금 해제 효과음 클립
     private int originalSortingOrder;  // 캔버스의 원래 정렬 순서
     private bool isUnlocked = false;  // 문이 열렸는지 여부를 저장하는 플래그
+    [SerializeField] private Light targetLight;  // 빛을 끌 라이트 컴포넌트를 연결
 
     private void Start()
     {
@@ -21,6 +24,7 @@ public class BoxKeyPad : MonoBehaviour
         keyPadPanel.SetActive(false);  // 키패드 패널 비활성화
         originalSortingOrder = keyPadCanvas.sortingOrder;  // 캔버스의 원래 정렬 순서를 저장
         KeyManager.Instance.keyDic[KeyAction.Play] += OnPlay;  // KeyManager에서 Play 키 이벤트 등록
+        audioSource = GetComponent<AudioSource>();
 
     }
 
@@ -44,7 +48,20 @@ public class BoxKeyPad : MonoBehaviour
     private void ShowPickUpText()
     {
         pickUpText.gameObject.SetActive(true);  // 텍스트 활성화
-        pickUpText.text = "E키를 눌러 비밀번호 입력창을 여세요";  // 안내 메시지 설정
+        var selectedItem = InventoryUIExmaple.Instance.GetSelectedItem();
+        // 선택된 아이템이 특정 ID를 가지고 있을 경우
+        if (selectedItem != null &&
+            (selectedItem.id == "7" || selectedItem.id == "6" || selectedItem.id == "5"))
+        {
+            pickUpText.text = "E키를 눌러 비밀번호 입력창을 여세요";  // 안내 메시지 설정
+        }
+        else
+        {
+            // selectedItem이 null이거나 ID가 조건에 맞지 않을 경우
+            pickUpText.text = "카드키를 들어 인식시켜 주세요";  // 안내 메시지 설정
+        }
+
+
     }
 
     // 상호작용 안내 텍스트를 비활성화하는 메서드
@@ -108,8 +125,14 @@ public class BoxKeyPad : MonoBehaviour
         if (inputPassword == correctPassword)
         {
             Debug.Log("비밀번호가 맞습니다. 문이 열립니다.");
+            audioSource.PlayOneShot(unlockSound);
+            if (targetLight != null)
+            {
+                targetLight.enabled = false;
+            }
 
             var selectedItem = InventoryUIExmaple.Instance.GetSelectedItem();
+
             if (selectedItem != null) // 선택된 아이템이 null이 아닌 경우
             {
                 if (selectedItem.id == "7")
