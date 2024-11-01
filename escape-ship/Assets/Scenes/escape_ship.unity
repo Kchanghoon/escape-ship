@@ -4371,6 +4371,7 @@ MonoBehaviour:
   interactionDistance: 4
   motionEase: 7
   statusText: {fileID: 2138823689}
+  doorSound: {fileID: 0}
 --- !u!114 &562397790
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13914,6 +13915,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6696149626201105299, guid: 189c3cd30874c82489bbcf7029d8859c, type: 3}
   m_PrefabInstance: {fileID: 1930918361427911987}
   m_PrefabAsset: {fileID: 0}
+--- !u!82 &2058041235 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 9035708258421968477, guid: 189c3cd30874c82489bbcf7029d8859c, type: 3}
+  m_PrefabInstance: {fileID: 1930918361427911987}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2083727671 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 86443822270310781, guid: bb98f4d7959e1f44a8ba0c711d48107e, type: 3}
@@ -16157,6 +16163,10 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 5167962041500487727}
+    - target: {fileID: 7669629497269956501, guid: 189c3cd30874c82489bbcf7029d8859c, type: 3}
+      propertyPath: doorSound
+      value: 
+      objectReference: {fileID: 2058041235}
     - target: {fileID: 7669629497269956501, guid: 189c3cd30874c82489bbcf7029d8859c, type: 3}
       propertyPath: statusText
       value: 

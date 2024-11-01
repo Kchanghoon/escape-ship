@@ -19,6 +19,7 @@ public class DoorController : MonoBehaviour
     private bool isDoorOpen = false;  // 문이 열려 있는지 여부를 저장
     private bool isAnimating = false;  // 현재 애니메이션이 진행 중인지 여부를 저장
     private bool isMouseOverDoor = false;  // 마우스가 문 위에 있는지 여부를 저장
+    [SerializeField] AudioSource doorSound;  // 문이 열릴 때 재생할 소리
 
     void Start()
     {
@@ -109,6 +110,7 @@ public class DoorController : MonoBehaviour
     // 문을 여는 메서드
     void OpenDoor()
     {
+        doorSound.Play();  // 문 열림 소리 재생
         isAnimating = true;  // 애니메이션이 진행 중임을 표시
         DOTween.Sequence()
             .Append(doorLeft.DOLocalMoveZ(leftStartPosZ + endPosZ, duration))  // 왼쪽 문을 열기
