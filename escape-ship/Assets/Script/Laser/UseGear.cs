@@ -7,14 +7,10 @@ public class UseGear : MonoBehaviour
     private bool isGearUsed = false;  // 기어(아이템 12번)가 사용되었는지 여부를 추적
     public float moveDistance = 5f;  // 오브젝트를 이동시킬 Y축 거리
     public float moveDuration = 1f;  // 이동 애니메이션의 지속 시간
+    [SerializeField] AudioSource GearMove;  // 기어 움직이는 소리
 
     void Start()
     {
-        // 게임 시작 시 오브젝트들을 초기 위치로 설정 (필요한 경우 초기 위치 설정)
-        foreach (GameObject obj in objectsToMove)
-        {
-            // obj.transform.position = new Vector3(obj.transform.position.x, originalYPosition, obj.transform.position.z);
-        }
 
         KeyManager.Instance.keyDic[KeyAction.Play] += CheckIfGearIsUsed;
     }
@@ -36,6 +32,7 @@ public class UseGear : MonoBehaviour
     void UseItem()
     {
         isGearUsed = true;  // 기어가 사용되었음을 기록
+        GearMove.Play();  // 문 열림 소리 재생.Play;
 
         ItemController.Instance.DeleteItemQuantity("12");
         // 오브젝트들을 Y축으로 moveDistance만큼 부드럽게 이동

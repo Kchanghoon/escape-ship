@@ -23,10 +23,6 @@ public class KeyPad : MonoBehaviour
         originalSortingOrder = keyPadCanvas.sortingOrder;  // 캔버스의 원래 정렬 순서를 저장
         KeyManager.Instance.keyDic[KeyAction.Play] += OnPlay;  // KeyManager에서 Play 키 이벤트 등록
 
-        if (doorSound == null)
-        {
-            Debug.LogWarning("AudioSource가 할당되지 않았습니다. 소리가 재생되지 않습니다.");
-        }
     }
 
     private void Update()
@@ -100,10 +96,9 @@ public class KeyPad : MonoBehaviour
         {
             Debug.Log("비밀번호가 맞습니다. 문이 열립니다.");
             
-            if (doorSound != null)
-            {
+
                 doorSound.Play();  // 문 열림 소리 재생
-            }
+
 
             doorMotion.OpenDoor();  // 문 열기
             CloseKeyPad();  // 키패드 패널 닫기

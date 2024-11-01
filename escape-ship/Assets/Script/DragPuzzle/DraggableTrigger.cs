@@ -142,7 +142,7 @@ public class DraggableTrigger : MonoBehaviour
     void OpenPuzzlePanel()
     {
         puzzlePanel.SetActive(true);
-        Time.timeScale = 0f;  // 퍼즐 푸는 동안 시간 정지
+        GameManager.Instance.ShowMouse();
         interactText.gameObject.SetActive(false);
     }
 
@@ -153,6 +153,7 @@ public class DraggableTrigger : MonoBehaviour
 
         if (IsTargetAtEndPosition())
         {
+            GameManager.Instance.HideMouse();
             CompletePuzzle();  // 퍼즐 완료
         }
     }
@@ -177,9 +178,8 @@ public class DraggableTrigger : MonoBehaviour
         puzzlePanel.SetActive(false);  // 퍼즐 패널 비활성화
 
         var itemController = ItemController.Instance;
-        itemController.AddItem("12");  // 아이템 추가
+        itemController.AddItem("13");  // 아이템 추가
 
-        Time.timeScale = 1f;  // 시간 다시 정상화
         Debug.Log("퍼즐 완료!");
     }
 
@@ -191,5 +191,11 @@ public class DraggableTrigger : MonoBehaviour
         {
             outline.enabled = highlight;
         }
+    }
+
+    public void ExitBtn()
+    {
+        GameManager.Instance.HideMouse();
+        puzzlePanel.SetActive(false);  // 퍼즐 패널 비활성화
     }
 }

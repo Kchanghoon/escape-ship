@@ -18,6 +18,7 @@ public class LaserEmitter : MonoBehaviour
     private bool isDoorOpen = false;  // 문이 열려 있는지 여부를 저장
     private bool isAnimating = false;  // 현재 애니메이션이 진행 중인지 여부를 저장
     private bool targetHit = false; // 레이저가 목표에 닿았는지 여부
+    [SerializeField] AudioSource doorSound;  // 문이 열릴 때 재생할 소리
 
     private void Start()
     {
@@ -107,6 +108,7 @@ public class LaserEmitter : MonoBehaviour
             {
                 isAnimating = false;  // 애니메이션 완료
                 isDoorOpen = true;  // 문이 열렸음
+                doorSound.Play();  // 문 열림 소리 재생
             });
     }
 

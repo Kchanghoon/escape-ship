@@ -127,4 +127,11 @@ public class PuzzleTrigger : MonoBehaviour
             outline.enabled = highlight;  // 하이라이트 활성화 또는 비활성화
         }
     }
+
+    public void exitBtn()
+    {
+        puzzlePanel.SetActive(false);  // 퍼즐 UI 패널 활성화
+        interactText.gameObject.SetActive(true);  // 상호작용 텍스트 비활성화
+        GameManager.Instance.HideMouse();
+    }
 }

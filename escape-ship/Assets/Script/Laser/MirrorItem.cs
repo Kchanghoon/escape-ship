@@ -12,6 +12,7 @@ public class MirrorItem : MonoBehaviour
 
     private bool isMouseOver = false;  // 마우스가 버튼 위에 있는지 여부
     private bool isAnimating = false;  // 애니메이션이 진행 중인지 여부
+    [SerializeField] AudioSource ClickBtn;
 
     public void Start()
     {
@@ -41,6 +42,7 @@ public class MirrorItem : MonoBehaviour
                 // 애니메이션이 시작되었음을 표시
                 isAnimating = true;
 
+                ClickBtn.Play();  // 버튼 누르는 소리 재생
                 // 목표 회전 각도 설정
                 float targetRotationY1 = mirror.transform.localEulerAngles.y + rotationAmount;
                 float targetRotationY2 = mirror2.transform.localEulerAngles.y + rotationAmount;
