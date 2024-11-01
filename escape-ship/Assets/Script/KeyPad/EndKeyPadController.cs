@@ -14,6 +14,14 @@ public class EndKeypadController : MonoBehaviour
     private StageManager stageManager;  // StageManager 인스턴스 참조
     private BlackOutChange blackOutChange;  // BlackOutChange 스크립트 참조
 
+    [Header("Dialogue Settings")]
+    public GameObject dialogueUI;  // 대화 UI 패널
+    public string[] dialogues;  // 대화 내용 배열
+    public TextMeshProUGUI dialogueText;  // 대화 텍스트 표시용
+    private int currentDialogueIndex = 0;  // 현재 대화 인덱스
+    private bool isDialogueActive = false;  // 대화가 활성화되었는지 여부
+    public bool isTimeStopped = true;  // 대화 중에 시간을 멈출지 여부
+
     private void Start()
     {
         // StageManager 인스턴스 가져오기
@@ -21,6 +29,14 @@ public class EndKeypadController : MonoBehaviour
 
         // BlackOutChange 스크립트 참조
         blackOutChange = FindObjectOfType<BlackOutChange>();
+    }
+
+    private void Update()
+    {
+        if (isDialogueActive && Input.GetKeyDown(KeyCode.F))
+        {
+            ShowNextDialogue();
+        }
     }
 
     // 숫자 버튼 클릭 시 호출
@@ -45,9 +61,11 @@ public class EndKeypadController : MonoBehaviour
     public void OnConfirmButtonClick()
     {
         if (currentInput == correctPassword)
-        {
+        {       // 키패드 닫기
+            OnBackButtonClick();
+            StartDialogue();  // 대화 시작
             // 비밀번호가 맞을 경우 Stage1으로 이동
-            StartCoroutine(HandleStageTransition());  // 블랙아웃과 함께 스테이지 전환
+             // 블랙아웃과 함께 스테이지 전환
         }
         else
         {
@@ -59,7 +77,47 @@ public class EndKeypadController : MonoBehaviour
         currentInput = "";
         inputField.text = "";
     }
+    // 대화 시작
+    void StartDialogue()
+    {
+        dialogueUI.SetActive(true);  // 대화 UI 활성화
+        currentDialogueIndex = 0;  // 대화 시작 인덱스 초기화
+        isDialogueActive = true;
+        if (isTimeStopped)
+        {
+            Time.timeScale = 0f;  // 시간을 멈춤
+        }
+        ShowNextDialogue();  // 첫 대화 표시
+    }
 
+    // 다음 대화를 표시하는 함수
+    void ShowNextDialogue()
+    {
+        if (currentDialogueIndex < dialogues.Length)
+        {
+            dialogueText.text = dialogues[currentDialogueIndex];  // 대화 표시
+            currentDialogueIndex++;  // 인덱스 증가
+        }
+        else
+        {
+            EndDialogue();  // 대화 종료
+        }
+
+    }
+
+    // 대화 종료 시 호출되는 함수
+    void EndDialogue()
+    {
+        dialogueUI.SetActive(false);  // 대화 UI 비활성화
+        isDialogueActive = false;
+        if (isTimeStopped)
+        {
+            Time.timeScale = 1f;  // 시간을 다시 흐르게 함
+        }
+
+        // 대화가 끝난 후 퍼즐 패널을 열기
+        StartCoroutine(HandleStageTransition());
+    }
     // 블랙아웃과 함께 스테이지 전환 처리
     private IEnumerator HandleStageTransition()
     {
