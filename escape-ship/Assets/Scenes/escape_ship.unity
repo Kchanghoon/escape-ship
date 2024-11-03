@@ -25197,6 +25197,10 @@ PrefabInstance:
       propertyPath: upgradeSound
       value: 
       objectReference: {fileID: 8300000, guid: 50724f56522c3c840bdd20e87cac6ff0, type: 3}
+    - target: {fileID: 3841885906430872257, guid: 189c3cd30874c82489bbcf7029d8859c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 41.1
+      objectReference: {fileID: 0}
     - target: {fileID: 3929301062017792129, guid: 189c3cd30874c82489bbcf7029d8859c, type: 3}
       propertyPath: pickUpSound
       value: 
@@ -25511,7 +25515,7 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: 5ccdbb4bd804cb348819892db7eb808e, type: 3}
     - target: {fileID: 6630222609551048921, guid: 189c3cd30874c82489bbcf7029d8859c, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6859293321188513454, guid: 189c3cd30874c82489bbcf7029d8859c, type: 3}
       propertyPath: pickUpSound
@@ -25633,6 +25637,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7870664720546112079, guid: 189c3cd30874c82489bbcf7029d8859c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 41.1
+      objectReference: {fileID: 0}
     - target: {fileID: 7939577979825007362, guid: 189c3cd30874c82489bbcf7029d8859c, type: 3}
       propertyPath: player
       value: 
@@ -25710,6 +25718,10 @@ PrefabInstance:
       value: "\uD558\uC580\uC0C9 \uC6B0\uC8FC\uC120\uC744 \uCD08\uB85D\uC0C9 \uC601\uC5ED\uC5D0
         \uAC00\uC838\uB2E4 \uB454 \uC0C1\uD0DC\uB85C X\uBC84\uD2BC\uC744 \uD074\uB9AD\uD574
         \uC800\uC7A5\uD574\uC8FC\uC138\uC694"
+      objectReference: {fileID: 0}
+    - target: {fileID: 8940917218656642008, guid: 189c3cd30874c82489bbcf7029d8859c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 41.1
       objectReference: {fileID: 0}
     - target: {fileID: 8958438831408373032, guid: 189c3cd30874c82489bbcf7029d8859c, type: 3}
       propertyPath: pickUpSound
