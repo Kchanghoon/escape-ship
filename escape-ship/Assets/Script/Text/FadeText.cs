@@ -7,6 +7,11 @@ public class FadeText : MonoBehaviour
 {
     public TextMeshProUGUI myTMPText; // TMP Text UI 요소를 연결
 
+    private void Start()
+    {
+        OnEnable();
+    }
+
     void OnEnable()
     {
         // 처음에 투명도를 0으로 설정하여 보이지 않게 함

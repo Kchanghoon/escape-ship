@@ -12,13 +12,11 @@ public class StartMenu : MonoBehaviour
     [SerializeField] private GameObject PauseMenuUI;
     [SerializeField] private GameObject confirmExitPanel;
     [SerializeField] private GameObject confirmOptionSlotPanel;
-    [SerializeField] private GameObject confirmLoadSlotPanel;
     [SerializeField] private GameObject confirmSelectSlotPanel;
 
     // 플레이어 설정
     [Header("Player Settings")]
     [SerializeField] private PlayerState playerState;
-    [SerializeField] private Button resumeButton;
 
     // 오디오 설정
     [Header("Audio Settings")]
@@ -29,6 +27,8 @@ public class StartMenu : MonoBehaviour
     [SerializeField] private TMP_InputField bgmVolumeText;
     [SerializeField] private TMP_InputField effectVolumeText;
     [SerializeField] private TMP_InputField masterVolumeText;
+    [SerializeField] AudioSource BTNClick;  // 문이 열릴 때 재생할 소리
+
     public GameObject panel;
 
     private void Start()
@@ -56,12 +56,14 @@ public class StartMenu : MonoBehaviour
     {
         StartMainUI.SetActive(true);
         GameManager.Instance.ShowMouse();
+        BTNClick.Play();
     }
 
     public void HideMainUI()
     {
         StartMainUI.SetActive(false);
         GameManager.Instance.HideMouse();
+        BTNClick.Play();
     }
 
     // 슬라이더 변경 시 텍스트 필드 업데이트
@@ -136,9 +138,8 @@ public class StartMenu : MonoBehaviour
         PauseMenuUI.SetActive(false);
         confirmExitPanel.SetActive(false);
         confirmOptionSlotPanel.SetActive(false);
-        confirmLoadSlotPanel.SetActive(false);
         confirmSelectSlotPanel.SetActive(false);
-
+        BTNClick.Play();
         // 플레이어 상태 초기화
         if (playerState != null)
         {
@@ -163,9 +164,8 @@ public class StartMenu : MonoBehaviour
         PauseMenuUI.SetActive(false);
         confirmExitPanel.SetActive(false);
         confirmOptionSlotPanel.SetActive(false);
-        confirmLoadSlotPanel.SetActive(false);
         confirmSelectSlotPanel.SetActive(false);
-
+        BTNClick.Play();
         if (playerState != null)
         {
             playerState.IncreaseOxygen(playerState.MaxOxygen - playerState.Oxygen);
@@ -176,11 +176,16 @@ public class StartMenu : MonoBehaviour
         GameManager.Instance.HideMouse();
     }
 
-    public void showConfirmExitPanel() { confirmExitPanel.SetActive(true); }
-    public void showLoadSlotPanel() { confirmLoadSlotPanel.SetActive(true); }
-    public void showOptionPanel() { confirmOptionSlotPanel.SetActive(true); }
-    public void showStageSelectPanel() { confirmSelectSlotPanel.SetActive(true); }
-    public void CancelExit() { confirmExitPanel.SetActive(false); confirmLoadSlotPanel.SetActive(false); confirmOptionSlotPanel.SetActive(false); confirmSelectSlotPanel.SetActive(false); }
+    public void showConfirmExitPanel() { confirmExitPanel.SetActive(true); BTNClick.Play(); }
+    public void showOptionPanel() { confirmOptionSlotPanel.SetActive(true); BTNClick.Play(); }
+    public void showStageSelectPanel() { confirmSelectSlotPanel.SetActive(true); BTNClick.Play(); }
+    public void CancelExit() 
+         {   
+            confirmExitPanel.SetActive(false);  
+            confirmOptionSlotPanel.SetActive(false); 
+            confirmSelectSlotPanel.SetActive(false);
+            BTNClick.Play();
+          }
 
     public void QuitGame()
     {

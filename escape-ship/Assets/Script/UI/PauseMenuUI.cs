@@ -23,6 +23,7 @@ public class PauseMenuUI : MonoBehaviour
     [SerializeField] private TMP_InputField bgmVolumeText;
     [SerializeField] private TMP_InputField effectVolumeText;
     [SerializeField] private TMP_InputField masterVolumeText;
+    [SerializeField] AudioSource BTNClick;  // 문이 열릴 때 재생할 소리
 
     [Header("Other Settings")]
     [SerializeField] private GameObject[] uiElements;
@@ -148,11 +149,13 @@ public class PauseMenuUI : MonoBehaviour
     public void showConfirmMenuPanel()
     {
         confirmMenuPanel.SetActive(true);
+        BTNClick.Play();
     }
 
     public void showConfirmExitPanel()
     {
         confirmExitPanel.SetActive(true);
+        BTNClick.Play();
     }
 
 
@@ -162,7 +165,7 @@ public class PauseMenuUI : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         GameManager.Instance.ShowMouse();
         //GameManager.Instance.SetPause(false);
-
+        BTNClick.Play();
         BasepauseMenuUI.SetActive(false);
         confirmMenuPanel.SetActive(false);
         confirmExitPanel.SetActive(false);
@@ -174,10 +177,12 @@ public class PauseMenuUI : MonoBehaviour
     {
         confirmMenuPanel.SetActive(false);
         confirmExitPanel.SetActive(false);
+        BTNClick.Play();
     }
 
     public void QuitGame()
     {
+        BTNClick.Play();
         Application.Quit();
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
