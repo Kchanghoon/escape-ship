@@ -13,8 +13,6 @@ public class PauseMenuUI : MonoBehaviour
     [SerializeField] private GameObject BasepauseMenuUI;
     [SerializeField] private GameObject confirmMenuPanel;
     [SerializeField] private GameObject confirmExitPanel;
-    [SerializeField] private GameObject confirmSaveSlotPanel;
-    [SerializeField] private GameObject confirmLoadSlotPanel;
     [SerializeField] private GameObject MainMenuUI;
 
     [Header("Audio Settings")]
@@ -157,15 +155,7 @@ public class PauseMenuUI : MonoBehaviour
         confirmExitPanel.SetActive(true);
     }
 
-    public void showSaveSlotPanel()
-    {
-        confirmSaveSlotPanel.SetActive(true);
-    }
 
-    public void showLoadSlotPanel()
-    {
-        confirmLoadSlotPanel.SetActive(true);
-    }
 
     public void Menu()
     {
@@ -176,8 +166,6 @@ public class PauseMenuUI : MonoBehaviour
         BasepauseMenuUI.SetActive(false);
         confirmMenuPanel.SetActive(false);
         confirmExitPanel.SetActive(false);
-        confirmSaveSlotPanel.SetActive(false);
-        confirmLoadSlotPanel.SetActive(false);
         MainMenuUI.SetActive(true);
 
     }
@@ -186,8 +174,6 @@ public class PauseMenuUI : MonoBehaviour
     {
         confirmMenuPanel.SetActive(false);
         confirmExitPanel.SetActive(false);
-        confirmLoadSlotPanel.SetActive(false);
-        confirmSaveSlotPanel.SetActive(false);
     }
 
     public void QuitGame()
