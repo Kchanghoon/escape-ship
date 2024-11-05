@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;  // UI 버튼과 패널을 조작하기 위해 필요
 
@@ -12,6 +13,8 @@ public class TutorialNoteControl : MonoBehaviour
 
     private int currentPanelIndex = 1;  // 현재 활성화된 패널을 추적 (1 또는 2)
 
+
+
     void Start()
     {
         // 패널 초기 상태 설정 (시작할 때 panel1만 활성화)
@@ -23,6 +26,8 @@ public class TutorialNoteControl : MonoBehaviour
         nextButton.onClick.AddListener(OnNextButtonClicked);
         undoButton.onClick.AddListener(OnUndoButtonClicked);
         //deleteButton.onClick.AddListener(OnDeleteButtonClicked);
+        KeyManager.Instance.keyDic[KeyAction.Setting] += OnDeleteButtonClicked;
+
     }
 
     // Next 버튼을 클릭했을 때 호출되는 함수
@@ -53,9 +58,12 @@ public class TutorialNoteControl : MonoBehaviour
         }
     }
 
-    //public void OnDeleteButtonClicked()
-    //{
-    //    tutorialPanel.SetActive(false);
-    //    GameManager.Instance.HideMouse();
-    //}
+    public void OnDeleteButtonClicked()
+    {
+        if (tutorialPanel.activeSelf)
+        {
+            tutorialPanel.SetActive(false);
+            GameManager.Instance.HideMouse();
+        }
+    }
 }

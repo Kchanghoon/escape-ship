@@ -18,6 +18,7 @@ public class NoteUI : MonoBehaviour
     {
         // 키 이벤트에 패널 토글 메서드를 연결
         KeyManager.Instance.keyDic[KeyAction.Panel] += TryTogglePanel;
+        KeyManager.Instance.keyDic[KeyAction.Setting] += TryDeletePanel;
     }
 
     private void OnDestroy()
@@ -51,5 +52,13 @@ public class NoteUI : MonoBehaviour
             GameManager.Instance.HideMouse();
         }
         panel.SetActive(isActive);  // 패널을 활성화 또는 비활성화
+    }
+
+    private void TryDeletePanel()
+    {
+        if (item9Panel.activeSelf)
+        {
+            item9Panel.SetActive(false);
+        }
     }
 }

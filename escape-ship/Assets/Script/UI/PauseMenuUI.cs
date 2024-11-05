@@ -13,6 +13,7 @@ public class PauseMenuUI : MonoBehaviour
     [SerializeField] private GameObject BasepauseMenuUI;
     [SerializeField] private GameObject confirmMenuPanel;
     [SerializeField] private GameObject confirmExitPanel;
+    [SerializeField] private GameObject confirmOptionPanel;
     [SerializeField] private GameObject MainMenuUI;
 
     [Header("Audio Settings")]
@@ -189,13 +190,6 @@ public class PauseMenuUI : MonoBehaviour
 #endif
     }
 
-    public void ClickSaveButton(int saveIndex)
-    {
-        // 세이브 로직 추가
-    }
+    public void showOptionPanel() { confirmOptionSlotPanel.SetActive(true); BTNClick.Play(); }
 
-    public void ClickLoadButton(int loadIndex)
-    {
-        // 로드 로직 추가
-    }
 }
