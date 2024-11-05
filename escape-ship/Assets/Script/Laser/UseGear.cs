@@ -1,5 +1,6 @@
 using UnityEngine;
-using DG.Tweening;  // DoTween 네임스페이스 추가
+using DG.Tweening;
+using TMPro;  // DoTween 네임스페이스 추가
 
 public class UseGear : MonoBehaviour
 {
@@ -8,6 +9,10 @@ public class UseGear : MonoBehaviour
     public float moveDistance = 5f;  // 오브젝트를 이동시킬 Y축 거리
     public float moveDuration = 1f;  // 이동 애니메이션의 지속 시간
     [SerializeField] AudioSource GearMove;  // 기어 움직이는 소리
+    [SerializeField] Transform player;  // 플레이어의 Transform
+    private bool isMouseOverItem = false;  // 마우스가 오브젝트 위에 있는지 여부를 저장
+    [SerializeField] float interactDistance = 4f;  // 상호작용 가능 거리
+    [SerializeField] TextMeshProUGUI Text;  // 상호작용 안내 텍스트
 
     void Start()
     {
@@ -15,15 +20,54 @@ public class UseGear : MonoBehaviour
         KeyManager.Instance.keyDic[KeyAction.Play] += CheckIfGearIsUsed;
     }
 
+    private void Update()
+    {
+        float distanceToPlayer = Vector3.Distance(player.position, transform.position);
+        if (isMouseOverItem && distanceToPlayer <= interactDistance)
+        {
+            ShowText();  // 상호작용 안내 텍스트 활성화
+        }
+        else
+        {
+            HideText();  // 상호작용 안내 텍스트 비활성화
+        }
+    }
+
+    private void ShowText()
+    {
+        Text.gameObject.SetActive(true);  // 텍스트 활성화
+        Text.text = "E키를 눌러 기어장착 가능";  // 안내 메시지 설정
+    }
+
+    // 상호작용 안내 텍스트를 비활성화하는 메서드
+    private void HideText()
+    {
+        Text.gameObject.SetActive(false);  // 텍스트 비활성화
+    }
+
+    private void OnMouseEnter()
+    {
+        isMouseOverItem = true;
+    }
+
+    private void OnMouseExit()
+    {
+        isMouseOverItem = false;
+    }
+
     // 아이템 12번을 사용했는지 확인하는 메서드
     void CheckIfGearIsUsed()
     {
         if (!isGearUsed)  // 아직 기어가 사용되지 않았을 때만 확인
         {
-            var selectedItem = InventoryUIExmaple.Instance.GetSelectedItem();  // 선택된 아이템을 가져옴
-            if (selectedItem != null && selectedItem.id == "12")  // 아이템 ID가 12번인지 확인
+            float distanceToPlayer = Vector3.Distance(player.position, transform.position);
+            if (isMouseOverItem && distanceToPlayer <= interactDistance)
             {
-                UseItem();  // 아이템 사용 로직 호출
+                var selectedItem = InventoryUIExmaple.Instance.GetSelectedItem();  // 선택된 아이템을 가져옴
+                if (selectedItem != null && selectedItem.id == "12")  // 아이템 ID가 12번인지 확인
+                {
+                    UseItem();  // 아이템 사용 로직 호출
+                }
             }
         }
     }
