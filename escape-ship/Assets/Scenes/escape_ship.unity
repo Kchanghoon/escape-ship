@@ -21189,6 +21189,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1361135662}
     m_Modifications:
+    - target: {fileID: 1363236112776498701, guid: dc11cc31549d8624b981965a76bf5b94, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4140168313415218722, guid: dc11cc31549d8624b981965a76bf5b94, type: 3}
       propertyPath: BTNClick
       value: 
@@ -21220,6 +21224,30 @@ PrefabInstance:
     - target: {fileID: 5824455724257053018, guid: dc11cc31549d8624b981965a76bf5b94, type: 3}
       propertyPath: m_Name
       value: PauseMenuUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 5829264760716444023, guid: dc11cc31549d8624b981965a76bf5b94, type: 3}
+      propertyPath: m_fontColor.b
+      value: 0.4584905
+      objectReference: {fileID: 0}
+    - target: {fileID: 5829264760716444023, guid: dc11cc31549d8624b981965a76bf5b94, type: 3}
+      propertyPath: m_fontColor.g
+      value: 0.8889635
+      objectReference: {fileID: 0}
+    - target: {fileID: 5829264760716444023, guid: dc11cc31549d8624b981965a76bf5b94, type: 3}
+      propertyPath: m_fontColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5829264760716444023, guid: dc11cc31549d8624b981965a76bf5b94, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4285916159
+      objectReference: {fileID: 0}
+    - target: {fileID: 7073938098968580411, guid: dc11cc31549d8624b981965a76bf5b94, type: 3}
+      propertyPath: m_fontColor.b
+      value: 0.45882353
+      objectReference: {fileID: 0}
+    - target: {fileID: 7073938098968580411, guid: dc11cc31549d8624b981965a76bf5b94, type: 3}
+      propertyPath: m_fontColor.g
+      value: 0.8901961
       objectReference: {fileID: 0}
     - target: {fileID: 7613916811364243406, guid: dc11cc31549d8624b981965a76bf5b94, type: 3}
       propertyPath: m_LocalPosition.x
@@ -21259,6 +21287,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7613916811364243406, guid: dc11cc31549d8624b981965a76bf5b94, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8111420310782461599, guid: dc11cc31549d8624b981965a76bf5b94, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
