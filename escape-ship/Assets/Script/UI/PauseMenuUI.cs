@@ -12,18 +12,12 @@ public class PauseMenuUI : MonoBehaviour
     [Header("UI Panels")]
     [SerializeField] private GameObject BasepauseMenuUI;
     [SerializeField] private GameObject confirmMenuPanel;
-    [SerializeField] private GameObject confirmExitPanel;
     [SerializeField] private GameObject confirmOptionPanel;
+    [SerializeField] private GameObject confirmExitPanel;
     [SerializeField] private GameObject MainMenuUI;
 
     [Header("Audio Settings")]
-    [SerializeField] private AudioMixer audioMixer;
-    [SerializeField] private Slider bgmSlider;
-    [SerializeField] private Slider effectSlider;
-    [SerializeField] private Slider masterSlider;
-    [SerializeField] private TMP_InputField bgmVolumeText;
-    [SerializeField] private TMP_InputField effectVolumeText;
-    [SerializeField] private TMP_InputField masterVolumeText;
+
     [SerializeField] AudioSource BTNClick;  // 문이 열릴 때 재생할 소리
 
     [Header("Other Settings")]
@@ -34,82 +28,8 @@ public class PauseMenuUI : MonoBehaviour
     private void Start()
     {
         KeyManager.Instance.keyDic[KeyAction.Setting] += OnSetting;
-
-        bgmSlider.onValueChanged.AddListener(SetBGMVolume);
-        effectSlider.onValueChanged.AddListener(SetEffectVolume);
-        masterSlider.onValueChanged.AddListener(SetMasterVolume);
-
-        bgmVolumeText.onEndEdit.AddListener(delegate { OnBGMTextChange(bgmVolumeText.text); });
-        effectVolumeText.onEndEdit.AddListener(delegate { OnEffectTextChange(effectVolumeText.text); });
-        masterVolumeText.onEndEdit.AddListener(delegate { OnMasterTextChange(masterVolumeText.text); });
-
-        bgmSlider.value = PlayerPrefs.GetFloat("BGMVolume", 0.75f);
-        effectSlider.value = PlayerPrefs.GetFloat("EffectVolume", 0.75f);
-        masterSlider.value = PlayerPrefs.GetFloat("MasterVolume", 0.75f);
-
-        UpdateTextFields();
     }
 
-    private void UpdateTextFields()
-    {
-        bgmVolumeText.text = Mathf.Round(bgmSlider.value * 100).ToString();
-        effectVolumeText.text = Mathf.Round(effectSlider.value * 100).ToString();
-        masterVolumeText.text = Mathf.Round(masterSlider.value * 100).ToString();
-    }
-
-    public void SetBGMVolume(float value)
-    {
-        float volume = (value > 0.0001f) ? Mathf.Log10(value) * 20 : -80f;
-        audioMixer.SetFloat("BGMVolume", volume);
-        PlayerPrefs.SetFloat("BGMVolume", value);
-        UpdateTextFields();
-    }
-
-    public void SetEffectVolume(float value)
-    {
-        float volume = (value > 0.0001f) ? Mathf.Log10(value) * 20 : -80f;
-        audioMixer.SetFloat("EffectVolume", volume);
-        PlayerPrefs.SetFloat("EffectVolume", value);
-        UpdateTextFields();
-    }
-
-    public void SetMasterVolume(float value)
-    {
-        float volume = (value > 0.0001f) ? Mathf.Log10(value) * 20 : -80f;
-        audioMixer.SetFloat("MasterVolume", volume);
-        PlayerPrefs.SetFloat("MasterVolume", value);
-        UpdateTextFields();
-    }
-
-    private void OnBGMTextChange(string newValue)
-    {
-        if (float.TryParse(newValue, out float result))
-        {
-            result = Mathf.Clamp(result / 100f, 0.0001f, 1f);
-            bgmSlider.value = result;
-            SetBGMVolume(result);
-        }
-    }
-
-    private void OnEffectTextChange(string newValue)
-    {
-        if (float.TryParse(newValue, out float result))
-        {
-            result = Mathf.Clamp(result / 100f, 0.0001f, 1f);
-            effectSlider.value = result;
-            SetEffectVolume(result);
-        }
-    }
-
-    private void OnMasterTextChange(string newValue)
-    {
-        if (float.TryParse(newValue, out float result))
-        {
-            result = Mathf.Clamp(result / 100f, 0.0001f, 1f);
-            masterSlider.value = result;
-            SetMasterVolume(result);
-        }
-    }
 
     private void OnSetting()
     {
@@ -131,6 +51,7 @@ public class PauseMenuUI : MonoBehaviour
             }
             GameManager.Instance.isSetting = false;
             BasepauseMenuUI.SetActive(false);
+            confirmOptionPanel.SetActive(false);
             isPause = false;
         }
     }
@@ -153,12 +74,17 @@ public class PauseMenuUI : MonoBehaviour
         BTNClick.Play();
     }
 
+    public void showConfirmOptionPanel()
+    {
+        confirmOptionPanel.SetActive(true);
+        BTNClick.Play();
+    }
+
     public void showConfirmExitPanel()
     {
         confirmExitPanel.SetActive(true);
         BTNClick.Play();
     }
-
 
 
     public void Menu()
@@ -170,6 +96,7 @@ public class PauseMenuUI : MonoBehaviour
         BasepauseMenuUI.SetActive(false);
         confirmMenuPanel.SetActive(false);
         confirmExitPanel.SetActive(false);
+        confirmOptionPanel.SetActive(false);
         MainMenuUI.SetActive(true);
 
     }
@@ -190,6 +117,6 @@ public class PauseMenuUI : MonoBehaviour
 #endif
     }
 
-    public void showOptionPanel() { confirmOptionSlotPanel.SetActive(true); BTNClick.Play(); }
+ 
 
 }

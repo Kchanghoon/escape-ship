@@ -18,39 +18,12 @@ public class StartMenu : MonoBehaviour
     [Header("Player Settings")]
     [SerializeField] private PlayerState playerState;
 
-    // 오디오 설정
+    //// 오디오 설정
     [Header("Audio Settings")]
-    [SerializeField] private AudioMixer audioMixer;
-    [SerializeField] private Slider bgmSlider;
-    [SerializeField] private Slider effectSlider;
-    [SerializeField] private Slider masterSlider;
-    [SerializeField] private TMP_InputField bgmVolumeText;
-    [SerializeField] private TMP_InputField effectVolumeText;
-    [SerializeField] private TMP_InputField masterVolumeText;
     [SerializeField] AudioSource BTNClick;  // 문이 열릴 때 재생할 소리
 
     public GameObject panel;
 
-    private void Start()
-    {
-
-        // 슬라이더 값 변경 이벤트
-        bgmSlider.onValueChanged.AddListener(SetBGMVolume);
-        effectSlider.onValueChanged.AddListener(SetEffectVolume);
-        masterSlider.onValueChanged.AddListener(SetMasterVolume);
-
-        // 텍스트 필드 변경 이벤트
-        bgmVolumeText.onEndEdit.AddListener(delegate { OnBGMTextChange(bgmVolumeText.text); });
-        effectVolumeText.onEndEdit.AddListener(delegate { OnEffectTextChange(effectVolumeText.text); });
-        masterVolumeText.onEndEdit.AddListener(delegate { OnMasterTextChange(masterVolumeText.text); });
-
-        // 슬라이더 초기 값 설정
-        bgmSlider.value = PlayerPrefs.GetFloat("BGMVolume", 0.75f);
-        effectSlider.value = PlayerPrefs.GetFloat("EffectVolume", 0.75f);
-        masterSlider.value = PlayerPrefs.GetFloat("MasterVolume", 0.75f);
-
-        UpdateTextFields();
-    }
 
     public void ShowMainUI()
     {
@@ -64,70 +37,6 @@ public class StartMenu : MonoBehaviour
         StartMainUI.SetActive(false);
         GameManager.Instance.HideMouse();
         BTNClick.Play();
-    }
-
-    // 슬라이더 변경 시 텍스트 필드 업데이트
-    private void UpdateTextFields()
-    {
-        bgmVolumeText.text = Mathf.Round(bgmSlider.value * 100).ToString();
-        effectVolumeText.text = Mathf.Round(effectSlider.value * 100).ToString();
-        masterVolumeText.text = Mathf.Round(masterSlider.value * 100).ToString();
-    }
-
-    // 볼륨 조절 메서드들
-    public void SetBGMVolume(float value)
-    {
-        float volume = (value > 0.0001f) ? Mathf.Log10(value) * 20 : -80f;
-        audioMixer.SetFloat("BGMVolume", volume);
-        PlayerPrefs.SetFloat("BGMVolume", value);
-        UpdateTextFields();
-    }
-
-    public void SetEffectVolume(float value)
-    {
-        float volume = (value > 0.0001f) ? Mathf.Log10(value) * 20 : -80f;
-        audioMixer.SetFloat("EffectVolume", volume);
-        PlayerPrefs.SetFloat("EffectVolume", value);
-        UpdateTextFields();
-    }
-
-    public void SetMasterVolume(float value)
-    {
-        float volume = (value > 0.0001f) ? Mathf.Log10(value) * 20 : -80f;
-        audioMixer.SetFloat("MasterVolume", volume);
-        PlayerPrefs.SetFloat("MasterVolume", value);
-        UpdateTextFields();
-    }
-
-    // 텍스트 입력으로 볼륨 변경
-    private void OnBGMTextChange(string newValue)
-    {
-        if (float.TryParse(newValue, out float result))
-        {
-            result = Mathf.Clamp(result / 100f, 0.0001f, 1f);
-            bgmSlider.value = result;
-            SetBGMVolume(result);
-        }
-    }
-
-    private void OnEffectTextChange(string newValue)
-    {
-        if (float.TryParse(newValue, out float result))
-        {
-            result = Mathf.Clamp(result / 100f, 0.0001f, 1f);
-            effectSlider.value = result;
-            SetEffectVolume(result);
-        }
-    }
-
-    private void OnMasterTextChange(string newValue)
-    {
-        if (float.TryParse(newValue, out float result))
-        {
-            result = Mathf.Clamp(result / 100f, 0.0001f, 1f);
-            masterSlider.value = result;
-            SetMasterVolume(result);
-        }
     }
 
     // 스테이지 선택 후 StageManager에 연결하여 활성화
@@ -172,7 +81,6 @@ public class StartMenu : MonoBehaviour
             playerState.DecreaseStress(playerState.Stress);
         }
 
-        //GameManager.Instance.SetPause(false); // 일시 정지 해제 (커서 잠금 포함)
         GameManager.Instance.HideMouse();
     }
 
@@ -191,7 +99,7 @@ public class StartMenu : MonoBehaviour
     {
         // 게임 종료 기능
         Application.Quit();
-
+        BTNClick.Play();
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #endif
