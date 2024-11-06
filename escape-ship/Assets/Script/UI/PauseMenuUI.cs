@@ -33,8 +33,11 @@ public class PauseMenuUI : MonoBehaviour
 
     private void OnSetting()
     {
-        // uiElements 배열 내에서 활성화된 UI 요소가 있는지 확인
-        bool isAnyUIActive = uiElements.Any(x => x.activeInHierarchy);
+        // 메인 메뉴 UI가 활성화되어 있으면 아무 작업도 하지 않고 종료
+        if (MainMenuUI.activeInHierarchy)
+        {
+            return;
+        }
 
         if (isPause == false) // 게임이 일시정지 상태가 아니고, 다른 UI가 활성화되지 않은 경우에만 실행
         {
@@ -45,16 +48,16 @@ public class PauseMenuUI : MonoBehaviour
         }
         else // 게임이 일시정지 상태이며, 다른 UI가 활성화된 경우에만 실행
         {
-            if (!isAnyUIActive)
-            {
-               Hide();
-            }
+            Hide();
             GameManager.Instance.isSetting = false;
             BasepauseMenuUI.SetActive(false);
             confirmOptionPanel.SetActive(false);
+            confirmExitPanel.SetActive(false);
+            confirmMenuPanel.SetActive(false);
             isPause = false;
         }
     }
+
 
     private void Show()
     {

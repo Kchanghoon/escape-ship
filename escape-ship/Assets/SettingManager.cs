@@ -36,9 +36,9 @@ public class SettingsManager : Singleton<SettingsManager>
         masterVolumeText.onEndEdit.AddListener(delegate { OnVolumeTextChange(masterVolumeText, masterSlider, SetMasterVolume); });
 
         // 감도 및 FOV 슬라이더 초기화
-        sensitivitySlider.minValue = 1f; // 최소값 설정
+        sensitivitySlider.minValue = 0.1f; // 최소값 설정
         sensitivitySlider.maxValue = 10f; // 최대값 설정
-        sensitivitySlider.value = Mathf.Clamp(MouseCam.Instance.mouseSpeed, 1f, 10f); // 마우스 감도 초기값 설정
+        sensitivitySlider.value = Mathf.Clamp(MouseCam.Instance.mouseSpeed, 0.1f, 10f); // 마우스 감도 초기값 설정
 
         fovSlider.value = playerCamera.fieldOfView; // FOV 초기값 설정
 
@@ -66,6 +66,10 @@ public class SettingsManager : Singleton<SettingsManager>
         bgmSlider.value = PlayerPrefs.GetFloat("BGMVolume", 0.75f);
         effectSlider.value = PlayerPrefs.GetFloat("EffectVolume", 0.75f);
         masterSlider.value = PlayerPrefs.GetFloat("MasterVolume", 0.75f);
+
+        // 마우스 감도 및 FOV 설정 불러오기
+        sensitivitySlider.value = PlayerPrefs.GetFloat("MouseSensitivity", 4f); // 기본값을 5로 설정
+        fovSlider.value = PlayerPrefs.GetFloat("FOV", 60f); // 기본값을 60으로 설정
     }
 
     private void UpdateTextFields()
@@ -123,6 +127,7 @@ public class SettingsManager : Singleton<SettingsManager>
     {
         MouseCam.Instance.mouseSpeed = value;
         sensitivityText.text = Mathf.Round(value).ToString(); // 텍스트 필드 업데이트
+        PlayerPrefs.SetFloat("MouseSensitivity", value); // 마우스 감도 저장
     }
 
     private void OnFOVChanged(float value)
@@ -130,6 +135,7 @@ public class SettingsManager : Singleton<SettingsManager>
         value = Mathf.Clamp(value, 10f, 90f);  // FOV 값을 10~90 사이로 제한
         playerCamera.fieldOfView = value;
         fovText.text = Mathf.Round(value).ToString(); // 텍스트 필드 업데이트
+        PlayerPrefs.SetFloat("FOV", value); // FOV 저장
     }
 
     private void OnValueTextChange(TMP_InputField textField, Slider slider, System.Action<float> onValueChanged)

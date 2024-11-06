@@ -153,11 +153,13 @@ public class PlayerState : MonoBehaviour
     }
 
 void GameOver()
-{
+    {
 
-    // ¾À ·Îµå
-    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-}
+        // ¾À ·Îµå
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        GameManager.Instance.ShowMouse();
+
+    }
 
 
 }

@@ -20489,7 +20489,7 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: 5ccdbb4bd804cb348819892db7eb808e, type: 3}
     - target: {fileID: 6630222609551048921, guid: 189c3cd30874c82489bbcf7029d8859c, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6859293321188513454, guid: 189c3cd30874c82489bbcf7029d8859c, type: 3}
       propertyPath: pickUpSound
@@ -21484,17 +21484,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1284530141262551672}
     - target: {fileID: 4140168313415218722, guid: dc11cc31549d8624b981965a76bf5b94, type: 3}
+      propertyPath: uiElements.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4140168313415218722, guid: dc11cc31549d8624b981965a76bf5b94, type: 3}
       propertyPath: uiElements.Array.data[0]
       value: 
-      objectReference: {fileID: 198728281}
+      objectReference: {fileID: 9203654917810722580}
     - target: {fileID: 4140168313415218722, guid: dc11cc31549d8624b981965a76bf5b94, type: 3}
       propertyPath: uiElements.Array.data[1]
       value: 
-      objectReference: {fileID: 792312484}
+      objectReference: {fileID: 9203654917810722580}
     - target: {fileID: 4140168313415218722, guid: dc11cc31549d8624b981965a76bf5b94, type: 3}
       propertyPath: uiElements.Array.data[2]
       value: 
-      objectReference: {fileID: 214880736}
+      objectReference: {fileID: 9203654917810722580}
     - target: {fileID: 4140168313415218722, guid: dc11cc31549d8624b981965a76bf5b94, type: 3}
       propertyPath: uiElements.Array.data[3]
       value: 
