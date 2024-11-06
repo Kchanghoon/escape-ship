@@ -6,7 +6,7 @@ using TMPro;
 public class Item : MonoBehaviour
 {
     public ItemDataExample itemData;  // 아이템 데이터
-    public float pickUpDistance = 2f;  // 아이템을 가져갈 수 있는 거리
+    public float pickUpDistance = 5f;  // 아이템을 가져갈 수 있는 거리
     private Transform playerTransform;  // 플레이어의 Transform
     private bool isMouseOverItem = false;  // 에임이 아이템에 맞춰졌는지 여부
     public AudioClip pickUpSound;  // 아이템 획득 시 재생할 사운드 클립

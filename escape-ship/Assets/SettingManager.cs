@@ -80,9 +80,10 @@ public class SettingsManager : Singleton<SettingsManager>
         masterVolumeText.text = Mathf.Round(masterSlider.value * 100).ToString();
 
         // 감도 및 FOV 텍스트 필드 업데이트
-        sensitivityText.text = Mathf.Round(sensitivitySlider.value).ToString();
+        sensitivityText.text = sensitivitySlider.value.ToString("F1"); // 소수점 첫째 자리까지 표시
         fovText.text = Mathf.Round(fovSlider.value).ToString();
     }
+
 
     // 오디오 볼륨 설정 메서드
     public void SetBGMVolume(float value)
@@ -126,9 +127,10 @@ public class SettingsManager : Singleton<SettingsManager>
     private void OnSensitivityChanged(float value)
     {
         MouseCam.Instance.mouseSpeed = value;
-        sensitivityText.text = Mathf.Round(value).ToString(); // 텍스트 필드 업데이트
+        sensitivityText.text = value.ToString("F1"); // 소수점 첫째 자리까지 표시
         PlayerPrefs.SetFloat("MouseSensitivity", value); // 마우스 감도 저장
     }
+
 
     private void OnFOVChanged(float value)
     {
