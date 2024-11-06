@@ -67,28 +67,24 @@ public class PipeManager : Singleton<PipeManager>
 
     async public void OnPuzzleComplete()
     {
-        ItemController.Instance.DeleteItemQuantity("3");  // 벨브 수량 감소
         puzzleclear = true;
+        ItemController.Instance.DeleteItemQuantity("3"); // 벨브 수량 감소
         // 패널 비활성화
-        if (panel != null)
-        {
             CloseBtn();
-        }
         // 회복존 활성화
-        if (recoveryZone != null)
+        if (puzzleclear)
         {
-            recoveryZone.SetActive(true);
-            Debug.Log("회복존이 활성화되었습니다.");
+            if (recoveryZone != null)
+            {
+                recoveryZone.SetActive(true);
+                Debug.Log("회복존이 활성화되었습니다.");
 
-         
-            await UniTask.Delay((int)(time * 1000));
-            recoveryZone.SetActive(false);
-            Debug.Log("회복존이 비활성화");
+                await UniTask.Delay((int)(time * 1000));
+                recoveryZone.SetActive(false);
+                Debug.Log("회복존이 비활성화");
+            }
         }
-        else
-        {
-            Debug.LogWarning("회복존이 할당되지 않았습니다.");
-        }
+
     }
 
     // 패널을 열 때 호출되는 함수 (필요한 경우 구현)

@@ -95,10 +95,8 @@ public class KeyPad : MonoBehaviour
         if (inputPassword == correctPassword)
         {
             Debug.Log("비밀번호가 맞습니다. 문이 열립니다.");
-            
 
-                doorSound.Play();  // 문 열림 소리 재생
-
+            doorSound.Play();  // 문 열림 소리 재생
 
             doorMotion.OpenDoor();  // 문 열기
             CloseKeyPad();  // 키패드 패널 닫기
