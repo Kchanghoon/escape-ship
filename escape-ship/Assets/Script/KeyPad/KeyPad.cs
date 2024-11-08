@@ -42,17 +42,25 @@ public class KeyPad : MonoBehaviour
     }
 
     // 상호작용 안내 텍스트를 활성화하는 메서드
+    // 상호작용 안내 텍스트를 활성화하는 메서드
     private void ShowPickUpText()
     {
-        pickUpText.gameObject.SetActive(true);  // 텍스트 활성화
-        pickUpText.text = "E키를 눌러 키패드 활성화 가능";  // 안내 메시지 설정
+        if (pickUpText != null) // null 체크
+        {
+            pickUpText.gameObject.SetActive(true);  // 텍스트 활성화
+            pickUpText.text = "E키를 눌러 키패드 활성화 가능";  // 안내 메시지 설정
+        }
     }
 
     // 상호작용 안내 텍스트를 비활성화하는 메서드
     private void HidePickUpText()
     {
-        pickUpText.gameObject.SetActive(false);  // 텍스트 비활성화
+        if (pickUpText != null) // null 체크
+        {
+            pickUpText.gameObject.SetActive(false);  // 텍스트 비활성화
+        }
     }
+
 
     // 마우스가 오브젝트 위에 있을 때 호출되는 메서드
     private void OnMouseEnter()

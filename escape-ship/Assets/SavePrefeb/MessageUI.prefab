@@ -238,7 +238,6 @@ MonoBehaviour:
   panel2: {fileID: 3678231937280571015}
   nextButton: {fileID: 6387237681740809711}
   undoButton: {fileID: 5128478162381746108}
-  deleteButton: {fileID: 1550692974327131596}
   tutorialPanel: {fileID: 2334203423401694737}
 --- !u!1 &3210282118537573277
 GameObject:
@@ -981,11 +980,11 @@ RectTransform:
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 3113161082515721857}
+  m_Father: {fileID: 3367304833771726738}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 960, y: 540}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5911483970061390270
@@ -1187,6 +1186,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 4606923504115252507}
   - {fileID: 5149697966693602599}
   - {fileID: 3113161082515721857}
   m_Father: {fileID: 0}
@@ -1340,7 +1340,6 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 4606923504115252507}
   - {fileID: 642588582062352233}
   m_Father: {fileID: 3367304833771726738}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -76,7 +76,6 @@ public class PlayerState : MonoBehaviour
                 ItemController.Instance.DecreaseItemQuantity(selectedItem.id);
                 Debug.Log("알약을 사용하여 스트레스가 10 감소했습니다.");
             }
-
         }
         else
         {
@@ -99,7 +98,6 @@ public class PlayerState : MonoBehaviour
             GameOver();
         }
     }
-
 
     // 산소를 업데이트하는 메서드
     void UpdateOxygen()
@@ -152,14 +150,14 @@ public class PlayerState : MonoBehaviour
         isInRecoverZone = false;  // 회복존에서 나간 상태로 기록
     }
 
-void GameOver()
+    void GameOver()
     {
-
-        // 씬 로드
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        // RestartManager 객체가 아니라, DeadPanel을 활성화해야 합니다.
+        RestartManager.Instance.ShowDeadPanel();
+        RestartManager.Instance.SaveCurrentStage();
         GameManager.Instance.ShowMouse();
-
     }
+
 
 
 }

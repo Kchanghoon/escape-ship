@@ -11,6 +11,12 @@ public class StageManager : Singleton<StageManager>
     // 각 스테이지별 플레이어 시작 위치
     public Transform[] playerStartPoints;
 
+    // 현재 활성화된 스테이지 인덱스 저장 변수
+    private int currentStageIndex = -1;
+
+
+
+
     public void ActivateStage(int stageIndex)
     {
         // 모든 스테이지 비활성화
@@ -23,6 +29,9 @@ public class StageManager : Singleton<StageManager>
         if (stageIndex >= 0 && stageIndex < stages.Length)
         {
             stages[stageIndex].SetActive(true);
+
+            // 현재 활성화된 스테이지 인덱스 업데이트
+            currentStageIndex = stageIndex;
 
             // 플레이어를 해당 스테이지의 시작 위치로 이동
             if (player != null)
@@ -55,5 +64,11 @@ public class StageManager : Singleton<StageManager>
         {
             Debug.LogError("잘못된 스테이지 인덱스입니다.");
         }
+    }
+
+    // 현재 활성화된 스테이지 인덱스를 반환하는 메서드
+    public int GetCurrentStageIndex()
+    {
+        return currentStageIndex;
     }
 }
