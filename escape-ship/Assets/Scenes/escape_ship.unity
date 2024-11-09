@@ -4573,7 +4573,6 @@ GameObject:
   - component: {fileID: 321654430}
   - component: {fileID: 321654433}
   - component: {fileID: 321654432}
-  - component: {fileID: 321654431}
   m_Layer: 5
   m_Name: DeadPanel
   m_TagString: Untagged
@@ -4603,21 +4602,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1000, y: 700}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &321654431
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 321654429}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9c453e265f93fe45b027376def62641, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DeadPanel: {fileID: 321654429}
-  BTNClick: {fileID: 988148218}
-  playerState: {fileID: 3666117477124163933}
 --- !u!114 &321654432
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6148,6 +6132,7 @@ Transform:
   - {fileID: 1440800870}
   - {fileID: 122093776161205679}
   - {fileID: 2003423271}
+  - {fileID: 648636999}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &452599435 stripped
@@ -8680,6 +8665,53 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: 8fc88e5f23ab34452aefae3d4af75619, type: 3}
+--- !u!1 &648636998
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 648636999}
+  - component: {fileID: 648637000}
+  m_Layer: 0
+  m_Name: RestartManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &648636999
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 648636998}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 447503369}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &648637000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 648636998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9c453e265f93fe45b027376def62641, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DeadPanel: {fileID: 321654429}
+  BTNClick: {fileID: 988148218}
+  playerState: {fileID: 3666117477124163933}
 --- !u!1 &656877123 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3501150555890617580, guid: 189c3cd30874c82489bbcf7029d8859c, type: 3}
@@ -12563,10 +12595,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 321654431}
+      - m_Target: {fileID: 648637000}
         m_TargetAssemblyTypeName: RestartManager, Assembly-CSharp
-        m_MethodName: SelectStage
-        m_Mode: 3
+        m_MethodName: SendRestart
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -19655,7 +19687,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 321654431}
+      - m_Target: {fileID: 648637000}
         m_TargetAssemblyTypeName: RestartManager, Assembly-CSharp
         m_MethodName: MainMenu
         m_Mode: 1
@@ -38812,7 +38844,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 1614412736757516107, guid: e577bd2a33b3df2488defb126ad32b4d, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 5314383782288444884, guid: e577bd2a33b3df2488defb126ad32b4d, type: 3}
       insertIndex: 1
