@@ -34319,6 +34319,15 @@ PrefabInstance:
       propertyPath: dialogueText
       value: 
       objectReference: {fileID: 1047615760}
+    - target: {fileID: 2143152587904305592, guid: 189c3cd30874c82489bbcf7029d8859c, type: 3}
+      propertyPath: dialogues.Array.data[3]
+      value: "\uAC01 \uBC15\uC2A4\uB4E4\uC758 \uBE44\uBC00\uBC88\uD638\uB294 \uBC15\uC2A4\uB4E4\uC758
+        \uBE5B\uACFC \uB9E4\uCE58\uD558\uB294 \uD30C\uC774\uD504\uC758 \uAC1C\uC218\uB798\uC694. 
+        2\uCE35\uC5D0\uC11C \uD30C\uC774\uD504\uB4E4\uC774 \uC788\uB098\uC694? \uAC01
+        \uC0C9 \uBCC4\uB85C \uC138\uB85C \uAC00\uB85C \uD615\uD0DC\uC758 \uD30C\uC774\uD504
+        \uB4E4\uC744 \uBAA8\uB450 \uB354\uD574\uBD10\uC694. \uC5BC\uB978 \uC138\uB7EC
+        \uAC00\uBCF4\uC8E0!"
+      objectReference: {fileID: 0}
     - target: {fileID: 2227929857914941739, guid: 189c3cd30874c82489bbcf7029d8859c, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.333
@@ -35006,7 +35015,7 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: 5ccdbb4bd804cb348819892db7eb808e, type: 3}
     - target: {fileID: 6630222609551048921, guid: 189c3cd30874c82489bbcf7029d8859c, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6859293321188513454, guid: 189c3cd30874c82489bbcf7029d8859c, type: 3}
       propertyPath: pickUpSound
