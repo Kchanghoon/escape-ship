@@ -34806,7 +34806,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4882476148742865903, guid: 189c3cd30874c82489bbcf7029d8859c, type: 3}
       propertyPath: interactionDistance
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5216758670939023995, guid: 189c3cd30874c82489bbcf7029d8859c, type: 3}
       propertyPath: time
@@ -35095,7 +35095,7 @@ PrefabInstance:
       objectReference: {fileID: 2138823689}
     - target: {fileID: 7669629497269956501, guid: 189c3cd30874c82489bbcf7029d8859c, type: 3}
       propertyPath: interactionDistance
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7684672727343868596, guid: 189c3cd30874c82489bbcf7029d8859c, type: 3}
       propertyPath: m_Color.b
