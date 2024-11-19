@@ -45,14 +45,15 @@ public class KeySet
 
 public class KeyManager : Singleton<KeyManager>
 {
-    [SerializeField] List<KeySet> inputDownKeySets;
-    [SerializeField] List<KeySet> inputKeySets;
+    [SerializeField] private List<KeySet> inputDownKeySets; // KeyDown 이벤트 처리용
+    [SerializeField] private List<KeySet> inputKeySets;     // KeyUp 이벤트 처리용
 
-    List<KeySet> allKeySets
-    {
-        get => inputDownKeySets.Concat(inputKeySets).ToList();
-    }
-     
+    // 읽기 전용 프로퍼티 추가
+    public IReadOnlyList<KeySet> InputDownKeySets => inputDownKeySets;
+    public IReadOnlyList<KeySet> InputKeySets => inputKeySets;
+    // 모든 KeySet 가져오기 (읽기 전용)
+    private List<KeySet> AllKeySets => inputDownKeySets.Concat(inputKeySets).ToList();
+
     public delegate void KeyEvent();
     private event KeyEvent OnJump;
     private event KeyEvent OnRun;
@@ -80,6 +81,11 @@ public class KeyManager : Singleton<KeyManager>
 
     private void Awake()
     {
+        InitializeKeyDictionary();
+    }
+
+    private void InitializeKeyDictionary()
+    {
         keyDic.Add(KeyAction.Jump, OnJump);
         keyDic.Add(KeyAction.Run, OnRun);
         keyDic.Add(KeyAction.Setting, OnSetting);
@@ -90,7 +96,6 @@ public class KeyManager : Singleton<KeyManager>
         keyDic.Add(KeyAction.Drop, OnDrop);
         keyDic.Add(KeyAction.Sit, OnSit);
         keyDic.Add(KeyAction.Panel, OnPanel);
-        
 
         keyDic[KeyAction.SelectItem1] = () => InventoryUIExmaple.Instance.SelectItem(0);
         keyDic[KeyAction.SelectItem2] = () => InventoryUIExmaple.Instance.SelectItem(1);
@@ -104,9 +109,10 @@ public class KeyManager : Singleton<KeyManager>
         keyDic[KeyAction.SelectItem10] = () => InventoryUIExmaple.Instance.SelectItem(9);
     }
 
-   private void InputKey(KeyAction keyAction)
+    // 키 입력 처리
+    private void InputKey(KeyAction keyAction)
     {
-        if(GameManager.Instance.isPause && GameManager.Instance.isSetting)
+        if (GameManager.Instance.isPause && GameManager.Instance.isSetting)
         {
             if (keyAction != KeyAction.Setting) return;
         }
@@ -114,17 +120,16 @@ public class KeyManager : Singleton<KeyManager>
         keyDic[keyAction]?.Invoke();
     }
 
-    // Update is called once per frame
-    void Update()
+    // Update 메서드 (기존 키 입력 처리 유지)
+    private void Update()
     {
         if (Input.anyKeyDown)
         {
-            foreach (var key in allKeySets)
+            foreach (var key in AllKeySets)
             {
                 if (Input.GetKeyDown(key.keyCode))
                 {
                     InputKey(key.keyAction);
-                    // keyDic[key.keyAction]?.Invoke();
                 }
             }
         }
@@ -135,8 +140,29 @@ public class KeyManager : Singleton<KeyManager>
             if (Input.GetKeyUp(key.keyCode))
             {
                 InputKey(key.keyAction);
-                // keyDic[key.keyAction]?.Invoke();
             }
         }
+    }
+
+    // **추가**: 키 변경 요청 처리 메서드
+    public void UpdateKeyBinding(KeyAction keyAction, KeyCode newKeyCode)
+    {
+        // KeyAction에 해당하는 KeySet 검색
+        var keySet = AllKeySets.FirstOrDefault(k => k.keyAction == keyAction);
+        if (keySet != null)
+        {
+            keySet.keyCode = newKeyCode; // 새로운 키 값으로 설정
+            Debug.Log($"Key for {keyAction} updated to {newKeyCode}");
+        }
+        else
+        {
+            Debug.LogError($"KeyAction {keyAction} not found!");
+        }
+    }
+
+    // **추가**: 특정 KeyAction의 KeyCode 가져오기
+    public KeyCode GetKeyCode(KeyAction keyAction)
+    {
+        return AllKeySets.FirstOrDefault(k => k.keyAction == keyAction)?.keyCode ?? KeyCode.None;
     }
 }
