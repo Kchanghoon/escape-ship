@@ -1,6 +1,7 @@
 using UnityEngine;
 using DG.Tweening;
-using TMPro;  // DoTween 네임스페이스 추가
+using TMPro;
+using System.Linq;  // DoTween 네임스페이스 추가
 
 public class UseGear : MonoBehaviour
 {
@@ -32,11 +33,18 @@ public class UseGear : MonoBehaviour
             HideText();  // 상호작용 안내 텍스트 비활성화
         }
     }
-
-    private void ShowText()
+    public KeyCode GetKeyCode(KeyAction keyAction)
     {
+        // KeyManager의 InputDownKeySets와 InputKeySets를 사용하여 키 찾기
+        return KeyManager.Instance.InputDownKeySets.Concat(KeyManager.Instance.InputKeySets)
+            .FirstOrDefault(keySet => keySet.keyAction == keyAction)?.keyCode ?? KeyCode.None;
+    }
+    private void ShowText()
+    {        // KeyManager에서 현재 Play 키값 가져오기
+        KeyCode playKey = KeyManager.Instance.GetKeyCode(KeyAction.Play);
+
         Text.gameObject.SetActive(true);  // 텍스트 활성화
-        Text.text = "E키를 눌러 기어장착 가능";  // 안내 메시지 설정
+        Text.text = $"{playKey}키를 눌러 기어장착 가능";  // 안내 메시지 설정
     }
 
     // 상호작용 안내 텍스트를 비활성화하는 메서드

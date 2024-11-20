@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using System.Linq;
 
 public class DraggableTrigger : MonoBehaviour
 {
@@ -68,8 +69,9 @@ public class DraggableTrigger : MonoBehaviour
             {
                 if (!isPuzzleCompleted)
                 {
+                    KeyCode playKey = KeyManager.Instance.GetKeyCode(KeyAction.Play);
                     interactText.gameObject.SetActive(true);
-                    interactText.text = "E키를 눌러 대화를 시작하세요.";
+                    interactText.text = $"{playKey}키를 눌러 대화를 시작하세요.";
 
                     // E 키를 눌렀을 때 대화 시작
                     if (Input.GetKeyDown(KeyCode.E) && !isDialogueActive)
@@ -96,7 +98,12 @@ public class DraggableTrigger : MonoBehaviour
             }
         
     }
-
+    public KeyCode GetKeyCode(KeyAction keyAction)
+    {
+        // KeyManager의 InputDownKeySets와 InputKeySets를 사용하여 키 찾기
+        return KeyManager.Instance.InputDownKeySets.Concat(KeyManager.Instance.InputKeySets)
+            .FirstOrDefault(keySet => keySet.keyAction == keyAction)?.keyCode ?? KeyCode.None;
+    }
     // 대화 시작
     void StartDialogue()
     {

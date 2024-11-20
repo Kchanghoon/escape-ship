@@ -48,7 +48,6 @@ public class ObjectPipe : MonoBehaviour
         isMouseOverObject = true;
         if (IsPlayerInRange() && isMouseOverObject)
         {
-            Debug.Log("온마우스 엔터 안까지 작동 완료");
             statusText.gameObject.SetActive(true);
             statusText.text = "벨브가 필요합니다.";
         }

@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;  // TextMeshPro 라이브러리 추가
-using DG.Tweening;  // DoTween 라이브러리 추가
+using DG.Tweening;
+using System.Linq;  // DoTween 라이브러리 추가
 
 public class DoorController : MonoBehaviour
 {
@@ -58,7 +59,9 @@ public class DoorController : MonoBehaviour
 
         // 상호작용할 수 있는 거리에 있고, 문에 마우스가 올려져 있으며 애니메이션이 진행 중이 아닐 때만 동작
         if (distanceToPlayer <= interactionDistance && isMouseOverDoor && !isAnimating)
-        {
+        {       // KeyManager에서 현재 Play 키값 가져오기
+            KeyCode playKey = KeyManager.Instance.GetKeyCode(KeyAction.Play);
+
             // 인벤토리에서 선택된 아이템을 확인 (ID 2의 아이템 필요)
             var selectedItem = InventoryUIExmaple.Instance.GetSelectedItem();
             if (selectedItem != null && selectedItem.id == "8")
@@ -71,7 +74,7 @@ public class DoorController : MonoBehaviour
                 {
                     OpenDoor();  // 문이 닫혀 있으면 열기
                 }
-                statusText.text = "E키를 눌러 문을 닫아주세요.";  // 상태 텍스트 업데이트
+                statusText.text = $"{playKey}키를 눌러 문을 닫아주세요.";  // 상태 텍스트 업데이트
             }
             else
             {
@@ -79,10 +82,17 @@ public class DoorController : MonoBehaviour
             }
         }
     }
-
+    public KeyCode GetKeyCode(KeyAction keyAction)
+    {
+        // KeyManager의 InputDownKeySets와 InputKeySets를 사용하여 키 찾기
+        return KeyManager.Instance.InputDownKeySets.Concat(KeyManager.Instance.InputKeySets)
+            .FirstOrDefault(keySet => keySet.keyAction == keyAction)?.keyCode ?? KeyCode.None;
+    }
     // 문 상태에 따라 텍스트를 업데이트하는 메서드
     private void UpdateStatusText()
-    {
+    {       // KeyManager에서 현재 Play 키값 가져오기
+        KeyCode playKey = KeyManager.Instance.GetKeyCode(KeyAction.Play);
+
         var selectedItem = InventoryUIExmaple.Instance.GetSelectedItem();
         if (selectedItem == null || (selectedItem.id != "8"))
         {
@@ -90,7 +100,7 @@ public class DoorController : MonoBehaviour
         }
         else
         {
-            statusText.text = "E키를 눌러 문을 여세요.";  // 열쇠가 있을 경우
+            statusText.text = $"{playKey}키를 눌러 문을 여세요.";  // 열쇠가 있을 경우
         }
         statusText.gameObject.SetActive(true);  // 상태 텍스트 표시
     }

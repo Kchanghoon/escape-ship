@@ -3519,7 +3519,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4994280506351745950, guid: 0545a8ff925500c4c9499e428ef7d97f, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5070432678988038077, guid: 0545a8ff925500c4c9499e428ef7d97f, type: 3}
       propertyPath: m_audioClip
@@ -3533,6 +3533,10 @@ PrefabInstance:
       propertyPath: dialogueText
       value: 
       objectReference: {fileID: 1047615760}
+    - target: {fileID: 5287309217908707007, guid: 0545a8ff925500c4c9499e428ef7d97f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5494540626112185338, guid: 0545a8ff925500c4c9499e428ef7d97f, type: 3}
       propertyPath: m_Name
       value: Manager
@@ -3765,9 +3769,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 0}
     - targetCorrespondingSourceObject: {fileID: 918060976324397424, guid: 0545a8ff925500c4c9499e428ef7d97f, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 1694009970045124983, guid: 0545a8ff925500c4c9499e428ef7d97f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 0545a8ff925500c4c9499e428ef7d97f, type: 3}

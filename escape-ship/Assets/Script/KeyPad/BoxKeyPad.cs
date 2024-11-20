@@ -1,3 +1,4 @@
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -44,24 +45,33 @@ public class BoxKeyPad : MonoBehaviour
         }
     }
 
+    public KeyCode GetKeyCode(KeyAction keyAction)
+    {
+        // KeyManager의 InputDownKeySets와 InputKeySets를 사용하여 키 찾기
+        return KeyManager.Instance.InputDownKeySets.Concat(KeyManager.Instance.InputKeySets)
+            .FirstOrDefault(keySet => keySet.keyAction == keyAction)?.keyCode ?? KeyCode.None;
+    }
+
     // 상호작용 안내 텍스트를 활성화하는 메서드
     private void ShowPickUpText()
     {
         pickUpText.gameObject.SetActive(true);  // 텍스트 활성화
         var selectedItem = InventoryUIExmaple.Instance.GetSelectedItem();
+        // KeyManager에서 현재 Play 키값 가져오기
+        KeyCode playKey = KeyManager.Instance.GetKeyCode(KeyAction.Play);
+
         // 선택된 아이템이 특정 ID를 가지고 있을 경우
         if (selectedItem != null &&
             (selectedItem.id == "7" || selectedItem.id == "6" || selectedItem.id == "5"))
         {
-            pickUpText.text = "E키를 눌러 비밀번호 입력창을 여세요";  // 안내 메시지 설정
+            pickUpText.text = $"{playKey}키를 눌러 비밀번호 입력창을 여세요";  // 안내 메시지 설정
         }
         else
         {
             // selectedItem이 null이거나 ID가 조건에 맞지 않을 경우
             pickUpText.text = "카드키를 들어 인식시켜 주세요";  // 안내 메시지 설정
         }
-
-
+ 
     }
 
     // 상호작용 안내 텍스트를 비활성화하는 메서드

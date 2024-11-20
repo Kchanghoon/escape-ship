@@ -1,3 +1,4 @@
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -40,15 +41,21 @@ public class KeyPad : MonoBehaviour
             HidePickUpText();  // 상호작용 안내 텍스트 비활성화
         }
     }
-
+    public KeyCode GetKeyCode(KeyAction keyAction)
+    {
+        // KeyManager의 InputDownKeySets와 InputKeySets를 사용하여 키 찾기
+        return KeyManager.Instance.InputDownKeySets.Concat(KeyManager.Instance.InputKeySets)
+            .FirstOrDefault(keySet => keySet.keyAction == keyAction)?.keyCode ?? KeyCode.None;
+    }
     // 상호작용 안내 텍스트를 활성화하는 메서드
     // 상호작용 안내 텍스트를 활성화하는 메서드
     private void ShowPickUpText()
     {
+        KeyCode playKey = KeyManager.Instance.GetKeyCode(KeyAction.Play);
         if (pickUpText != null) // null 체크
         {
             pickUpText.gameObject.SetActive(true);  // 텍스트 활성화
-            pickUpText.text = "E키를 눌러 키패드 활성화 가능";  // 안내 메시지 설정
+            pickUpText.text = $"{playKey}키를 눌러 키패드 활성화 가능";  // 안내 메시지 설정
         }
     }
 

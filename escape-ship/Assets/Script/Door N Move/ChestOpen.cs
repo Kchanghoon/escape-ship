@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using DG.Tweening;
+using System.Linq;
 
 public class ChestOpen : MonoBehaviour
 {
@@ -103,7 +104,11 @@ public class ChestOpen : MonoBehaviour
         }
         else
         {
-            statusText.text = "배터리가 필요합니다. E키를 눌러 배터리를 넣어주세요.";
+            // KeyManager에서 현재 Play 키값 가져오기
+            KeyCode playKey = KeyManager.Instance.GetKeyCode(KeyAction.Play);
+
+            // 메시지에 Play 키값 동적으로 반영
+            statusText.text = $"배터리가 필요합니다. {playKey}키를 눌러 배터리를 넣어주세요.";
         }
     }
 
@@ -124,6 +129,12 @@ public class ChestOpen : MonoBehaviour
         }
 
         isOpen = !isOpen;  // 상태를 반전시킴
+    }
+    public KeyCode GetKeyCode(KeyAction keyAction)
+    {
+        // KeyManager의 InputDownKeySets와 InputKeySets를 사용하여 키 찾기
+        return KeyManager.Instance.InputDownKeySets.Concat(KeyManager.Instance.InputKeySets)
+            .FirstOrDefault(keySet => keySet.keyAction == keyAction)?.keyCode ?? KeyCode.None;
     }
 
 }

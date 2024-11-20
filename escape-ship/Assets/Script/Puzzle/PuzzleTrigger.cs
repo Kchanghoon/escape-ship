@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using System.Linq;
 
 public class PuzzleTrigger : MonoBehaviour
 {
@@ -59,11 +60,13 @@ public class PuzzleTrigger : MonoBehaviour
 
             // 플레이어가 상호작용 가능한 거리 이내에 있는지 확인
             if (distanceToPlayer <= interactDistance)
-            {
+            {        // KeyManager에서 현재 Play 키값 가져오기
+                KeyCode playKey = KeyManager.Instance.GetKeyCode(KeyAction.Play);
+
                 if (!isPuzzleCompleted)  // 퍼즐이 아직 완료되지 않았다면
                 {
                     interactText.gameObject.SetActive(true);  // 상호작용 안내 텍스트 활성화
-                    interactText.text = "E키를 눌러 퍼즐을 여세요.";  // 상호작용 안내 문구 설정
+                    interactText.text = $"{playKey}키를 눌러 퍼즐을 여세요.";  // 상호작용 안내 문구 설정
                 }
                 else
                 {
@@ -78,7 +81,12 @@ public class PuzzleTrigger : MonoBehaviour
             }
         }
     }
-
+    public KeyCode GetKeyCode(KeyAction keyAction)
+    {
+        // KeyManager의 InputDownKeySets와 InputKeySets를 사용하여 키 찾기
+        return KeyManager.Instance.InputDownKeySets.Concat(KeyManager.Instance.InputKeySets)
+            .FirstOrDefault(keySet => keySet.keyAction == keyAction)?.keyCode ?? KeyCode.None;
+    }
     // 퍼즐 패널을 여는 함수
     void OpenPuzzlePanel()
     {
