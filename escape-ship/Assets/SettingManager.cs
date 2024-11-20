@@ -13,6 +13,7 @@ public class SettingsManager : Singleton<SettingsManager>
     [SerializeField] private TMP_InputField bgmVolumeText; // 배경 음악 볼륨 텍스트 입력 필드
     [SerializeField] private TMP_InputField effectVolumeText; // 효과음 볼륨 텍스트 입력 필드
     [SerializeField] private TMP_InputField masterVolumeText; // 마스터 볼륨 텍스트 입력 필드
+    [SerializeField] private AudioSource BTNClick;
 
     [Header("카메라 및 마우스 설정")]
     [SerializeField] private Slider sensitivitySlider;  // 마우스 감도 슬라이더
@@ -153,5 +154,6 @@ public class SettingsManager : Singleton<SettingsManager>
     public void ExitPanel()
     {
         OptionPanel.SetActive(false); // 옵션 패널 비활성화
+        BTNClick.Play();
     }
 }

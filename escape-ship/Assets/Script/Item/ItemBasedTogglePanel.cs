@@ -17,14 +17,14 @@ public class ItemBasedTogglePanel : MonoBehaviour
         originalSortingOrder = ToggleCanvas.sortingOrder;
 
         // 키 이벤트에 패널 토글 메서드를 연결
-        KeyManager.Instance.keyDic[KeyAction.Panel] += TryTogglePanel;
+        KeyManager.Instance.keyDic[KeyAction.OpenPage] += TryTogglePanel;
         panel.SetActive(false);
         isOpen = false;
     }
 
     private void OnDestroy()
     {
-        if(KeyManager.Instance != null) KeyManager.Instance.keyDic[KeyAction.Panel] -= TryTogglePanel;
+        if(KeyManager.Instance != null) KeyManager.Instance.keyDic[KeyAction.OpenPage] -= TryTogglePanel;
     }
 
     // 선택된 아이템이 패널을 열 수 있는지 확인하는 메서드

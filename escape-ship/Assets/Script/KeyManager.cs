@@ -25,7 +25,7 @@ public enum KeyAction
     SelectItem10,
     Use,
     Drop,
-    Panel,
+    OpenPage,
     Sit,
     Wheel
 }
@@ -95,7 +95,7 @@ public class KeyManager : Singleton<KeyManager>
         keyDic.Add(KeyAction.Use, OnUse);
         keyDic.Add(KeyAction.Drop, OnDrop);
         keyDic.Add(KeyAction.Sit, OnSit);
-        keyDic.Add(KeyAction.Panel, OnPanel);
+        keyDic.Add(KeyAction.OpenPage, OnPanel);
 
         keyDic[KeyAction.SelectItem1] = () => InventoryUIExmaple.Instance.SelectItem(0);
         keyDic[KeyAction.SelectItem2] = () => InventoryUIExmaple.Instance.SelectItem(1);
@@ -164,5 +164,11 @@ public class KeyManager : Singleton<KeyManager>
     public KeyCode GetKeyCode(KeyAction keyAction)
     {
         return AllKeySets.FirstOrDefault(k => k.keyAction == keyAction)?.keyCode ?? KeyCode.None;
+    }
+
+    public KeyAction? GetActionForKey(KeyCode keyCode)
+    {
+        var keySet = AllKeySets.FirstOrDefault(k => k.keyCode == keyCode);
+        return keySet?.keyAction; // 해당 키에 연결된 KeyAction 반환 (없으면 null)
     }
 }

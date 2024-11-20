@@ -15,6 +15,7 @@ public class PauseMenuUI : MonoBehaviour
     [SerializeField] private GameObject confirmOptionPanel;
     [SerializeField] private GameObject confirmExitPanel;
     [SerializeField] private GameObject MainMenuUI;
+    [SerializeField] private GameObject confirmKeyBindingPanel;
 
     [Header("Audio Settings")]
 
@@ -54,6 +55,7 @@ public class PauseMenuUI : MonoBehaviour
             confirmOptionPanel.SetActive(false);
             confirmExitPanel.SetActive(false);
             confirmMenuPanel.SetActive(false);
+            confirmKeyBindingPanel.SetActive(false);
             isPause = false;
         }
     }
@@ -100,6 +102,7 @@ public class PauseMenuUI : MonoBehaviour
         confirmMenuPanel.SetActive(false);
         confirmExitPanel.SetActive(false);
         confirmOptionPanel.SetActive(false);
+        confirmKeyBindingPanel.SetActive(false);
         MainMenuUI.SetActive(true);
 
     }

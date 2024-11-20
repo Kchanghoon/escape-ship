@@ -13,6 +13,7 @@ public class StartMenu : MonoBehaviour
     [SerializeField] private GameObject confirmExitPanel;
     [SerializeField] private GameObject confirmOptionSlotPanel;
     [SerializeField] private GameObject confirmSelectSlotPanel;
+    [SerializeField] private GameObject confrimKeyBindingPanel;
 
     // 플레이어 설정
     [Header("Player Settings")]
@@ -48,6 +49,7 @@ public class StartMenu : MonoBehaviour
         confirmExitPanel.SetActive(false);
         confirmOptionSlotPanel.SetActive(false);
         confirmSelectSlotPanel.SetActive(false);
+        confrimKeyBindingPanel.SetActive(false);
         BTNClick.Play();
         // 플레이어 상태 초기화
         if (playerState != null)
@@ -74,6 +76,7 @@ public class StartMenu : MonoBehaviour
         confirmExitPanel.SetActive(false);
         confirmOptionSlotPanel.SetActive(false);
         confirmSelectSlotPanel.SetActive(false);
+        confrimKeyBindingPanel.SetActive(false);
         BTNClick.Play();
         if (playerState != null)
         {
