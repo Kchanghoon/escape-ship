@@ -76,6 +76,13 @@ public class PlayerState : MonoBehaviour
                 ItemController.Instance.DecreaseItemQuantity(selectedItem.id);
                 Debug.Log("알약을 사용하여 스트레스가 10 감소했습니다.");
             }
+            if (selectedItem.id == "14")
+            {
+                IncreaseOxygen(10f);
+                // 사용 후 아이템 수량 감소
+                ItemController.Instance.DecreaseItemQuantity(selectedItem.id);
+                Debug.Log("알약을 사용하여 스트레스가 10 감소했습니다.");
+            }
         }
         else
         {

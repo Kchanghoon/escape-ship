@@ -6,12 +6,14 @@ public class NoteUI : MonoBehaviour
 {
     [SerializeField] private GameObject item9Panel;
     [SerializeField] private GameObject item10Panel;
+    [SerializeField] private GameObject item15Panel;
     Dictionary<string, GameObject> itemPanelDic = new Dictionary<string, GameObject>();
 
     private void Awake()
     {
         itemPanelDic.Add("9", item9Panel);
         itemPanelDic.Add("10", item10Panel);
+        itemPanelDic.Add("15", item15Panel);
     }
 
     private void Start()

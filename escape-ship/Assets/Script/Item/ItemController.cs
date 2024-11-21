@@ -154,7 +154,7 @@ public class ItemController : Singleton<ItemController>
         var item = curItemDatas.Find(x => x.id == id);  // 아이템 찾기
 
         // ID가 "1", "2", "3"일 때만 감소 처리
-        if ( id != "2" && id != "9" && id != "10")
+        if ( id != "2" && id != "9" && id != "10" && id != "14")
         {
             Debug.Log($"아이템 {id}은(는) 수량 감소 대상이 아닙니다.");
             return;
