@@ -4740,6 +4740,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Test
       objectReference: {fileID: 0}
+    - target: {fileID: 9137582591405979338, guid: 262b003740552174e9a174c991f1b352, type: 3}
+      propertyPath: m_text
+      value: "The END\n\uC0DD\uC874\uD558\uC168\uC2B5\uB2C8\uB2E4."
+      objectReference: {fileID: 0}
+    - target: {fileID: 9137582591405979338, guid: 262b003740552174e9a174c991f1b352, type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 512
+      objectReference: {fileID: 0}
+    - target: {fileID: 9137582591405979338, guid: 262b003740552174e9a174c991f1b352, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
