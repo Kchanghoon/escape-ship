@@ -172,6 +172,10 @@ public class PlayerState : MonoBehaviour
         GameManager.Instance.ShowMouse();
     }
 
-
+    public void ResetState()
+    {
+        oxygen = 100;
+        stress = 0;
+    }
 
 }

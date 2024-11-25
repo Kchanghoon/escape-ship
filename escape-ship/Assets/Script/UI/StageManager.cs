@@ -14,8 +14,8 @@ public class StageManager : Singleton<StageManager>
     // 현재 활성화된 스테이지 인덱스 저장 변수
     private int currentStageIndex = -1;
 
-
-
+    public PlayerState playerstate;
+    public InventoryUIExmaple inventoryuiexample;
 
     public void ActivateStage(int stageIndex)
     {
@@ -52,7 +52,8 @@ public class StageManager : Singleton<StageManager>
                     player.transform.position = playerStartPoints[stageIndex].position;
                     player.transform.rotation = playerStartPoints[stageIndex].rotation;
                 }
-
+                playerstate.ResetState();
+                inventoryuiexample.ResetInventory();
                 Debug.Log($"플레이어가 {stageIndex} 스테이지의 시작 위치로 이동했습니다. 현재 위치: {player.transform.position}");
             }
             else
