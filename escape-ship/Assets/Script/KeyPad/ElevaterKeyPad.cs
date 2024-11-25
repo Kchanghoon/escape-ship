@@ -87,6 +87,7 @@ public class ElevaterKeyPad : MonoBehaviour
 
         keyPadController.SetActiveElevaterKeyPad(this); // ElevaterKeyPad¸¦ ¼³Á¤
         GameManager.Instance.ShowMouse();
+        GameManager.Instance.SetKeyPad();
     }
 
     public void CheckPassword(string inputPassword)
@@ -145,6 +146,7 @@ public class ElevaterKeyPad : MonoBehaviour
         keyPadPanel.SetActive(false);
         keyPadCanvas.sortingOrder = originalSortingOrder;
         GameManager.Instance.HideMouse();
+        GameManager.Instance.UnSetKeyPad();
     }
 
     private void OnDestroy()

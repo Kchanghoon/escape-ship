@@ -53,7 +53,14 @@ public class PlayerState : MonoBehaviour
 
     private void OnAction()
     {
-        IncreaseStress(5f);  // E 키를 누르면 스트레스가 5 증가
+        if (!GameManager.Instance.isNotuse)
+        {
+            IncreaseStress(5f);  // E 키를 누르면 스트레스가 5 증가
+        }
+        else
+       {
+            return;
+        }
     }
 
     // Update는 매 프레임마다 호출

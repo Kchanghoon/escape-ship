@@ -25,6 +25,7 @@ public class PauseMenuUI : MonoBehaviour
     [SerializeField] private GameObject[] uiElements;
 
     private bool isPause;
+    //private bool Keypad = GameManager.Instance.SetKeyPad;
 
     private void Start()
     {
@@ -36,6 +37,11 @@ public class PauseMenuUI : MonoBehaviour
     {
         // 메인 메뉴 UI가 활성화되어 있으면 아무 작업도 하지 않고 종료
         if (MainMenuUI.activeInHierarchy)
+        {
+            return;
+        }
+
+        if (GameManager.Instance.isKeypad)
         {
             return;
         }

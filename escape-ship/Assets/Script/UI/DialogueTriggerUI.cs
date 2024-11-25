@@ -45,6 +45,7 @@ public class DialogueTriggerUI : MonoBehaviour
             {
                 ShowDialogue();  // 대화창 표시
                 hasTriggered = true;  // 대화가 발생했음을 기록
+                GameManager.Instance.SetKeyPad();
             }
         }
     }
@@ -90,5 +91,6 @@ public class DialogueTriggerUI : MonoBehaviour
         }
 
         isDialogueActive = false;
+        GameManager.Instance.UnSetKeyPad();
     }
 }

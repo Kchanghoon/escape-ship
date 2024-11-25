@@ -101,6 +101,7 @@ public class KeyPad : MonoBehaviour
         GameManager.Instance.ShowMouse();
         // KeyPadController에 현재 키패드를 설정
         keyPadController.SetActiveKeyPad(this);
+        GameManager.Instance.SetKeyPad();
 
     }
 
@@ -128,5 +129,6 @@ public class KeyPad : MonoBehaviour
         keyPadPanel.SetActive(false);  // 키패드 패널 비활성화
         keyPadCanvas.sortingOrder = originalSortingOrder;  // 캔버스 정렬 순서를 원래대로 복원
         GameManager.Instance.HideMouse();
+        GameManager.Instance.UnSetKeyPad();
     }
 }

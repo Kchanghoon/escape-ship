@@ -57,6 +57,7 @@ public class ItemBasedTogglePanel : MonoBehaviour
             {
                 ToggleCanvas.sortingOrder = sortingCanvas;  // 활성화 시 캔버스의 정렬 순서 변경
                 GameManager.Instance.ShowMouse();
+                 GameManager.Instance.SetNotUse();
                 isOpen = true;
                 panel.SetActive(true);
             Debug.Log("Open false 들어옴");
@@ -65,6 +66,7 @@ public class ItemBasedTogglePanel : MonoBehaviour
             {
                 ToggleCanvas.sortingOrder = originalSortingOrder;  // 비활성화 시 원래 정렬 순서 복구
                 GameManager.Instance.HideMouse();
+            GameManager.Instance.UnSetNotUse();
                 panel.SetActive(false);
                 isOpen= false;
         }

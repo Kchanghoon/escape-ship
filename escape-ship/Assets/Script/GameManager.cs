@@ -6,6 +6,8 @@ public class GameManager : Singleton<GameManager>
 {
     public bool isPause;
     public bool isSetting;
+    public bool isKeypad;
+    public bool isNotuse;
 
 
     public void ShowMouse()
@@ -27,5 +29,24 @@ public class GameManager : Singleton<GameManager>
     public void SetSetting(bool isSetting)
     {
         this.isSetting = isSetting;
+    }
+
+    public void SetKeyPad()
+    {
+        isKeypad = true;
+        isNotuse = true;
+    }
+    public void UnSetKeyPad()
+    {
+        isKeypad = false;
+        isNotuse = false;
+    }
+    public void SetNotUse()
+    {
+        isNotuse = true;
+    }
+    public void UnSetNotUse()
+    {
+        isNotuse = false;
     }
 }
