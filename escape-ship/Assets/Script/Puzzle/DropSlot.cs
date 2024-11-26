@@ -13,15 +13,9 @@ public class DropSlot : MonoBehaviour, IDropHandler
 
         if (droppedPiece != null && droppedPiece.gameObject == correctPiece)
         {
-            // 올바른 조각이 드롭된 경우
-            droppedPiece.transform.position = transform.position;  // 슬롯에 조각 배치
-            isCorrectPiecePlaced = true;  // 올바른 조각이 배치되었음을 기록
+            droppedPiece.transform.position = transform.position;                              // 슬롯에 조각 배치
+            isCorrectPiecePlaced = true;                                                         // 올바른 조각이 배치되었음을 기록
             CheckPuzzleCompletion();
-        }
-        else
-        {
-            // 잘못된 조각이 드롭된 경우 아무런 처리도 하지 않음
-            Debug.Log("잘못된 조각입니다. 아무 동작도 하지 않습니다.");
         }
     }
 
@@ -31,10 +25,6 @@ public class DropSlot : MonoBehaviour, IDropHandler
         if (puzzleTrigger != null)
         {
             puzzleTrigger.CheckAllSlots();  // 퍼즐 완료 여부 확인
-        }
-        else
-        {
-            Debug.LogError("PuzzleTrigger가 할당되지 않았습니다!");
         }
     }
 

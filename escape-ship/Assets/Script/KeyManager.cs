@@ -144,7 +144,6 @@ public class KeyManager : Singleton<KeyManager>
         }
     }
 
-    // **추가**: 키 변경 요청 처리 메서드
     public void UpdateKeyBinding(KeyAction keyAction, KeyCode newKeyCode)
     {
         // KeyAction에 해당하는 KeySet 검색
@@ -152,15 +151,10 @@ public class KeyManager : Singleton<KeyManager>
         if (keySet != null)
         {
             keySet.keyCode = newKeyCode; // 새로운 키 값으로 설정
-            Debug.Log($"Key for {keyAction} updated to {newKeyCode}");
-        }
-        else
-        {
-            Debug.LogError($"KeyAction {keyAction} not found!");
         }
     }
 
-    // **추가**: 특정 KeyAction의 KeyCode 가져오기
+    // 특정 KeyAction의 KeyCode 가져오기
     public KeyCode GetKeyCode(KeyAction keyAction)
     {
         return AllKeySets.FirstOrDefault(k => k.keyAction == keyAction)?.keyCode ?? KeyCode.None;

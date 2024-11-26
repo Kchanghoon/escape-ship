@@ -115,14 +115,10 @@ public class PuzzleTrigger : MonoBehaviour
     // 모든 드롭 슬롯이 올바르게 배치되었는지 확인하는 함수
     public void CheckAllSlots()
     {
-        foreach (DropSlot slot in dropSlots)  // 각 드롭 슬롯을 순회하며 확인
+        foreach (DropSlot slot in dropSlots)                                     // 각 드롭 슬롯을 순회하며 확인
         {
-            if (!slot.IsCorrectPiecePlaced())  // 슬롯에 올바른 퍼즐 조각이 놓이지 않았다면
-            {
-                return;  // 함수 종료 (퍼즐 미완료)
-            }
-        }
-        // 모든 드롭 슬롯이 올바르게 배치되었으면 퍼즐 완료 처리
+            if (!slot.IsCorrectPiecePlaced()) return;                             // 슬롯에 올바른 퍼즐 조각이 놓이지 않았다면 
+        }                                                                             // 모든 드롭 슬롯이 올바르게 배치되었으면 퍼즐 완료 처리
         CompletePuzzle();
     }
 

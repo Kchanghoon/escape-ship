@@ -20,8 +20,7 @@ public class DragBlockManager : MonoBehaviour
 
     // 충돌 감지 함수 (EndPosition과의 충돌 무시)
     public bool IsCollision(Vector2 targetPosition, RectTransform currentBlock, RectTransform endPosition)
-    {
-        // 현재 블록의 목표 위치를 기준으로 사각형 계산
+    {                                                                                                           // 현재 블록의 목표 위치를 기준으로 사각형 계산
         Rect currentBlockRect = new Rect(targetPosition, currentBlock.rect.size);
         Debug.Log($"현재 블록 Rect: {currentBlockRect}");
 
@@ -50,9 +49,9 @@ public class DragBlockManager : MonoBehaviour
     {
         foreach (var block in GetComponentsInChildren<RectTransform>())
         {
-            if (block == gameArea) continue;  // 게임 영역은 제외
+            if (block == gameArea) continue;                                                         // 게임 영역은 제외
 
-            SnapToGrid(block);  // 각 블록을 그리드에 맞게 정렬
+            SnapToGrid(block);                                                                // 각 블록을 그리드에 맞게 정렬
         }
     }
 

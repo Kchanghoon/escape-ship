@@ -39,41 +39,38 @@ public class LaserEmitter : MonoBehaviour
 
     void FireLaser()
     {
-        Vector3 laserDirection = laserOrigin.forward;  // 레이저 발사 방향
-        Vector3 laserPosition = laserOrigin.position;  // 레이저 시작 위치
-        laserLineRenderer.positionCount = 1;  // LineRenderer의 시작점을 레이저 시작 위치로 설정
+        Vector3 laserDirection = laserOrigin.forward;                                      // 레이저 발사 방향
+        Vector3 laserPosition = laserOrigin.position;                                    // 레이저 시작 위치
+        laserLineRenderer.positionCount = 1;                                            // LineRenderer의 시작점을 레이저 시작 위치로 설정
         laserLineRenderer.SetPosition(0, laserPosition);
 
         bool isReflecting = true;
         int reflections = 0;
         float remainingDistance = maxLaserDistance;
-        bool hitTarget = false;  // 목표에 닿았는지 확인하는 플래그
-
-        while (isReflecting && reflections < 10)  // 최대 10번까지 반사
-        {
-            // LayerMask 적용한 Raycast
+        bool hitTarget = false;                                                          // 목표에 닿았는지 확인하는 플래그
+            
+        while (isReflecting && reflections < 10)                                                                                                  // 최대 10번까지 반사
+        {                                                                                                                                      // LayerMask 적용한 Raycast
             if (Physics.Raycast(laserPosition, laserDirection, out RaycastHit hit, remainingDistance, reflectableLayers))
             {
                 laserLineRenderer.positionCount += 1;
-                laserLineRenderer.SetPosition(laserLineRenderer.positionCount - 1, hit.point);
-
-                // 레이저가 거울에 맞았을 경우 반사
+                laserLineRenderer.SetPosition(laserLineRenderer.positionCount - 1, hit.point);                                                                       // 레이저가 거울에 맞았을 경우 반사
                 if (hit.collider.CompareTag("Mirror"))
                 {
-                    Vector3 incomingDirection = laserDirection;  // 레이저의 입사각
-                    Vector3 normal = hit.normal;  // 거울 표면의 법선 벡터
-                    laserDirection = Vector3.Reflect(incomingDirection, normal);  // 반사각 계산
+                    Vector3 incomingDirection = laserDirection;                                                                                                  // 레이저의 입사각
+                    Vector3 normal = hit.normal;                                                                                                                // 거울 표면의 법선 벡터
+                    laserDirection = Vector3.Reflect(incomingDirection, normal);                                                                                                         // 반사각 계산
 
                     laserPosition = hit.point;
                     reflections++;
                     remainingDistance -= hit.distance;
                 }
-                else if (hit.collider.CompareTag("Target"))  // 목표 지점에 맞았을 경우
+                else if (hit.collider.CompareTag("Target"))                                                                                                 // 목표 지점에 맞았을 경우
                 {
-                    hitTarget = true;  // 목표에 닿았다는 것을 기록
+                    hitTarget = true;                                                                                                                                    // 목표에 닿았다는 것을 기록
                     if (!isDoorOpen)
                     {
-                        CompletePuzzle();  // 퍼즐 완료 처리 및 문 열기
+                        CompletePuzzle();                                                                                                                               // 퍼즐 완료 처리 및 문 열기
                     }
                     isReflecting = false;
                 }

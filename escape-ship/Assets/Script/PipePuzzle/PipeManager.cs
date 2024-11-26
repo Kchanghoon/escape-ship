@@ -35,7 +35,7 @@ public class PipeManager : Singleton<PipeManager>
     private List<Pipe> CheckAdjacencyPipesPipes(Pipe centerPipe)
     {
         List<Pipe> connectedPipes = new();
-        foreach (Pipe pipe in centerPipe.AdjacencyPipes) //인접한 파이프라인이 가운데 파이프라인과 인접하고 있는지 체크
+        foreach (Pipe pipe in centerPipe.AdjacencyPipes)                                    //인접한 파이프라인이 가운데 파이프라인과 인접하고 있는지 체크
         {
             if (!pipe.isChecked && pipe.IsConnected(centerPipe)) connectedPipes.Add(pipe);
         }
@@ -48,7 +48,7 @@ public class PipeManager : Singleton<PipeManager>
         allPipes.ForEach(x => x.isChecked = false);
         startPipe.isChecked = true;
 
-        List<Pipe> beforeConnectedPipes = new List<Pipe>() { startPipe }; // 첫 연결점 시작 파이프라인
+        List<Pipe> beforeConnectedPipes = new List<Pipe>() { startPipe };                                               // 첫 연결점 시작 파이프라인
         while (beforeConnectedPipes.Count != 0 || beforeConnectedPipes.Count > 10)
         {
             if (beforeConnectedPipes.Count > 10) break;
@@ -59,7 +59,7 @@ public class PipeManager : Singleton<PipeManager>
                 connectPipeLine.AddRange(CheckAdjacencyPipesPipes(pipe));
             }
 
-            beforeConnectedPipes = connectPipeLine.Except(beforeConnectedPipes).ToList(); //이전에 연결된 거 빼고 연결되어있는 파이프라인
+            beforeConnectedPipes = connectPipeLine.Except(beforeConnectedPipes).ToList();                                    //이전에 연결된 거 빼고 연결되어있는 파이프라인
         }
 
         if (endPipe.isChecked) OnPuzzleComplete();
