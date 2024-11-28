@@ -3094,37 +3094,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &903760344
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 903760345}
-  m_Layer: 0
-  m_Name: GoalDialog
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &903760345
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 903760344}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1872812984}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &907049730 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3911497409314484112, guid: 2763118e8fea29243b65374b209e326c, type: 3}
@@ -9178,9 +9147,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3950458706211886389, guid: 2763118e8fea29243b65374b209e326c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 708819286}
-    - targetCorrespondingSourceObject: {fileID: 3950458706211886389, guid: 2763118e8fea29243b65374b209e326c, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 903760345}
     - targetCorrespondingSourceObject: {fileID: 2139580010317806074, guid: 2763118e8fea29243b65374b209e326c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1274918603}
