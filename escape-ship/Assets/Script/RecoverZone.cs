@@ -7,7 +7,6 @@ public class RecoverZone : MonoBehaviour
     private bool playerInRange = false;  // 플레이어가 범위 안에 있는지 여부
     private PlayerState playerState;
 
-    // 플레이어가 범위에 들어왔을 때 호출
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
