@@ -118,7 +118,7 @@ MonoBehaviour:
   m_MinSize: {x: 400, y: 100}
   m_MaxSize: {x: 32384, y: 16192}
   vertical: 1
-  controlID: 121
+  controlID: 62
   draggingID: 0
 --- !u!114 &6
 MonoBehaviour:
@@ -146,7 +146,7 @@ MonoBehaviour:
   m_MinSize: {x: 400, y: 100}
   m_MaxSize: {x: 32384, y: 16192}
   vertical: 0
-  controlID: 122
+  controlID: 63
   draggingID: 0
 --- !u!114 &7
 MonoBehaviour:
@@ -941,7 +941,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets
+    - Assets/Script
     m_Globs: []
     m_OriginalText: 
     m_ImportLogFlags: 0
@@ -949,16 +949,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 60
   m_LastFolders:
-  - Assets
+  - Assets/Script
   m_LastFoldersGridSize: 60
   m_LastProjectPath: C:\Users\rlack\escape-ship\escape-ship
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 0a9a0100
-    m_LastClickedID: 104970
-    m_ExpandedIDs: 000000000a9a01000c9a01000e9a0100109a0100129a0100149a010000ca9a3b
+    m_SelectedIDs: 0e9a0100
+    m_LastClickedID: 104974
+    m_ExpandedIDs: 000000000c9a01000e9a0100109a0100129a0100149a0100169a010000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -986,7 +986,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000000a9a01000c9a01000e9a0100109a0100129a0100149a0100
+    m_ExpandedIDs: 000000000c9a01000e9a0100109a0100129a0100149a0100169a0100
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1261,9 +1261,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: aa71ffff
-      m_LastClickedID: -36438
-      m_ExpandedIDs: fa5effffae6afffffaf9ffff1efaffffe4faffffa8660000
+      m_SelectedIDs: a8660000
+      m_LastClickedID: 26280
+      m_ExpandedIDs: e4faffffa8660000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
