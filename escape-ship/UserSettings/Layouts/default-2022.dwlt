@@ -118,7 +118,7 @@ MonoBehaviour:
   m_MinSize: {x: 400, y: 100}
   m_MaxSize: {x: 32384, y: 16192}
   vertical: 1
-  controlID: 62
+  controlID: 158
   draggingID: 0
 --- !u!114 &6
 MonoBehaviour:
@@ -146,7 +146,7 @@ MonoBehaviour:
   m_MinSize: {x: 400, y: 100}
   m_MaxSize: {x: 32384, y: 16192}
   vertical: 0
-  controlID: 63
+  controlID: 159
   draggingID: 0
 --- !u!114 &7
 MonoBehaviour:
@@ -941,7 +941,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Script
+    - Assets/Font
     m_Globs: []
     m_OriginalText: 
     m_ImportLogFlags: 0
@@ -949,15 +949,15 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 60
   m_LastFolders:
-  - Assets/Script
+  - Assets/Font
   m_LastFoldersGridSize: 60
   m_LastProjectPath: C:\Users\rlack\escape-ship\escape-ship
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 0e9a0100
-    m_LastClickedID: 104974
+    m_SelectedIDs: 389a0100
+    m_LastClickedID: 105016
     m_ExpandedIDs: 000000000c9a01000e9a0100109a0100129a0100149a0100169a010000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -1013,7 +1013,7 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 0
+    m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: cc0a0100b80a0100620a0100880a0100be0a010000000000820a0100247100002697010040970100
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -1261,23 +1261,23 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: a8660000
-      m_LastClickedID: 26280
-      m_ExpandedIDs: e4faffffa8660000
+      m_SelectedIDs: 40f5ffff
+      m_LastClickedID: -2752
+      m_ExpandedIDs: 4ef5ffff84f7ffffa6f9ffffe4faffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: 
-        m_OriginalName: 
+        m_Name: ToolTipUI
+        m_OriginalName: ToolTipUI
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: 0
+        m_UserData: -2738
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 11
+        m_OriginalEventType: 0
         m_IsRenamingFilename: 0
         m_ClientGUIView: {fileID: 11}
       m_SearchString: 
