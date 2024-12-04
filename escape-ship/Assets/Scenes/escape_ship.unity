@@ -9291,8 +9291,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5171688948566326767, guid: 773bc614213234f45836a0ee81e731fe, type: 3}
       propertyPath: allItemDatas.Array.data[3].descriptions
-      value: "\uD568\uC120 1205\uD638 \uC810\uAC80 \uC77C\uC9C0 : 2055\uB144 \uB9C8\uC9C0\uB9C9
-        \uD568\uC120 \uC810\uAC80 \uC644\uB8CC"
+      value: "\uD568\uC120\uB118\uBC84 1205 \uC810\uAC80 \uC77C\uC9C0 : 2055\uB144
+        \uB9C8\uC9C0\uB9C9 \uD568\uC120 \uC810\uAC80 \uC644\uB8CC"
       objectReference: {fileID: 0}
     - target: {fileID: 5171688948566326767, guid: 773bc614213234f45836a0ee81e731fe, type: 3}
       propertyPath: allItemDatas.Array.data[13].descriptions
